@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sonnseite</title>
+  <meta name="description" content="Sonnseite – ein sanfter Begleiter für Zuversicht, Achtsamkeit und Resilienz. Alle Daten bleiben auf deinem Gerät.">
+  <meta name="theme-color" content="#faf5ee">
+  <meta name="robots" content="noindex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Sonnseite">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    /* Thema früh setzen, damit es beim Laden nicht flackert */
+    try { var s = JSON.parse(localStorage.getItem('sonnseite.v1') || '{}').settings || {}; var h = new Date().getHours();
+      var sys = matchMedia('(prefers-color-scheme: dark)').matches; var th = s.theme || 'evening';
+      var d = th === 'dark' || (th === 'auto' && sys) || (th === 'evening' && (sys || h >= 20 || h < 6));
+      document.documentElement.dataset.theme = d ? 'dark' : 'light'; if (s.fontScale) document.documentElement.style.fontSize = (s.fontScale * 100) + '%';
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#view">Zum Inhalt</a>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="Sonnseite – Start">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="17" r="7" fill="var(--sunc)"/><path d="M4 24c4-3 8-4 12-4s8 1 12 4" fill="none" stroke="var(--sage-d)" stroke-width="2" stroke-linecap="round"/><path d="M16 5v3M7.5 8.5l2 2M24.5 8.5l-2 2" stroke="var(--terra)" stroke-width="2" stroke-linecap="round"/></svg>
+      <span id="brand-name">Sonnseite</span>
+    </a>
+    <div class="top-actions">
+      <a id="btn-help" class="help-btn" href="#/help"></a>
+      <a id="btn-settings" class="icon-btn" href="#/settings"></a>
+    </div>
+  </header>
+  <main id="view" tabindex="-1"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Navigation"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="print" class="print-only"></div>
+  <noscript><p style="padding:2rem">Sonnseite braucht JavaScript.</p></noscript>
+  <script src="js/i18n.js"></script>
+  <script src="js/content/de.js"></script>
+  <script src="js/content/en.js"></script>
+  <script src="js/content/cs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
