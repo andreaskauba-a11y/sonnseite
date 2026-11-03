@@ -9,6 +9,7 @@ Web-App (PWA) für das Handy, auf Deutsch, Englisch und Tschechisch.
 - **Journal** mit Schreibimpulsen und regelbasierter Rückmeldung (läuft lokal, keine KI, kein Server)
 - **Wochen-Check-up**: WHO-5-Wohlbefindensfragebogen + Reflexionsfragen, sanfte Verlaufskurve ohne „Noten“
 - **8-Wochen-Programm** mit Wochenthemen (frei wechselbar) und **16 Übungen** (Atem, Body-Scan, 5-4-3-2-1, Selbstmitgefühl, Gedanken prüfen, Werte, Stärken, bestmögliches Selbst, Genießen, Dankbarkeitsbrief, expressives Schreiben, Muskelentspannung …) – jeweils mit „Warum das hilft“ und Quellen
+- **Stimme & Klang** bei allen geführten Übungen und Atemübungen: gesprochene Anleitung über die Sprachausgabe des Geräts (offline, Stimme/Tonhöhe/Tempo wählbar), live erzeugter Klangteppich und Klangschale auf 432 Hz (als Klangfarbe, ohne Wirkversprechen); der Bildschirm bleibt während der Übung an
 - **Garten**, der mit jeder Selbstfürsorge wächst und nie welkt – keine Streaks, kein Druck
 - **Hilfe-Seite** mit Krisennummern für Österreich/Wien; Krisenwörter in Texten zeigen sofort Hilfe an
 - Erinnerungen über **Kalenderdatei (.ics)**, sanfte Hinweise in der App (abschaltbar)
@@ -29,6 +30,9 @@ Dann http://localhost:8080 öffnen.
 2. In Render: **New → Blueprint** → dieses Repository wählen. `render.yaml` richtet eine kostenlose *Static Site* ein (Ordner `public`, kein Build).
    Alternativ: **New → Static Site**, Build Command leer lassen, Publish Directory `public`.
 3. Die URL (z. B. `https://sonnseite.onrender.com`) am Handy öffnen und „Zum Home-Bildschirm“ hinzufügen.
+
+## Stimme & Klang
+Code in `public/js/audio.js` (Web Speech API + Web Audio API, keine Audiodateien).
 
 ## Inhalte anpassen
 - Oberflächentexte: `public/js/i18n.js`

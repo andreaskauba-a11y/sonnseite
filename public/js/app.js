@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.0.0';
+  const VERSION = '1.1.0';
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
   const LANGS = ['de', 'en', 'cs'];
@@ -31,14 +31,15 @@
   function defaults() {
     return {
       v: 1,
-      settings: { lang: detectLang(), name: '', themes: [], fontScale: 1, theme: 'evening', morningTime: '07:30', eveningTime: '20:30', hints: true, onboarded: false, startDate: dkey(), programShift: 0 },
+      settings: { lang: detectLang(), name: '', themes: [], fontScale: 1, theme: 'evening', morningTime: '07:30', eveningTime: '20:30', hints: true, onboarded: false, startDate: dkey(), programShift: 0, audio: audioDefaults() },
       days: {}, journal: [], weekly: [], exercises: [], favs: []
     };
   }
+  function audioDefaults() { return { voice: true, voiceURI: {}, pitch: null, rate: 0.85, voiceVol: 1, music: true, musicVol: 0.5 }; }
   function load() {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) { const d = JSON.parse(raw); const def = defaults(); return Object.assign(def, d, { settings: Object.assign(def.settings, d.settings || {}) }); }
+      if (raw) { const d = JSON.parse(raw); const def = defaults(); const st = Object.assign(def.settings, d.settings || {}); st.audio = Object.assign(audioDefaults(), st.audio || {}); return Object.assign(def, d, { settings: st }); }
     } catch (e) { /* ignore */ }
     return defaults();
   }
@@ -87,6 +88,10 @@
     sun_cloud: '<path d="M8 3v1.5M3 8h1.5M4.6 4.6l1 1M11.4 4.6l-1 1"/><path d="M5.3 10.5a3 3 0 0 1 5.3-3"/><path d="M9 19.5h8a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.4 1.3A2.9 2.9 0 0 0 9 19.5z"/>',
     cloud: '<path d="M7 18.5h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.4 3.4 0 0 0 7 18.5z"/>',
     rain: '<path d="M7 15h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.4 3.4 0 0 0 7 15z"/><path d="M9 18l-.8 2M13 18l-.8 2M17 18l-.8 2"/>',
+    speaker: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+    speakerOff: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>',
+    music: '<path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/>',
+    musicOff: '<path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/><path d="M3.5 3.5l17 17"/>',
     storm: '<path d="M7 15h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.4 3.4 0 0 0 7 15z"/><path d="M12.5 15.5l-2 3h3l-2 3"/>'
   };
   const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${P[n] || ''}</svg>`;
@@ -150,6 +155,28 @@
     r.style.fontSize = (s.fontScale * 100) + '%';
     r.lang = L();
     const m = $('meta[name="theme-color"]'); if (m) m.setAttribute('content', dark ? '#221b17' : '#faf5ee');
+  }
+
+  /* ---------- Stimme & Klang ---------- */
+  const AU = window.SonnAudio;
+  const AS = () => S.settings.audio;
+  function syncAudio() { const a = AS(); AU.configure({ lang: L(), voice: a.voice, voiceURI: (a.voiceURI || {})[L()] || '', pitch: a.pitch, rate: a.rate, voiceVol: a.voiceVol, music: a.music, musicVol: a.musicVol }); }
+  const waitMs = (ms) => new Promise((r) => later(r, ms));
+  function audioBar() {
+    const a = AS();
+    return `<div class="audio-bar" role="group" aria-label="${esc(t('audioTitle'))}">
+      <button class="pill ${a.voice ? 'on' : ''}" data-act="tvoice" aria-pressed="${a.voice}">${ic(a.voice ? 'speaker' : 'speakerOff')} ${esc(t('voiceShort'))}</button>
+      <button class="pill ${a.music ? 'on' : ''}" data-act="tmusic" aria-pressed="${a.music}">${ic(a.music ? 'music' : 'musicOff')} ${esc(t('musicShort'))}</button></div>`;
+  }
+  function audioToggles(onChange) {
+    const upd = (key, el) => {
+      AS()[key] = !AS()[key]; save(); syncAudio();
+      el.classList.toggle('on', AS()[key]); el.setAttribute('aria-pressed', String(AS()[key]));
+      el.innerHTML = key === 'voice' ? ic(AS().voice ? 'speaker' : 'speakerOff') + ' ' + esc(t('voiceShort')) : ic(AS().music ? 'music' : 'musicOff') + ' ' + esc(t('musicShort'));
+      if (key === 'voice' && !AS().voice) AU.stopSpeech();
+      if (onChange) onChange(key);
+    };
+    return { tvoice: (el) => upd('voice', el), tmusic: (el) => upd('music', el) };
   }
 
   function renderChrome() {
@@ -341,7 +368,7 @@
       if (stopped) return;
       while (pattern[ph] === 0) { ph = (ph + 1) % 4; if (ph === 0) c++; }
       if (c >= cycles) { onEnd && onEnd(); return; }
-      onPhase(names[ph], pattern[ph], ph);
+      onPhase(names[ph], pattern[ph], ph, c);
       later(() => { ph = (ph + 1) % 4; if (ph === 0) c++; step(); }, pattern[ph] * 1000);
     };
     step();
@@ -352,6 +379,14 @@
     bc.style.transitionDuration = secs + 's';
     if (ph === 0) bc.classList.add('grow'); else if (ph === 2) bc.classList.remove('grow');
     bl.textContent = t(phase);
+  }
+  /* Atem-Hinweise: in den ersten Zyklen gesprochen, danach nur noch leise Töne */
+  function cueBreath(spokenCycles) {
+    return (phase, secs, ph, c) => {
+      setCircle(phase, secs, ph);
+      if (AS().voice && c < spokenCycles) AU.speak(t(phase), { rate: 0.8 });
+      else if (ph === 0) AU.bell('in'); else if (ph === 2) AU.bell('out');
+    };
   }
 
   /* ---------- Startseite ---------- */
@@ -405,7 +440,7 @@
         { render: (d) => `<p class="eyebrow">${ic('sun')} ${esc(t('morningTitle'))}</p><h1>${esc(greeting())}</h1><p class="lead">${esc(t('moodQ'))}</p>${moodPicker(d.mood)}<p class="tiny center">${esc(t('moodHint'))}</p>`,
           collect: (el, d) => { d.mood = readPick(el) || d.mood; } },
         { skip: true, render: (d) => `${d.mood && d.mood <= 2 ? `<p class="note soft">${esc(t('lowMoodMorning'))}</p>` : ''}<h1>${esc(t('arriveTitle'))}</h1><p class="lead">${esc(t('arriveText'))}</p>${miniBreath()}`,
-          mount: () => { actions.mbstart = (btn) => { btn.disabled = true; if (stopB) stopB(); stopB = runBreath([4, 0, 6, 0], 3, setCircle, () => { $('#bl').textContent = t('wellDone'); btn.disabled = false; }); }; } },
+          mount: () => { onCleanup(() => AU.stopSpeech()); actions.mbstart = (btn) => { btn.disabled = true; AU.unlock(); syncAudio(); if (stopB) stopB(); stopB = runBreath([4, 0, 6, 0], 3, cueBreath(3), () => { $('#bl').textContent = t('wellDone'); AU.bell('end'); AU.speak(t('wellDone')); btn.disabled = false; }); }; } },
         { render: () => `<h1>${esc(t('thoughtTitle'))}</h1>${affCard(ai, true)}<p class="muted">${esc(t('thoughtText'))}</p>` },
         { render: (d) => `<p class="eyebrow">${esc(t('intentionLabel'))}</p><h1>${esc(C().morningQuestions[qi])}</h1><textarea id="f-int" rows="4" placeholder="${esc(t('intentionPh'))}">${esc(d.intention)}</textarea>`,
           collect: (el, d) => { d.intention = $('#f-int', el).value.trim(); } },
@@ -487,9 +522,11 @@
         <div class="g-ctrl"><button class="icon-btn" data-act="gprev" aria-label="${esc(t('back'))}">${ic('arrowLeft')}</button><button class="btn primary" data-act="gplay" id="gplay">${ic('play')} ${esc(t('start'))}</button><button class="icon-btn" data-act="gnext" aria-label="${esc(t('next'))}">${ic('arrowRight')}</button></div></div>`;
     } else {
       body = `<div class="write">${ex.minutes >= 10 ? `<button class="btn soft" data-act="wtimer" id="wt">${ic('play')} ${esc(t('timerStart', { n: ex.minutes }))}</button>` : ''}
+        <div class="audio-bar"><button class="pill" data-act="wmusic" aria-pressed="false">${ic('music')} ${esc(t('writeMusic'))}</button></div>
         ${ex.fields.map((f, j) => `<label class="field"><span>${esc(f.l)}</span><textarea id="w${j}" rows="${f.rows || 3}" placeholder="${esc(f.p || '')}"></textarea></label>`).join('')}
         <button class="btn primary wide" data-act="wsave">${esc(t('saveEntry'))}</button></div>`;
     }
+    onCleanup(() => AU.stopAll());
     view(`<section class="page exercise">
       <button class="back" data-go="/exercises">${ic('arrowLeft')} ${esc(t('tabExercises'))}</button>
       <p class="eyebrow">${ic(TYPEI[ex.type])} ${esc(ex.method)} · ${ex.minutes} ${esc(t('min'))}</p>
@@ -497,61 +534,93 @@
       <p class="lead">${esc(ex.intro)}</p>
       ${ex.list ? `<div class="tags">${ex.list.map((x) => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
       ${ex.note ? `<p class="note soft">${esc(ex.note)}</p>` : ''}
+      ${ex.type !== 'write' ? audioBar() + `<p class="tiny">${esc(t('eyesClosedHint'))}</p>` : ''}
       <div id="engine">${body}</div>
       <details class="evidence"><summary>${esc(t('whyHelps'))}</summary><p>${esc(ex.evidence)}</p></details>
     </section>`, { tab: 'ex' });
 
     const finish = (extra) => {
       S.exercises.push({ id, ts: Date.now() }); save();
+      if (ex.type !== 'write') { AU.bell('end'); AU.speak(t('voiceEnd')).then(() => { AU.stopPad(); AU.awake(false); }); later(() => AU.stopPad(), 20000); }
       $('#engine').innerHTML = `${extra || ''}<div class="close-screen">${garden(growth(), 120)}<h2>${esc(t('exDone'))}</h2><p class="lead">${esc(t('exDoneText'))}</p>
         <div class="row"><a class="btn soft" href="#/exercises">${esc(t('moreExercises'))}</a><a class="btn primary" href="#/">${esc(t('toHome'))}</a></div></div>`;
       window.scrollTo({ top: $('#engine').offsetTop - 80, behavior: 'smooth' });
     };
 
     if (ex.type === 'breath') {
-      let stop = null, end = 0, tick = null;
-      const reset = () => { if (stop) stop(); stop = null; clearInterval(tick); };
+      let stop = null, end = 0, tick = null, running = false;
+      const reset = () => { running = false; if (stop) stop(); stop = null; clearInterval(tick); AU.stopSpeech(); AU.stopPad(); AU.awake(false); };
       onCleanup(reset);
-      act({
-        bstart: (btn) => {
-          if (stop) { reset(); btn.innerHTML = ic('play') + ' ' + esc(t('start')); $('#bl').textContent = t('ready'); $('#btime').textContent = ''; $('#bc').classList.remove('grow'); return; }
-          const mins = +$('[data-pick-group="min"]').dataset.value || ex.minutes;
-          const cyc = Math.max(1, Math.round(mins * 60 / ex.pattern.reduce((a, b) => a + b, 0)));
-          end = Date.now() + cyc * ex.pattern.reduce((a, b) => a + b, 0) * 1000;
+      act(Object.assign(audioToggles(), {
+        bstart: async (btn) => {
+          if (running) { reset(); btn.innerHTML = ic('play') + ' ' + esc(t('start')); $('#bl').textContent = t('ready'); $('#btime').textContent = ''; $('#bc').classList.remove('grow'); return; }
+          running = true;
+          AU.unlock(); syncAudio(); AU.startPad(); AU.awake(true);
           btn.innerHTML = ic('pause') + ' ' + esc(t('stop'));
-          const upd = () => { const s = Math.max(0, Math.round((end - Date.now()) / 1000)); $('#btime').textContent = `${Math.floor(s / 60)}:${pad(s % 60)}`; };
+          const mins = +$('[data-pick-group="min"]').dataset.value || ex.minutes;
+          const per = ex.pattern.reduce((x, y) => x + y, 0);
+          const cyc = Math.max(1, Math.round(mins * 60 / per));
+          await AU.speak(t('breathStartVoice'));
+          if (!running) return;
+          end = Date.now() + cyc * per * 1000;
+          const upd = () => { const sec = Math.max(0, Math.round((end - Date.now()) / 1000)); const el = $('#btime'); if (el) el.textContent = `${Math.floor(sec / 60)}:${pad(sec % 60)}`; };
           upd(); tick = setInterval(upd, 500);
-          stop = runBreath(ex.pattern, cyc, setCircle, () => { reset(); finish(); });
+          stop = runBreath(ex.pattern, cyc, cueBreath(3), () => { stop = null; clearInterval(tick); running = false; finish(); });
         }
-      });
+      }));
     } else if (ex.type === 'guided') {
-      let i = -1, playing = false, left = 0, iv = null;
+      /* Mit Stimme: Klangschale → Satz wird gesprochen → Stille zum Nachspüren (mind. 5 Sek.) → nächster Schritt */
+      let i = 0, playing = false, run = 0, introDone = false;
       const steps = ex.steps;
-      const show = () => {
-        const s = steps[i]; left = s.s;
-        $('#gt').textContent = s.t; $('#gc').textContent = `${i + 1} / ${steps.length}`;
-        const gb = $('#gb'); gb.style.transition = 'none'; gb.style.width = '0%';
-        if (playing) requestAnimationFrame(() => { gb.style.transition = `width ${left}s linear`; gb.style.width = '100%'; });
-      };
-      const stopT = () => { clearInterval(iv); iv = null; };
-      const runT = () => { stopT(); iv = setInterval(() => { left--; if (left <= 0) { stopT(); advance(); } }, 1000); };
-      const advance = () => { if (i < steps.length - 1) { i++; show(); if (playing) runT(); } else { playing = false; stopT(); finish(); } };
-      const setBtn = () => { const b = $('#gplay'); if (!b) return; b.innerHTML = playing ? ic('pause') + ' ' + esc(t('pause')) : ic('play') + ' ' + esc(i < 0 ? t('start') : t('resume')); };
-      onCleanup(stopT);
-      act({
+      const bar = (secs) => { const gb = $('#gb'); if (!gb) return; gb.style.transition = 'none'; gb.style.width = '0%'; if (secs > 0) requestAnimationFrame(() => requestAnimationFrame(() => { gb.style.transition = `width ${secs}s linear`; gb.style.width = '100%'; })); };
+      const freeze = () => { const gb = $('#gb'); if (!gb) return; const w = getComputedStyle(gb).width; gb.style.transition = 'none'; gb.style.width = w; };
+      const show = () => { const st = steps[i]; $('#gt').textContent = st.t; $('#gc').textContent = `${i + 1} / ${steps.length}`; bar(0); };
+      const setBtn = () => { const b2 = $('#gplay'); if (!b2) return; b2.innerHTML = playing ? ic('pause') + ' ' + esc(t('pause')) : ic('play') + ' ' + esc(!introDone && i === 0 ? t('start') : t('resume')); };
+      const stopRun = () => { run++; AU.stopSpeech(); };
+      async function play() {
+        const my = ++run;
+        if (!introDone) {
+          $('#gt').textContent = ex.intro; $('#gc').textContent = '';
+          await AU.speak(ex.intro); if (my !== run) return;
+          introDone = true; await waitMs(AS().voice ? 1500 : 300); if (my !== run) return;
+        }
+        while (i < steps.length) {
+          const st = steps[i]; show(); AU.bell('step');
+          await waitMs(AS().music ? 900 : 100); if (my !== run) return;
+          const t0 = Date.now();
+          await AU.speak(st.t); if (my !== run) return;
+          const rest = AS().voice ? Math.max(st.s * 1000 - (Date.now() - t0), 5000) : st.s * 1000;
+          bar(rest / 1000);
+          await waitMs(rest); if (my !== run) return;
+          i++;
+        }
+        playing = false; i = steps.length - 1; setBtn(); finish();
+      }
+      onCleanup(() => { run++; });
+      act(Object.assign(audioToggles(), {
         gplay: () => {
-          if (i < 0) { playing = true; i = 0; show(); runT(); }
-          else if (playing) { playing = false; stopT(); const gb = $('#gb'); const w = getComputedStyle(gb).width; gb.style.transition = 'none'; gb.style.width = w; }
-          else { playing = true; show(); runT(); }
+          if (playing) { playing = false; stopRun(); freeze(); AU.stopPad(); AU.awake(false); }
+          else { playing = true; AU.unlock(); syncAudio(); AU.startPad(); AU.awake(true); play(); }
           setBtn();
         },
-        gnext: () => { if (i < 0) { playing = true; } advance(); setBtn(); },
-        gprev: () => { if (i > 0) { i--; show(); if (playing) runT(); } }
-      });
+        gnext: () => {
+          stopRun(); if (!introDone) introDone = true; else i++;
+          if (i >= steps.length) { playing = false; i = steps.length - 1; finish(); return; }
+          if (playing) play(); else show();
+          setBtn();
+        },
+        gprev: () => { stopRun(); introDone = true; if (i > 0) i--; if (playing) play(); else show(); setBtn(); }
+      }));
     } else {
       let wt = null;
       onCleanup(() => clearInterval(wt));
+      let wm = false;
       act({
+        wmusic: (btn) => {
+          wm = !wm; AU.unlock();
+          if (wm) { if (!AS().music) { AS().music = true; save(); } syncAudio(); AU.startPad(); } else AU.stopPad();
+          btn.classList.toggle('on', wm); btn.setAttribute('aria-pressed', String(wm));
+        },
         wtimer: (btn) => {
           if (wt) { clearInterval(wt); wt = null; btn.innerHTML = ic('play') + ' ' + esc(t('timerStart', { n: ex.minutes })); return; }
           let s = ex.minutes * 60;
@@ -785,7 +854,7 @@
 
   /* ---------- Einstellungen ---------- */
   function viewSettings() {
-    const s = S.settings; const th = C().themes;
+    const s = S.settings; const th = C().themes; const au = s.audio;
     const seg = (key, opts) => `<div class="seg" data-pick-group="${key}" data-value="${s[key]}">${opts.map(([v, l]) => `<button class="${String(s[key]) === String(v) ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${String(s[key]) === String(v)}">${esc(l)}</button>`).join('')}</div>`;
     view(`<section class="page settings">
       <button class="back" data-go="/">${ic('arrowLeft')} ${esc(t('tabToday'))}</button>
@@ -801,6 +870,18 @@
         <label class="field small"><span>${ic('moon')} ${esc(t('eveningTitle'))}</span><input type="time" id="s-et" value="${esc(s.eveningTime)}"></label></div>
         <label class="toggle"><input type="checkbox" id="s-hints" ${s.hints ? 'checked' : ''}><span>${esc(t('hintsToggle'))}</span></label>
         <button class="btn soft" data-act="ics">${ic('calendar')} ${esc(t('icsButton'))}</button><p class="tiny">${esc(t('icsHint'))}</p></div>
+      <div class="card" id="audio-card"><p class="label">${esc(t('audioTitle'))}</p>
+        ${AU.speechAvailable() ? '' : `<p class="note soft">${esc(t('noSpeech'))}</p>`}
+        <label class="toggle"><input type="checkbox" id="a-voice" ${au.voice ? 'checked' : ''}><span>${esc(t('voiceToggle'))}</span></label>
+        <label class="field"><span>${esc(t('voiceLabel'))}</span><select id="a-uri"></select></label>
+        <label class="field"><span>${esc(t('pitchLabel'))}</span><input type="range" id="a-pitch" min="0.7" max="1.3" step="0.02"><span class="range-ends"><small>${esc(t('lower'))}</small><button class="link-btn" data-act="pitchauto">${esc(t('pitchAuto'))}</button><small>${esc(t('higher'))}</small></span></label>
+        <p class="label">${esc(t('rateLabel'))}</p>
+        <div class="seg" data-pick-group="rate" data-value="${au.rate}">${[[0.75, t('rateSlow')], [0.85, t('rateCalm')], [0.95, t('rateNormal')]].map(([v, l]) => `<button class="${au.rate === v ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${au.rate === v}">${esc(l)}</button>`).join('')}</div>
+        <label class="field"><span>${esc(t('voiceVol'))}</span><input type="range" id="a-vv" min="0.2" max="1" step="0.05" value="${au.voiceVol}"></label>
+        <label class="toggle"><input type="checkbox" id="a-music" ${au.music ? 'checked' : ''}><span>${esc(t('musicToggle'))}</span></label>
+        <label class="field"><span>${esc(t('musicVol'))}</span><input type="range" id="a-mv" min="0.05" max="1" step="0.05" value="${au.musicVol}"></label>
+        <button class="btn soft" data-act="listen">${ic('play')} ${esc(t('listen'))}</button>
+        <p class="tiny">${esc(t('audioHint'))}</p><p class="tiny">${esc(t('music432'))}</p></div>
       <div class="card"><p class="label">${esc(t('installTitle'))}</p><p class="tiny">${esc(t('installHint'))}</p></div>
       <div class="card"><p class="label">${esc(t('yourData'))}</p><p class="tiny">${esc(t('dataHint'))}</p>
         <div class="row wrap"><button class="btn soft" data-act="backup">${ic('download')} ${esc(t('backupExport'))}</button>
@@ -817,8 +898,29 @@
       s.theme = $('[data-pick-group="theme"]').dataset.value;
       s.morningTime = $('#s-mt').value || s.morningTime; s.eveningTime = $('#s-et').value || s.eveningTime;
       s.hints = $('#s-hints').checked;
+      persistAudio();
       save(); applyTheme();
     };
+    function persistAudio() {
+      au.voice = $('#a-voice').checked; au.music = $('#a-music').checked;
+      au.voiceURI = au.voiceURI || {}; au.voiceURI[L()] = $('#a-uri').value;
+      au.rate = +$('[data-pick-group="rate"]').dataset.value || 0.85;
+      au.voiceVol = +$('#a-vv').value; au.musicVol = +$('#a-mv').value;
+      save(); syncAudio();
+    }
+    const pitchEl = $('#a-pitch');
+    const showPitch = () => { pitchEl.value = au.pitch != null ? au.pitch : AU.autoPitch(AU.pickVoice(L(), $('#a-uri').value)); };
+    const fillVoices = () => {
+      const sel = $('#a-uri'); if (!sel) return;
+      const list = AU.voicesFor(L()); const cur = (au.voiceURI || {})[L()] || '';
+      sel.innerHTML = `<option value="">${esc(t('voiceAuto'))}${list[0] ? ' – ' + esc(list[0].name) : ''}</option>` + list.map((v) => `<option value="${esc(v.voiceURI)}" ${v.voiceURI === cur ? 'selected' : ''}>${esc(v.name)} · ${esc(v.lang)}</option>`).join('');
+      showPitch();
+    };
+    fillVoices(); later(fillVoices, 800); later(fillVoices, 2500);
+    $('#a-uri').addEventListener('change', () => { persistAudio(); showPitch(); });
+    pitchEl.addEventListener('input', () => { au.pitch = +pitchEl.value; save(); syncAudio(); });
+    pitchEl.addEventListener('change', () => { AU.unlock(); AU.speak(t('sampleShort')); });
+    $('#a-mv').addEventListener('input', () => { persistAudio(); });
     $('[data-pick-group="lang"]').addEventListener('picked', (e) => { persist(); s.lang = e.detail; save(); applyTheme(); renderChrome(); viewSettings(); });
     $('[data-pick-group="fontScale"]').addEventListener('picked', (e) => { document.documentElement.style.fontSize = (+e.detail * 100) + '%'; });
     $('[data-pick-group="theme"]').addEventListener('picked', () => { persist(); });
@@ -839,6 +941,8 @@
     act({
       save: () => { persist(); toast(t('saved')); go('/'); },
       ics: () => { persist(); downloadIcs(); },
+      pitchauto: () => { au.pitch = null; save(); syncAudio(); showPitch(); toast(t('pitchAutoDone')); },
+      listen: () => { persistAudio(); AU.unlock(); syncAudio(); AU.startPad(); AU.bell('step'); AU.speak(t('sampleText')).then(() => later(() => AU.stopPad(), 1200)); },
       backup: () => { download(`sonnseite-backup-${dkey()}.json`, JSON.stringify(S, null, 1), 'application/json'); },
       pdf: exportPdf,
       wipe: () => { if (confirm(t('confirmWipe')) && confirm(t('confirmWipe2'))) { localStorage.removeItem(KEY); S = defaults(); applyTheme(); renderChrome(); go('/'); } }
@@ -923,7 +1027,7 @@
 
   /* ---------- Router ---------- */
   function route() {
-    cleanup(); applyTheme();
+    cleanup(); applyTheme(); AU.stopAll(); syncAudio();
     const h = (location.hash || '#/').slice(1) || '/';
     if (!S.settings.onboarded && h !== '/help') return viewOnboarding();
     let m;

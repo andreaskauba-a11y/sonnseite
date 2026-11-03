@@ -330,3 +330,20 @@ body.in-flow .toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
   #print .meta { color: #777; }
   #print .link { display: none; }
 }
+
+/* Stimme & Klang */
+.audio-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px; border-radius: 999px; font: inherit; font-size: .98rem; font-weight: 600;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer;
+}
+.pill.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+select {
+  width: 100%; font: inherit; font-size: 1.02rem; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 12px 14px; appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; background-size: 6px 6px; background-repeat: no-repeat;
+}
+input[type="range"] { width: 100%; accent-color: var(--primary); height: 32px; }
+.range-ends { display: flex !important; justify-content: space-between; align-items: center; color: var(--muted); margin-top: -2px; }
+.link-btn { background: none; border: 0; color: var(--primary); font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; padding: 6px; }
