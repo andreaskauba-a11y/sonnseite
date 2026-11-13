@@ -31,17 +31,18 @@ _Stand: 13. November 2026 · Version 1.3.2 (live auf Render über `main`)_
 - Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
 - Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
 
-### Version 1.3.1 – Impressum
-- Eigene Seite (Route `#/imprint`): Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis, Haftung, Links, Datenschutz (inkl. Hosting bei Render), Urheberrecht (de, en, cs)
-- Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
-- „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
-
-### Version 1.3.2 – Aufräumen nach dem Impressum
-- Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
-- Link heißt „Impressum und Datenschutz“ (de, en, cs)
+### Version 1.3.1 und 1.3.2 – Impressum und Datenschutz
+- Eigene Seite (Route `#/imprint`) in de, en, cs: Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis mit Link zur Hilfe, Haftung, Links, Datenschutz inkl. Hosting bei Render, Urheberrecht und Quellen
+- Link „Impressum und Datenschutz“ in den Einstellungen, auf der Hilfe-Seite und im Willkommens-Bildschirm
+- Datenschutz-Absatz unter „Über Sonnseite“ entfernt (widersprach dem Hosting-Hinweis), Datenschutz steht nur noch im Impressum
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
+- Alle anderen Stellen geprüft: „keine Therapie“, „Einträge bleiben auf deinem Gerät“ und der KI-Hinweis zu den Stimmen bleiben bewusst stehen
 
-- **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
+## Offen / zu beobachten
+- **Live-Stand 1.3.2 am Handy prüfen:** unten in den Einstellungen muss „Sonnseite 1.3.2 · Impressum und Datenschutz“ stehen (aus der Cloud-Umgebung nicht prüfbar).
+- **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen (z. B. Wirtschaftskammer). Bei Änderung von Hosting, Kontakt oder Personen anpassen.
+- **Tschechisches Impressum** von einer Muttersprachlerin gegenlesen lassen (zusammen mit den übrigen tschechischen Texten).
+- **Kontaktadresse sonnseite@tm-relations.com** muss erreichbar sein und gelesen werden (Datenschutz-Anfragen).
 - **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
 - **„Warm“ ist nachträglich tiefer gestellt** (Faktor 0.92). Auf Künstlichkeit achten; ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
