@@ -375,10 +375,30 @@ window.CONTENT.en = {
     disclaimer: 'Numbers as of November 2026. Availability may change – if in doubt, check gesundheit.gv.at. Sonnseite is not therapy and does not replace medical or psychotherapeutic treatment.'
   },
 
+  imprint: {
+    title: 'Legal notice',
+    basis: 'Disclosure pursuant to § 25 of the Austrian Media Act (Mediengesetz)',
+    owner: 'Media owner and publisher',
+    place: 'Vienna, Austria',
+    mail: 'Email',
+    sections: [
+      { h: 'Purpose', p: ['Sonnseite is a private, non-commercial offering. The app provides small practices and texts based on scientifically grounded methods from psychology. They are meant to strengthen confidence, motivation and inner resilience in everyday life.'] },
+      { h: 'Important note about your health', help: true, p: ['Sonnseite is not therapy and not a medical device. The app makes no diagnoses and does not replace medical or psychotherapeutic advice or treatment. If you are feeling very bad, the Telefonseelsorge helps you right away on 142 (around the clock, free of charge). In Vienna you can reach the Psychosocial Service (PSD) on 01 31330. In an emergency, call 144.'] },
+      { h: 'Liability for content', p: ['All content has been created carefully and to the best of our knowledge. Even so, we cannot guarantee that it is complete, correct or up to date. You use the practices at your own responsibility. Listen to your body and stop a practice if it doesn’t feel good.'] },
+      { h: 'Links to other websites', p: ['The operators of linked websites, for example on the help page, are responsible for their content. When the links were added, no legal violations were apparent there.'] },
+      { h: 'Privacy', p: [
+        'Your entries are stored only in your device’s browser and are not sent anywhere. There is no account, no tracking, no cookies and no fonts or scripts from third parties.',
+        'The app is hosted by Render Services, Inc. (San Francisco, USA). As with any website, this provider processes technically necessary data when the page is opened – such as IP address, time and requested file – in order to deliver the page and protect it from misuse. We have no access to this data and do not analyse anything.',
+        'If you have questions about privacy, you can reach us at the email address above. You can lodge a complaint with the Austrian Data Protection Authority (dsb.gv.at).'] },
+      { h: 'Copyright and sources', p: ['Texts and design: {names}. The practices are based on published methods; you’ll find the sources for each practice under “Why this helps”. WHO-5 questionnaire: © World Health Organization. The voices in the practices are generated with artificial intelligence (ElevenLabs).'] }
+    ],
+    updated: 'As of November 2026'
+  },
+
   about: [
     'Sonnseite accompanies you with small, science-based practices from positive psychology, mindfulness, self-compassion, cognitive behavioural therapy and Acceptance and Commitment Therapy (ACT). For each practice you’ll find the background under “Why this helps”.',
     'We don’t promise healing or permanent happiness. Difficult feelings are part of life. The aim is to see the good again, to meet yourself more kindly and to strengthen your resilience.',
-    'Privacy: Sonnseite has no server, no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.',
+    'Privacy: Sonnseite stores nothing on a server and has no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.',
     'The voices in the practices are generated with artificial intelligence (ElevenLabs). The texts were written by people. You can choose your device’s voice at any time.'
   ]
 };

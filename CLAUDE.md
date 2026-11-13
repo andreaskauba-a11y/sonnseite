@@ -35,7 +35,7 @@ NOTES.md                Aktueller Stand, offene Punkte, nächste Schritte
 
 **Aufbau von app.js** (in dieser Reihenfolge): Helfer, Speicher (`defaults`/`load`/`save`), `t()` und `C()` für Texte und Inhalte, Icons (`P`, `ic()`), Ansicht und Aktionen (`view`, `act`, Klick-Delegation über `data-act`/`data-go`), Darstellung, Stimme und Klang (`syncAudio`, `audioBar`), Tagesinhalte (`programIndex`, `dailyAffIndex`, Impulse über `hint()`), Garten (`sunTimes`, `dayPhase`, `garden`), Rückmeldungen (`analyze`, `feedbackCard`, `crisisCard`), `flow()` für Abläufe mit Schritten, danach die Ansichten (Home, Morgen, Abend, Übungen, Journal, Woche, Mein Weg, Einstellungen, Hilfe, Onboarding) und am Ende der Router.
 
-**Routen** (Hash): `#/`, `#/morning`, `#/evening`, `#/weekly`, `#/exercises`, `#/ex/:id`, `#/journal`, `#/journal/new`, `#/journal/:id`, `#/path`, `#/settings`, `#/help`.
+**Routen** (Hash): `#/`, `#/morning`, `#/evening`, `#/weekly`, `#/exercises`, `#/ex/:id`, `#/journal`, `#/journal/new`, `#/journal/:id`, `#/path`, `#/settings`, `#/help`, `#/imprint` (Impressum, auch vor dem Onboarding erreichbar; Name und E-Mail in `OWNER` in app.js, Texte unter `imprint` in `content/*.js`).
 
 ## Wichtige Befehle
 ```bash
@@ -61,7 +61,7 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 - **Tschechisch:** Die Gedanken und Impulse stehen in weiblicher Form, passend zur Zielgruppe. Die Texte sollten von einer Muttersprachlerin gegengelesen werden.
 - **Gesprochene Texte geändert?** (Übungen vom Typ `guided`, `inhale`/`hold`/`exhale`, `wellDone`, `breathStartVoice`, `voiceEnd`, `sampleText`, `sampleShort`) → `tools/vertonen.js` laufen lassen, danach `--aufraeumen`. Bis dahin spricht für geänderte Texte automatisch die Gerätestimme. Der Dateiname ist eine Prüfsumme des Wortlauts (`audioKey`, in `audio.js` und `vertonen.js` identisch halten).
 - **Jede Nutzereingabe wird mit `esc()` ausgegeben** (XSS). Mehrzeiliger Text über `nl2br()`.
-- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.2.0). Sonst bekommen Handys die neue Version nicht.
+- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.3.1). Sonst bekommen Handys die neue Version nicht.
 - Icons sind feine, abgerundete Linien-SVGs im Objekt `P` (`stroke-width 1.6`). Emojis werden in der Oberfläche nicht verwendet.
 - Lesbarkeit für die Zielgruppe: Grundschrift 18px, Schriftgröße in drei Stufen einstellbar, Touch-Ziele mindestens 44px.
 - Commits auf Deutsch, Absender `Claude <noreply@anthropic.com>` (ein Hook prüft das).

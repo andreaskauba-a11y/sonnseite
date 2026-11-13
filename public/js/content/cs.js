@@ -375,10 +375,30 @@ window.CONTENT.cs = {
     disclaimer: 'Stav čísel: listopad 2026. Dostupnost se může změnit – v případě pochybností zkontroluj gesundheit.gv.at. Sonnseite není terapie a nenahrazuje lékařskou ani psychoterapeutickou péči.'
   },
 
+  imprint: {
+    title: 'Impresum',
+    basis: 'Údaje podle § 25 rakouského zákona o médiích (Mediengesetz)',
+    owner: 'Vlastník média a vydavatel',
+    place: 'Vídeň, Rakousko',
+    mail: 'E-mail',
+    sections: [
+      { h: 'Základní zaměření', p: ['Sonnseite je soukromá, nekomerční nabídka. Aplikace nabízí malá cvičení a texty z vědecky podložených psychologických metod. Mají v každodenním životě posilovat důvěru, motivaci a vnitřní odolnost.'] },
+      { h: 'Důležité upozornění ke zdraví', help: true, p: ['Sonnseite není terapie ani zdravotnický prostředek. Aplikace nestanovuje diagnózy a nenahrazuje lékařskou ani psychoterapeutickou péči. Pokud je ti velmi zle, okamžitě ti pomůže Telefonseelsorge na čísle 142 (nonstop, zdarma). Ve Vídni se dovoláš na psychosociální službu (PSD) na čísle 01 31330. V nouzi volej 144.'] },
+      { h: 'Odpovědnost za obsah', p: ['Veškerý obsah jsme připravili pečlivě a podle svého nejlepšího vědomí. Přesto nemůžeme ručit za jeho úplnost, správnost a aktuálnost. Cvičení používáš na vlastní odpovědnost. Naslouchej přitom svému tělu a cvičení přeruš, pokud ti nedělá dobře.'] },
+      { h: 'Odkazy na jiné stránky', p: ['Za obsah odkazovaných stránek, například na stránce s pomocí, odpovídají jejich provozovatelé. V době vložení odkazů na nich nebylo patrné žádné porušení práva.'] },
+      { h: 'Ochrana osobních údajů', p: [
+        'Tvé zápisy se ukládají jen v prohlížeči tvého zařízení a nikam se nepřenášejí. Není tu žádný účet, žádné sledování, žádné cookies a žádná písma ani skripty cizích poskytovatelů.',
+        'Aplikace je umístěna u společnosti Render Services, Inc. (San Francisco, USA). Jako u každé webové stránky zpracovává tento poskytovatel při otevření technicky nutné údaje, jako je IP adresa, čas a vyžádaný soubor, aby mohl stránku doručit a chránit ji před zneužitím. My sami k těmto údajům nemáme přístup a nic nevyhodnocujeme.',
+        'S dotazy k ochraně údajů se na nás můžeš obrátit na e-mailu uvedeném výše. Stížnost můžeš podat u rakouského úřadu pro ochranu osobních údajů (Datenschutzbehörde, dsb.gv.at).'] },
+      { h: 'Autorská práva a zdroje', p: ['Texty a vzhled: {names}. Cvičení vycházejí z publikovaných metod, zdroje najdeš u každého cvičení pod „Proč to pomáhá“. Dotazník WHO-5: © Světová zdravotnická organizace. Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs).'] }
+    ],
+    updated: 'Stav: listopad 2026'
+  },
+
   about: [
     'Sonnseite tě provází malými, vědecky podloženými cvičeními z pozitivní psychologie, všímavosti, soucitu se sebou, kognitivně-behaviorální terapie a terapie přijetím a závazkem (ACT). U každého cvičení najdeš základy pod „Proč to pomáhá“.',
     'Neslibujeme uzdravení ani trvalé štěstí. Těžké pocity patří k životu. Cílem je znovu vidět i to dobré, chovat se k sobě laskavěji a posilovat vlastní odolnost.',
-    'Ochrana dat: Sonnseite nemá server, účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.',
+    'Ochrana dat: Sonnseite neukládá nic na žádný server, nemá účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.',
     'Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs). Texty k nim napsali lidé. Kdykoli si můžeš zvolit hlas svého zařízení.'
   ]
 };

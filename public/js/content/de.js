@@ -379,10 +379,30 @@ window.CONTENT.de = {
     disclaimer: 'Stand der Nummern: November 2026. Erreichbarkeiten können sich ändern – im Zweifel auf gesundheit.gv.at nachsehen. Sonnseite ist keine Therapie und ersetzt keine ärztliche oder psychotherapeutische Behandlung.'
   },
 
+  imprint: {
+    title: 'Impressum',
+    basis: 'Offenlegung gemäß § 25 Mediengesetz',
+    owner: 'Medieninhaber und Herausgeber',
+    place: 'Wien, Österreich',
+    mail: 'E-Mail',
+    sections: [
+      { h: 'Grundlegende Richtung', p: ['Sonnseite ist ein privates, nicht kommerzielles Angebot. Die App bietet kleine Übungen und Texte aus wissenschaftlich fundierten Methoden der Psychologie. Sie sollen Zuversicht, Motivation und innere Widerstandskraft im Alltag stärken.'] },
+      { h: 'Wichtiger Hinweis zur Gesundheit', help: true, p: ['Sonnseite ist keine Therapie und kein Medizinprodukt. Die App stellt keine Diagnosen und ersetzt keine ärztliche oder psychotherapeutische Beratung oder Behandlung. Wenn es dir sehr schlecht geht, hilft dir sofort die Telefonseelsorge unter 142 (rund um die Uhr, kostenlos). In Wien erreichst du den Psychosozialen Dienst unter 01 31330. Im Notfall wählst du 144.'] },
+      { h: 'Haftung für Inhalte', p: ['Alle Inhalte sind sorgfältig und nach bestem Wissen erstellt. Für Vollständigkeit, Richtigkeit und Aktualität können wir trotzdem keine Gewähr übernehmen. Du nutzt die Übungen auf eigene Verantwortung. Hör dabei auf deinen Körper und brich eine Übung ab, wenn sie dir nicht guttut.'] },
+      { h: 'Links zu anderen Seiten', p: ['Für die Inhalte verlinkter Seiten, etwa auf der Hilfe-Seite, sind deren Betreiber verantwortlich. Als die Links gesetzt wurden, waren dort keine Rechtsverstöße erkennbar.'] },
+      { h: 'Datenschutz', p: [
+        'Deine Einträge werden nur im Browser deines Geräts gespeichert und nirgendwohin übertragen. Es gibt kein Konto, kein Tracking, keine Cookies und keine Schriften oder Skripte von fremden Anbietern.',
+        'Die App liegt bei Render Services, Inc. (San Francisco, USA). Wie bei jeder Webseite verarbeitet dieser Anbieter beim Aufruf technisch notwendige Daten wie IP-Adresse, Zeitpunkt und aufgerufene Datei, damit er die Seite ausliefern und vor Missbrauch schützen kann. Wir selbst haben darauf keinen Zugriff und werten nichts aus.',
+        'Bei Fragen zum Datenschutz erreichst du uns unter der E-Mail-Adresse oben. Beschwerden kannst du bei der österreichischen Datenschutzbehörde einbringen (dsb.gv.at).'] },
+      { h: 'Urheberrecht und Quellen', p: ['Texte und Gestaltung: {names}. Die Übungen beruhen auf veröffentlichten Methoden, die Quellen stehen bei jeder Übung unter „Warum das hilft“. WHO-5-Fragebogen: © Weltgesundheitsorganisation. Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs).'] }
+    ],
+    updated: 'Stand: November 2026'
+  },
+
   about: [
     'Sonnseite begleitet dich mit kleinen, wissenschaftlich fundierten Übungen aus Positiver Psychologie, Achtsamkeit, Selbstmitgefühl, kognitiver Verhaltenstherapie und Akzeptanz- und Commitment-Therapie (ACT). Bei jeder Übung findest du unter „Warum das hilft“ die Grundlagen.',
     'Wir versprechen keine Heilung und kein Dauerglück. Schwere Gefühle gehören zum Leben. Ziel ist, auch das Gute wieder zu sehen, sich selbst freundlicher zu begegnen und die eigene Widerstandskraft zu stärken.',
-    'Datenschutz: Sonnseite hat keinen Server, kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.',
+    'Datenschutz: Sonnseite speichert nichts auf einem Server, hat kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.',
     'Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs). Die Texte dazu sind von Menschen geschrieben. Du kannst jederzeit die Stimme deines Geräts wählen.'
   ]
 };

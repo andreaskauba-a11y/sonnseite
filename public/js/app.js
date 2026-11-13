@@ -3,7 +3,8 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.3.0';
+  const VERSION = '1.3.1';
+  const OWNER = { names: 'Andreas Kauba & Tomas Mikeska', mail: 'sonnseite@tm-relations.com' };
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
   const LANGS = ['de', 'en', 'cs'];
@@ -952,7 +953,7 @@
         <label class="btn soft">${ic('upload')} ${esc(t('backupImport'))}<input type="file" id="s-import" accept="application/json,.json" hidden></label>
         <button class="btn soft" data-act="pdf">${ic('download')} ${esc(t('exportPdf'))}</button></div>
         <button class="btn ghost danger" data-act="wipe">${esc(t('deleteAll'))}</button></div>
-      <div class="card about"><p class="label">${esc(t('about'))}</p>${C().about.map((p) => `<p>${esc(p)}</p>`).join('')}<p class="tiny">${esc(C().who5.attribution)}</p><p class="tiny">Sonnseite ${VERSION}</p></div>
+      <div class="card about"><p class="label">${esc(t('about'))}</p>${C().about.map((p) => `<p>${esc(p)}</p>`).join('')}<p class="tiny">${esc(C().who5.attribution)}</p><p class="tiny">Sonnseite ${VERSION} · <a href="#/imprint">${esc(t('imprint'))}</a></p></div>
       <button class="btn primary wide" data-act="save">${esc(t('saveSettings'))}</button>
     </section>`, {});
     const persist = () => {
@@ -1055,8 +1056,24 @@
       <p class="section-label">${esc(h.nowTitle)}</p>
       ${['atem46', 'ground54321', 'selfcompassion'].map(exCard).join('')}
       <p class="tiny">${esc(h.disclaimer)}</p>
+      <p class="tiny"><a href="#/imprint">${esc(t('imprint'))}</a></p>
     </section>`, {});
     act({});
+  }
+
+  /* ---------- Impressum ---------- */
+  function viewImprint() {
+    const m = C().imprint;
+    view(`<section class="page imprint">
+      <button class="back" data-act="back">${ic('arrowLeft')} ${esc(t('back'))}</button>
+      <h1>${esc(m.title)}</h1>
+      <p class="tiny">${esc(m.basis)}</p>
+      <div class="card"><p class="label">${esc(m.owner)}</p>
+        <p>${esc(OWNER.names)}<br>${esc(m.place)}<br>${esc(m.mail)}: <a href="mailto:${esc(OWNER.mail)}">${esc(OWNER.mail)}</a></p></div>
+      ${m.sections.map((x) => `<div class="card"><h2>${esc(x.h)}</h2>${x.p.map((p) => `<p>${esc(p.replace('{names}', OWNER.names))}</p>`).join('')}${x.help ? `<a class="link" href="#/help">${esc(t('allHelp'))} ${ic('arrowRight')}</a>` : ''}</div>`).join('')}
+      <p class="tiny">${esc(m.updated)} · Sonnseite ${VERSION}</p>
+    </section>`, {});
+    act({ back: () => go(prevRoute) });
   }
 
   /* ---------- Erster Start ---------- */
@@ -1067,7 +1084,8 @@
       steps: [
         { render: () => `<div class="ob-hero">${garden(9, 150)}</div><h1>${esc(t('obWelcome'))}</h1><p class="lead">${esc(t('obWelcomeText'))}</p>
             <p class="label">${ic('globe')} ${esc(t('language'))}</p>
-            <div class="seg" data-pick-group="lang" data-value="${s.lang}">${[['de', 'Deutsch'], ['en', 'English'], ['cs', 'Čeština']].map(([v, l]) => `<button class="${s.lang === v ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${s.lang === v}">${l}</button>`).join('')}</div>`,
+            <div class="seg" data-pick-group="lang" data-value="${s.lang}">${[['de', 'Deutsch'], ['en', 'English'], ['cs', 'Čeština']].map(([v, l]) => `<button class="${s.lang === v ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${s.lang === v}">${l}</button>`).join('')}</div>
+            <p class="tiny ob-imprint"><a href="#/imprint">${esc(t('imprint'))}</a></p>`,
           mount: (el) => { $('[data-pick-group="lang"]', el).addEventListener('picked', (e) => { s.lang = e.detail; save(); applyTheme(); renderChrome(); viewOnboarding(); }); } },
         { render: (d) => `<h1>${esc(t('obName'))}</h1><p class="lead">${esc(t('obNameText'))}</p><input type="text" id="o-name" value="${esc(d.name)}" placeholder="${esc(t('namePh'))}" autocomplete="given-name">`,
           collect: (el, d) => { d.name = $('#o-name', el).value.trim().slice(0, 40); } },
@@ -1097,6 +1115,8 @@
   function route() {
     cleanup(); applyTheme(); AU.stopAll(); syncAudio();
     const h = (location.hash || '#/').slice(1) || '/';
+    if (h === '/imprint') return viewImprint();
+    prevRoute = S.settings.onboarded ? h : '/';
     if (!S.settings.onboarded && h !== '/help') return viewOnboarding();
     let m;
     if (h === '/' || h === '') return viewHome();
@@ -1114,6 +1134,7 @@
     go('/');
   }
 
+  let prevRoute = '/';
   window.addEventListener('hashchange', route);
   window.addEventListener('storage', (e) => { if (e.key === KEY) { S = load(); } });
   setInterval(applyTheme, 10 * 60 * 1000);
