@@ -41,6 +41,21 @@ _Stand: 13. November 2026 · Version 1.3.3 (live auf Render über `main`)_
 - Link heißt „Impressum und Datenschutz“ (de, en, cs)
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
 
+### Version 1.3.3 – Lebensthemen ergänzt
+- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
+- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
+- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
+- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
+
+## In Arbeit: Einladung und Anleitung für Freundinnen und Freunde
+Entwürfe liegen dem Inhaber zur Freigabe vor (13. November 2026), noch nichts umgesetzt oder verschickt.
+- **Kurze Einladung** für WhatsApp oder E-Mail: was die App ist, Morgen- und Abendmoment, Übungen, Tagebuch, evidenzbasiert, kostenlos, kein Konto, Einträge bleiben am Handy, Link, Bitte um Rückmeldung. Dazu ein Satz zur Adresse („.onrender.com“).
+- **Anleitung auf einer Seite**, sieben Schritte: Öffnen (iPhone: Safari) – auf den Startbildschirm legen (iPhone und Android) – erster Start – täglich Morgen und Abend, ohne Pflicht – Übungen mit Stimme (Ton und Stummschalter, drei Stimmen) – Sicherung – keine Therapie, Herz-Symbol für Hilfe (142).
+- **Abschnitt „Zur Adresse und zum Datenschutz“**: Warum die Adresse auf „.onrender.com“ endet. Einträge bleiben nur am Handy. Render (San Francisco, USA) erhält beim Aufruf wie jede Webseite IP-Adresse, Uhrzeit und Datei, wir haben darauf keinen Zugriff. Verarbeitung außerhalb der EU möglich, betrifft aber nicht die Einträge. Offline wird nichts übertragen. Hinweis auf „Impressum und Datenschutz“. Formulierung passt zum Impressum (`imprint` in `content/de.js`).
+- Nicht geprüft und deshalb nicht erwähnt: in welchem Land Render die Daten verarbeitet und ob Render für den Datenaustausch EU–USA zertifiziert ist. Der Text ist keine Rechtsberatung.
+- **Offene Fragen an den Inhaber:** genauer Link zur App, Unterschrift („Andreas“ oder „Andreas & Tomas“), Form der Anleitung (Vorschlag: gestaltete Seite als PDF; Alternative: eigene Seite „So geht's“ in der App), ob die Einladung auch auf Englisch und Tschechisch kommen soll.
+
+## Offene Punkte
 - **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
 - **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
@@ -54,16 +69,9 @@ _Stand: 13. November 2026 · Version 1.3.3 (live auf Render über `main`)_
 - **Hilfe-Nummern** regelmäßig prüfen (gesundheit.gv.at). Die Zeiten der Kummernummer 116 123 sind bewusst nicht angegeben.
 - **Datensicherheit:** Die Daten liegen nur im Browser. Nutzerinnen auf die Sicherung hinweisen, vor allem vor einem Handywechsel oder dem Löschen der Browserdaten. iOS kann Daten von Webseiten löschen, die lange nicht genutzt wurden. Mit der App auf dem Home-Bildschirm ist das unwahrscheinlicher.
 - Krisen- und Rückmeldungs-Schlüsselwörter sind einfache Wortstämme. Fehlauslöser oder Lücken sind möglich, daher Rückmeldungen sammeln.
-
-### Version 1.3.3 – Lebensthemen ergänzt
-- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
-- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
-- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
-- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
-- Offen: tschechische Texte von Muttersprachlerin gegenlesen lassen
+- **Tschechische Lebensthemen (1.3.3)** von einer Muttersprachlerin gegenlesen lassen.
 
 ## Mögliche nächste Schritte (Ideen, nicht beauftragt)
 - Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
 - Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
 - Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz und Kosten)
-- Kurze Anleitung zum Weitergeben an Freundinnen (Installieren, iPhone-Premium-Stimmen, Sicherung)
