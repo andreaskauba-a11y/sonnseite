@@ -22,7 +22,7 @@ public/
   audio/                Sprachaufnahmen: <stimme>/<sprache>/<prüfsumme>.mp3, voices.js (Liste, automatisch erzeugt), stille.mp3
   icons/                App-Icons (SVG + PNG, per Playwright aus SVG gerendert)
   js/i18n.js            Oberflächentexte de/en/cs (window.I18N)
-  js/content/{de,en,cs}.js  Inhalte (window.CONTENT[lang]): Gedanken, Fragen, Impulse, Übungen,
+  js/content/{de,en,cs}.js  Inhalte (window.CONTENT[lang]): Lebensthemen (themes, themeGroups), Gedanken, Fragen, Impulse, Übungen,
                         8-Wochen-Programm, Rückmeldungsregeln, WHO-5, Hilfe-Nummern, Über-Texte.
                         Am Ende jeder Datei ein Object.assign-Block mit Impulsen und Wochen-Rückmeldungsstufen.
   js/audio.js           window.SonnAudio: speak() (Aufnahme, sonst Gerätestimme), prefetch(), Klangteppich, Klangschale, Wake Lock
@@ -56,12 +56,13 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 **Testen:** mit Playwright (vorinstalliert, `require('playwright')`), Gerät `devices['iPhone 13']`, `locale: 'de-AT'`, `timezoneId: 'Europe/Vienna'`. Tageszeiten testet man mit `page.clock.install({ time })`. Die Stimme im Test durch eine Attrappe von `speechSynthesis` ersetzen (Init-Script), die gesprochene Texte protokolliert. Testdaten über `localStorage.setItem('sonnseite.v1', …)` setzen, **danach `reload()`**, denn ein reiner Hash-Wechsel lädt die Daten nicht neu. Immer auf `pageerror` achten und auf waagrechtes Überlaufen prüfen.
 
 ## Konventionen
-- **Jede Textänderung in allen drei Sprachen** (de, en, cs). Die Arrays müssen in allen Sprachen **gleich lang und gleich sortiert** sein: `affirmations`, `morningQuestions` und `morningHints`, `eveningQuestions` und `eveningHints`, `themeHints`, `program`, `who5Short`, die Felder der Übungen und `exerciseHints`. Gespeichert werden Indizes, keine Texte, damit ein Sprachwechsel funktioniert.
+- **Jede Textänderung in allen drei Sprachen** (de, en, cs). Die Arrays müssen in allen Sprachen **gleich lang und gleich sortiert** sein: `affirmations`, `morningQuestions` und `morningHints`, `eveningQuestions` und `eveningHints`, `themeHints`, `program`, `who5Short`, die Felder der Übungen und `exerciseHints`. Gespeichert werden Indizes, keine Texte, damit ein Sprachwechsel funktioniert. **Neue Gedanken (`affirmations`) nur am Ende anhängen**, sonst verschieben sich gespeicherte Lieblingsgedanken.
+- **Lebensthemen** (`themes`, Auswahl „Was dich gerade beschäftigt“): gespeichert werden die Schlüssel (z. B. `veraenderung`), nicht die Texte. Schlüssel nie umbenennen, nur die Bezeichnung. Die Anzeige läuft über `themeGroups` (Gruppen mit Überschrift und Schlüsseln, Funktion `themeChips()` in app.js) und ist in allen Sprachen gleich aufgebaut. Jedes Thema braucht zwei Gedanken mit `tag: '<schlüssel>'`, sonst bewirkt die Auswahl nichts.
 - **Deutsch:** Du-Form, warm, neutrales Hochdeutsch mit leicht österreichischer Note (Kassa, Sonnseite). Typografische Anführungszeichen „…“ und Halbgeviertstrich –.
 - **Tschechisch:** Die Gedanken und Impulse stehen in weiblicher Form, passend zur Zielgruppe. Die Texte sollten von einer Muttersprachlerin gegengelesen werden.
 - **Gesprochene Texte geändert?** (Übungen vom Typ `guided`, `inhale`/`hold`/`exhale`, `wellDone`, `breathStartVoice`, `voiceEnd`, `sampleText`, `sampleShort`) → `tools/vertonen.js` laufen lassen, danach `--aufraeumen`. Bis dahin spricht für geänderte Texte automatisch die Gerätestimme. Der Dateiname ist eine Prüfsumme des Wortlauts (`audioKey`, in `audio.js` und `vertonen.js` identisch halten).
 - **Jede Nutzereingabe wird mit `esc()` ausgegeben** (XSS). Mehrzeiliger Text über `nl2br()`.
-- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.3.2). Sonst bekommen Handys die neue Version nicht.
+- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.3.3). Sonst bekommen Handys die neue Version nicht.
 - Icons sind feine, abgerundete Linien-SVGs im Objekt `P` (`stroke-width 1.6`). Emojis werden in der Oberfläche nicht verwendet.
 - Lesbarkeit für die Zielgruppe: Grundschrift 18px, Schriftgröße in drei Stufen einstellbar, Touch-Ziele mindestens 44px.
 - Commits auf Deutsch, Absender `Claude <noreply@anthropic.com>` (ein Hook prüft das).
@@ -81,6 +82,7 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 - **Morgenmoment** (3–5 Min.): inneres Wetter, drei Atemzüge, Gedanke des Tages, Ausrichtung, Vorfreude.
 - **Abendmoment** (5–10 Min.): drei gute Dinge, Reflexionsfrage (greift den Vorsatz vom Morgen auf), an schweren Tagen ein Selbstmitgefühls-Schritt, Rückmeldung.
 - **Stimmung als „inneres Wetter“** (Gewitter, Regen, Bewölkt, Sonne & Wolken, Sonnig) statt Gesichtern.
+- **Lebensthemen** (Onboarding und Einstellungen, freiwillig): 17 Themen in drei Gruppen, in dieser Reihenfolge: **Was gerade schön ist** (Liebe, Familie wächst, ein Tier zieht ein, gute Phase genießen) – **Was sich verändert** (Neuanfang/Neuorientierung, Umzug, Kinder werden selbstständig, Pension, Wechseljahre) – **Was gerade schwer ist** (Trennung, Krankheit, Trauer, Abschied von einem Tier, Überlastung, Einsamkeit, Pflege, Beruf). Bewusst nicht nur belastende Themen. „Familie wächst“ statt „Enkelkinder“, um kein bestimmtes Familienbild vorauszusetzen. Themen mit verschiedenen Gedanken (z. B. Trauer um einen Menschen und um ein Tier) werden nicht zusammengelegt. Gewählte Themen steuern die Gedanken des Tages (an etwa 40 % der Tage ein passender, sonst ein allgemeiner).
 - **8 Wochenthemen**, die sich automatisch abwechseln und manuell wählbar sind (`programShift`).
 - **Wochen-Check-up:** WHO-5 (Originalskala, Bezug auf die letzten zwei Wochen) plus Reflexionsfragen. **Ergebnisse ohne Noten und ohne Zahlen**, nur als sanfte Kurve. Die Rückmeldung hat **drei Stufen**:
   - ≥ 50: nur ein Spiegel, zum Beispiel „besonders: {best}“.
@@ -105,6 +107,7 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 
 ## Arbeitsweise mit dem Inhaber
 - **Vor dem Umsetzen Zwischenergebnisse zur Freigabe vorlegen**: Vorschau-Bilder, Textentwürfe als Liste. Erst nach „passt“ oder „umsetzen“ einbauen.
-- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur lokal committen.
+- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur committen (der Arbeitszweig `claude/…` darf zur Sicherung gepusht werden, er geht nicht live). Nach dem Online-Stellen NOTES.md aktualisieren (Commit „NOTES: Version x.y.z online“).
+- Bildschirmfotos für den Inhaber in `vorschau/` ablegen und nicht committen.
 - Rückfragen mit Empfehlung stellen („[Vorschlag: …]“), damit der Inhaber kurz antworten kann.
 - Nach Änderungen mit Playwright testen und Bildschirmfotos zeigen. Ehrlich sagen, was nicht geprüft werden konnte, etwa wie die Stimme tatsächlich klingt.

@@ -41,6 +41,14 @@ _Stand: 13. November 2026 · Version 1.3.3 (live auf Render über `main`)_
 - Link heißt „Impressum und Datenschutz“ (de, en, cs)
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
 
+### Version 1.3.3 – Lebensthemen ergänzt
+- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
+- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
+- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
+- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
+- Arbeitsablauf bewährt: Entwurf als Liste → Freigabe → Einbau → Playwright-Bilder → lokal committen → „online stellen“
+
+## Offen / zu beobachten
 - **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
 - **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
@@ -49,18 +57,12 @@ _Stand: 13. November 2026 · Version 1.3.3 (live auf Render über `main`)_
 - **ElevenLabs:** Starter-Abo kann nach der Vertonung gekündigt werden; für spätere Textänderungen dann kurz wieder aktivieren. Die drei Stimmen bleiben im Konto gespeichert (IDs in `tools/vertonen.js`).
 - **Klang der Stimme auf echten Geräten nicht geprüft.** Im Test lief nur eine Attrappe. Rückmeldungen der Nutzerinnen abwarten: Tempo, Pausen, Tonhöhe, Lautstärke im Verhältnis zur Musik.
 - **Klangteppich und Klangschale noch nicht angehört.** Eventuell zu laut, zu leise oder zu tief. Werte stehen in `audio.js` (`startPad`, `bell`).
-- **Tschechische Texte** von einer Muttersprachlerin gegenlesen lassen. Die Gedanken stehen in weiblicher Form, die WHO-5-Übersetzung ist eine eigene, keine offiziell validierte.
+- **Tschechische Texte** von einer Muttersprachlerin gegenlesen lassen. Die Gedanken stehen in weiblicher Form, die WHO-5-Übersetzung ist eine eigene, keine offiziell validierte. Neu dazugekommen (1.3.3): die neun neuen Themen-Bezeichnungen, die drei Gruppenüberschriften und 18 Gedanken.
 - **Neue Impuls-Varianten 2 und 3** wurden mit „online stellen“ freigegeben, aber nicht einzeln kommentiert. Auf Rückmeldungen achten.
 - **Hilfe-Nummern** regelmäßig prüfen (gesundheit.gv.at). Die Zeiten der Kummernummer 116 123 sind bewusst nicht angegeben.
 - **Datensicherheit:** Die Daten liegen nur im Browser. Nutzerinnen auf die Sicherung hinweisen, vor allem vor einem Handywechsel oder dem Löschen der Browserdaten. iOS kann Daten von Webseiten löschen, die lange nicht genutzt wurden. Mit der App auf dem Home-Bildschirm ist das unwahrscheinlicher.
 - Krisen- und Rückmeldungs-Schlüsselwörter sind einfache Wortstämme. Fehlauslöser oder Lücken sind möglich, daher Rückmeldungen sammeln.
-
-### Version 1.3.3 – Lebensthemen ergänzt
-- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
-- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
-- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
-- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
-- Offen: tschechische Texte von Muttersprachlerin gegenlesen lassen
+- **Neue Lebensthemen (1.3.3) beobachten:** Werden die schönen und neutralen Themen gewählt? Passen die Gedanken? Ein Thema wirkt nur an etwa 4 von 10 Tagen (sonst allgemeine Gedanken).
 
 ## Mögliche nächste Schritte (Ideen, nicht beauftragt)
 - Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
