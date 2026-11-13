@@ -4,9 +4,16 @@ window.CONTENT.cs = {
   moods: ['Bouřka', 'Déšť', 'Zataženo', 'Slunce a mraky', 'Slunečno'],
 
   themes: {
-    trennung: 'Rozchod / konec vztahu', krankheit: 'Nemoc nebo bolest', job: 'Práce: ztráta nebo změna', pflege: 'Péče o blízkého',
-    trauer: 'Smutek a ztráta', ueberlastung: 'Přetížení / vyčerpání', einsamkeit: 'Osamělost', veraenderung: 'Životní změna / nový směr', wechseljahre: 'Přechod / proměna těla'
+    liebe: 'Nová nebo prohloubená láska', familie: 'Rodina se rozrůstá', tierNeu: 'Nové zvíře v rodině', genuss: 'Vědomě si užívat dobré období',
+    veraenderung: 'Nový začátek / nový směr', umzug: 'Stěhování / nový domov', kinder: 'Děti se osamostatňují', pension: 'Odchod do důchodu', wechseljahre: 'Přechod / proměna těla',
+    trennung: 'Rozchod / konec vztahu', krankheit: 'Nemoc nebo bolest', trauer: 'Smutek a ztráta', tierAbschied: 'Rozloučení se zvířetem', ueberlastung: 'Přetížení / vyčerpání', einsamkeit: 'Osamělost', pflege: 'Péče o blízkého', job: 'Práce: ztráta nebo změna'
   },
+  /* Gruppen in Anzeigereihenfolge (Onboarding und Einstellungen) */
+  themeGroups: [
+    { title: 'Co je teď hezké', keys: ['liebe', 'familie', 'tierNeu', 'genuss'] },
+    { title: 'Co se mění', keys: ['veraenderung', 'umzug', 'kinder', 'pension', 'wechseljahre'] },
+    { title: 'Co je teď těžké', keys: ['trennung', 'krankheit', 'trauer', 'tierAbschied', 'ueberlastung', 'einsamkeit', 'pflege', 'job'] }
+  ],
 
   affirmations: [
     { t: 'Dnes můžu dělat malé kroky. I ty mě posouvají dál.' },
@@ -56,7 +63,25 @@ window.CONTENT.cs = {
     { t: 'Změna znejišťuje – a může také otevírat dveře.', tag: 'veraenderung' },
     { t: 'V této životní fázi se smím poznávat znovu.', tag: 'veraenderung' },
     { t: 'Moje tělo se mění. Smím k němu být laskavá.', tag: 'wechseljahre' },
-    { t: 'Tato životní fáze může přinést i novou svobodu a jasnost.', tag: 'wechseljahre' }
+    { t: 'Tato životní fáze může přinést i novou svobodu a jasnost.', tag: 'wechseljahre' },
+    { t: 'Smím být zvědavá, i když ještě všechno neumím.', tag: 'veraenderung' },
+    { t: 'Odvaha neznamená nemít pochybnosti – ale přesto udělat krok.', tag: 'veraenderung' },
+    { t: 'Nové místo potřebuje čas, než se z něj stane domov.', tag: 'umzug' },
+    { t: 'Smím si vzít s sebou to známé a nechat přibýt nové.', tag: 'umzug' },
+    { t: 'Pustit a zůstat ve spojení se navzájem nevylučuje.', tag: 'kinder' },
+    { t: 'Uvolněný čas smím využít i pro sebe.', tag: 'kinder' },
+    { t: 'Moje hodnota nikdy nezávisela jen na mé práci.', tag: 'pension' },
+    { t: 'Smím svým dnům v klidu dát nový tvar.', tag: 'pension' },
+    { t: 'Smím si užívat to, co mezi námi roste.', tag: 'liebe' },
+    { t: 'Blízkost se smí rozvíjet svým vlastním tempem.', tag: 'liebe' },
+    { t: 'Tuto novou roli smím žít po svém.', tag: 'familie' },
+    { t: 'Malé společné chvíle znamenají víc než dokonalé plány.', tag: 'familie' },
+    { t: 'Smím si dát čas, abychom si na sebe zvykli.', tag: 'tierNeu' },
+    { t: 'Radost ze zvířete mě smí nést celým dnem.', tag: 'tierNeu' },
+    { t: 'Smutek po zvířeti je skutečný. Zaslouží si, aby byl brán vážně.', tag: 'tierAbschied' },
+    { t: 'To, co jsme spolu sdíleli, zůstává.', tag: 'tierAbschied' },
+    { t: 'Smím se radovat z dobrého, aniž bych čekala na další problém.', tag: 'genuss' },
+    { t: 'Smím si vědomě všímat toho, co mi teď dělá dobře.', tag: 'genuss' }
   ],
 
   morningQuestions: [

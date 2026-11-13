@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.3.2';
+  const VERSION = '1.3.3';
   const OWNER = { names: 'Andreas Kauba & Tomas Mikeska', mail: 'sonnseite@tm-relations.com' };
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
@@ -913,9 +913,15 @@
     setTimeout(() => window.print(), 50);
   }
 
+  /* Lebensthemen als Auswahl in Gruppen (schön – verändert – schwer) */
+  function themeChips(sel) {
+    const th = C().themes;
+    const groups = C().themeGroups || [{ title: '', keys: Object.keys(th) }];
+    return groups.map((g) => `${g.title ? `<p class="chip-group">${esc(g.title)}</p>` : ''}<div class="chips">${g.keys.filter((k) => th[k]).map((k) => `<button class="chip ${sel.includes(k) ? 'on' : ''}" data-act="chip" data-k="${k}" aria-pressed="${sel.includes(k)}">${esc(th[k])}</button>`).join('')}</div>`).join('');
+  }
   /* ---------- Einstellungen ---------- */
   function viewSettings() {
-    const s = S.settings; const th = C().themes; const au = s.audio;
+    const s = S.settings; const au = s.audio;
     const seg = (key, opts) => `<div class="seg" data-pick-group="${key}" data-value="${s[key]}">${opts.map(([v, l]) => `<button class="${String(s[key]) === String(v) ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${String(s[key]) === String(v)}">${esc(l)}</button>`).join('')}</div>`;
     view(`<section class="page settings">
       <button class="back" data-go="/">${ic('arrowLeft')} ${esc(t('tabToday'))}</button>
@@ -923,7 +929,7 @@
       <div class="card"><label class="field"><span>${esc(t('yourName'))}</span><input type="text" id="s-name" value="${esc(s.name)}" placeholder="${esc(t('namePh'))}" autocomplete="given-name"></label>
         <p class="label">${esc(t('language'))}</p>${seg('lang', [['de', 'Deutsch'], ['en', 'English'], ['cs', 'Čeština']])}</div>
       <div class="card"><p class="label">${esc(t('lifeThemes'))}</p><p class="tiny">${esc(t('lifeThemesHint'))}</p>
-        <div class="chips" id="s-themes">${Object.entries(th).map(([k, l]) => `<button class="chip ${s.themes.includes(k) ? 'on' : ''}" data-act="chip" data-k="${k}" aria-pressed="${s.themes.includes(k)}">${esc(l)}</button>`).join('')}</div></div>
+        <div id="s-themes">${themeChips(s.themes)}</div></div>
       <div class="card"><p class="label">${esc(t('fontSize'))}</p>${seg('fontScale', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']])}
         <p class="label">${esc(t('appearance'))}</p>${seg('theme', [['evening', t('themeEvening')], ['light', t('themeLight')], ['dark', t('themeDark')], ['auto', t('themeAuto')]])}</div>
       <div class="card"><p class="label">${esc(t('reminders'))}</p>
@@ -1090,7 +1096,7 @@
         { render: (d) => `<h1>${esc(t('obName'))}</h1><p class="lead">${esc(t('obNameText'))}</p><input type="text" id="o-name" value="${esc(d.name)}" placeholder="${esc(t('namePh'))}" autocomplete="given-name">`,
           collect: (el, d) => { d.name = $('#o-name', el).value.trim().slice(0, 40); } },
         { render: (d) => `<h1>${esc(t('obThemes'))}</h1><p class="lead">${esc(t('obThemesText'))}</p>
-            <div class="chips" id="o-themes">${Object.entries(C().themes).map(([k, l]) => `<button class="chip ${d.themes.includes(k) ? 'on' : ''}" data-act="chip" data-k="${k}" aria-pressed="${d.themes.includes(k)}">${esc(l)}</button>`).join('')}</div>
+            <div id="o-themes">${themeChips(d.themes)}</div>
             <p class="tiny">${ic('heart')} ${esc(t('privateNote'))}</p>`,
           collect: (el, d) => { d.themes = $$('#o-themes .chip.on', el).map((c) => c.dataset.k); } },
         { render: () => `<h1>${esc(t('obHow'))}</h1>

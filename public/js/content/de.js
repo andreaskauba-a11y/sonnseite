@@ -4,9 +4,16 @@ window.CONTENT.de = {
   moods: ['Gewitter', 'Regen', 'Bewölkt', 'Sonne & Wolken', 'Sonnig'],
 
   themes: {
-    trennung: 'Trennung / Beziehungsende', krankheit: 'Krankheit oder Schmerzen', job: 'Beruf: Verlust oder Umbruch', pflege: 'Pflege von Angehörigen',
-    trauer: 'Trauer und Verlust', ueberlastung: 'Überlastung / Erschöpfung', einsamkeit: 'Einsamkeit', veraenderung: 'Lebensumbruch / Neuorientierung', wechseljahre: 'Wechseljahre / Körper im Wandel'
+    liebe: 'Neue oder gewachsene Liebe', familie: 'Familie wächst', tierNeu: 'Ein Tier zieht ein', genuss: 'Eine gute Phase bewusst genießen',
+    veraenderung: 'Neuanfang / Neuorientierung', umzug: 'Umzug / neues Zuhause', kinder: 'Kinder werden selbstständig', pension: 'Übergang in die Pension', wechseljahre: 'Wechseljahre / Körper im Wandel',
+    trennung: 'Trennung / Beziehungsende', krankheit: 'Krankheit oder Schmerzen', trauer: 'Trauer und Verlust', tierAbschied: 'Abschied von einem Tier', ueberlastung: 'Überlastung / Erschöpfung', einsamkeit: 'Einsamkeit', pflege: 'Pflege von Angehörigen', job: 'Beruf: Verlust oder Umbruch'
   },
+  /* Gruppen in Anzeigereihenfolge (Onboarding und Einstellungen) */
+  themeGroups: [
+    { title: 'Was gerade schön ist', keys: ['liebe', 'familie', 'tierNeu', 'genuss'] },
+    { title: 'Was sich verändert', keys: ['veraenderung', 'umzug', 'kinder', 'pension', 'wechseljahre'] },
+    { title: 'Was gerade schwer ist', keys: ['trennung', 'krankheit', 'trauer', 'tierAbschied', 'ueberlastung', 'einsamkeit', 'pflege', 'job'] }
+  ],
 
   /* Realistische, freundliche Formulierungen statt überzogener „Ich bin glücklich“-Sätze
      (Wood, Perunovic & Lee, 2009: übertrieben positive Selbstaussagen können bei niedrigem Selbstwert schaden). */
@@ -58,7 +65,25 @@ window.CONTENT.de = {
     { t: 'Veränderung macht unsicher – und kann auch Türen öffnen.', tag: 'veraenderung' },
     { t: 'Ich darf mich in dieser Lebensphase neu kennenlernen.', tag: 'veraenderung' },
     { t: 'Mein Körper verändert sich. Ich darf ihm mit Freundlichkeit begegnen.', tag: 'wechseljahre' },
-    { t: 'Diese Lebensphase darf auch neue Freiheit und Klarheit bringen.', tag: 'wechseljahre' }
+    { t: 'Diese Lebensphase darf auch neue Freiheit und Klarheit bringen.', tag: 'wechseljahre' },
+    { t: 'Ich darf neugierig sein, ohne schon alles zu können.', tag: 'veraenderung' },
+    { t: 'Mut heißt nicht, keine Zweifel zu haben – sondern trotzdem einen Schritt zu gehen.', tag: 'veraenderung' },
+    { t: 'Ein neuer Ort braucht Zeit, bis er sich wie Zuhause anfühlt.', tag: 'umzug' },
+    { t: 'Ich darf Vertrautes mitnehmen und Neues dazukommen lassen.', tag: 'umzug' },
+    { t: 'Loslassen und Verbundenbleiben schließen sich nicht aus.', tag: 'kinder' },
+    { t: 'Ich darf die frei gewordene Zeit auch für mich nutzen.', tag: 'kinder' },
+    { t: 'Mein Wert hing nie nur an meiner Arbeit.', tag: 'pension' },
+    { t: 'Ich darf meinen Tagen in Ruhe eine neue Form geben.', tag: 'pension' },
+    { t: 'Ich darf genießen, was zwischen uns wächst.', tag: 'liebe' },
+    { t: 'Nähe darf sich in ihrem eigenen Tempo entwickeln.', tag: 'liebe' },
+    { t: 'Ich darf diese neue Rolle auf meine eigene Art leben.', tag: 'familie' },
+    { t: 'Kleine gemeinsame Momente zählen mehr als perfekte Pläne.', tag: 'familie' },
+    { t: 'Ich darf mir Zeit nehmen, uns aneinander zu gewöhnen.', tag: 'tierNeu' },
+    { t: 'Die Freude an einem Tier darf mich durch den Tag tragen.', tag: 'tierNeu' },
+    { t: 'Die Trauer um ein Tier ist echt. Sie darf ernst genommen werden.', tag: 'tierAbschied' },
+    { t: 'Was wir miteinander geteilt haben, bleibt.', tag: 'tierAbschied' },
+    { t: 'Ich darf mich über das Gute freuen, ohne auf das nächste Problem zu warten.', tag: 'genuss' },
+    { t: 'Was mir jetzt guttut, darf ich bewusst wahrnehmen.', tag: 'genuss' }
   ],
 
   morningQuestions: [

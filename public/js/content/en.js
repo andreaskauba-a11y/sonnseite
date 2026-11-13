@@ -4,9 +4,16 @@ window.CONTENT.en = {
   moods: ['Thunderstorm', 'Rain', 'Cloudy', 'Sun & clouds', 'Sunny'],
 
   themes: {
-    trennung: 'Separation / end of a relationship', krankheit: 'Illness or pain', job: 'Work: job loss or upheaval', pflege: 'Caring for a relative',
-    trauer: 'Grief and loss', ueberlastung: 'Overload / exhaustion', einsamkeit: 'Loneliness', veraenderung: 'Life transition / new direction', wechseljahre: 'Menopause / a changing body'
+    liebe: 'New or deepening love', familie: 'A growing family', tierNeu: 'A pet moves in', genuss: 'Savouring a good phase',
+    veraenderung: 'New start / new direction', umzug: 'Moving / a new home', kinder: 'Children becoming independent', pension: 'Moving into retirement', wechseljahre: 'Menopause / a changing body',
+    trennung: 'Separation / end of a relationship', krankheit: 'Illness or pain', trauer: 'Grief and loss', tierAbschied: 'Saying goodbye to a pet', ueberlastung: 'Overload / exhaustion', einsamkeit: 'Loneliness', pflege: 'Caring for a relative', job: 'Work: job loss or upheaval'
   },
+  /* Gruppen in Anzeigereihenfolge (Onboarding und Einstellungen) */
+  themeGroups: [
+    { title: 'What’s good right now', keys: ['liebe', 'familie', 'tierNeu', 'genuss'] },
+    { title: 'What’s changing', keys: ['veraenderung', 'umzug', 'kinder', 'pension', 'wechseljahre'] },
+    { title: 'What’s hard right now', keys: ['trennung', 'krankheit', 'trauer', 'tierAbschied', 'ueberlastung', 'einsamkeit', 'pflege', 'job'] }
+  ],
 
   affirmations: [
     { t: 'I may take small steps today. They move me forward, too.' },
@@ -56,7 +63,25 @@ window.CONTENT.en = {
     { t: 'Change feels uncertain – and it can also open doors.', tag: 'veraenderung' },
     { t: 'I may get to know myself anew in this phase of life.', tag: 'veraenderung' },
     { t: 'My body is changing. I may meet it with kindness.', tag: 'wechseljahre' },
-    { t: 'This phase of life may also bring new freedom and clarity.', tag: 'wechseljahre' }
+    { t: 'This phase of life may also bring new freedom and clarity.', tag: 'wechseljahre' },
+    { t: 'I may be curious without already knowing how to do everything.', tag: 'veraenderung' },
+    { t: 'Courage doesn’t mean having no doubts – it means taking a step anyway.', tag: 'veraenderung' },
+    { t: 'A new place takes time to feel like home.', tag: 'umzug' },
+    { t: 'I may bring what is familiar and let new things join it.', tag: 'umzug' },
+    { t: 'Letting go and staying connected are not opposites.', tag: 'kinder' },
+    { t: 'I may use the time that has opened up for myself, too.', tag: 'kinder' },
+    { t: 'My worth never depended only on my work.', tag: 'pension' },
+    { t: 'I may calmly give my days a new shape.', tag: 'pension' },
+    { t: 'I may enjoy what is growing between us.', tag: 'liebe' },
+    { t: 'Closeness may grow at its own pace.', tag: 'liebe' },
+    { t: 'I may live this new role in my own way.', tag: 'familie' },
+    { t: 'Small shared moments matter more than perfect plans.', tag: 'familie' },
+    { t: 'I may take time for us to get used to each other.', tag: 'tierNeu' },
+    { t: 'The joy an animal brings may carry me through the day.', tag: 'tierNeu' },
+    { t: 'Grief for an animal is real. It deserves to be taken seriously.', tag: 'tierAbschied' },
+    { t: 'What we shared stays with me.', tag: 'tierAbschied' },
+    { t: 'I may enjoy the good without waiting for the next problem.', tag: 'genuss' },
+    { t: 'I may consciously notice what does me good right now.', tag: 'genuss' }
   ],
 
   morningQuestions: [
