@@ -32,7 +32,7 @@ _Stand: 13. November 2026 · Version 1.3.0 (live auf Render über `main`)_
 - Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
 
 ## Offen / zu beobachten
-- **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
+- **Natürliche Stimmen funktionieren am Handy** (vom Inhaber am 13.11.2026 bestätigt). Weiter beobachten: Lautstärke im Verhältnis zu Klangteppich und Klangschale, Verhalten bei gesperrtem Bildschirm, Rückmeldungen zu „Warm“ (tiefer gestellt).
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
 - **„Warm“ ist nachträglich tiefer gestellt** (Faktor 0.92). Auf Künstlichkeit achten; ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
 - **Render-Header:** Die geänderte CSP in `render.yaml` greift nur, wenn Render den Blueprint übernimmt. Nach dem Online-Stellen prüfen, ob Aufnahmen abspielen (sonst in Render unter „Blueprint“ synchronisieren).
