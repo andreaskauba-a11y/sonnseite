@@ -1,6 +1,6 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 13. November 2026 · Version 1.3.1 (lokal; live ist 1.3.0)_
+_Stand: 13. November 2026 · Version 1.3.1 (live auf Render über `main`)_
 
 ## Erledigt
 ### Version 1.0 – Grundversion
@@ -31,8 +31,8 @@ _Stand: 13. November 2026 · Version 1.3.1 (lokal; live ist 1.3.0)_
 - Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
 - Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
 
-### Version 1.3.1 – Impressum (noch nicht online)
-- Eigene Seite `#/impressum` → Route `#/imprint`: Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis, Haftung, Links, Datenschutz (inkl. Hosting bei Render), Urheberrecht (de, en, cs)
+### Version 1.3.1 – Impressum
+- Eigene Seite (Route `#/imprint`): Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis, Haftung, Links, Datenschutz (inkl. Hosting bei Render), Urheberrecht (de, en, cs)
 - Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
 - „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
 
