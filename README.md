@@ -9,7 +9,7 @@ Web-App (PWA) für das Handy, auf Deutsch, Englisch und Tschechisch.
 - **Journal** mit Schreibimpulsen und regelbasierter Rückmeldung (läuft lokal, keine KI, kein Server)
 - **Wochen-Check-up**: WHO-5-Wohlbefindensfragebogen + Reflexionsfragen, sanfte Verlaufskurve ohne „Noten“
 - **8-Wochen-Programm** mit Wochenthemen (frei wechselbar) und **16 Übungen** (Atem, Body-Scan, 5-4-3-2-1, Selbstmitgefühl, Gedanken prüfen, Werte, Stärken, bestmögliches Selbst, Genießen, Dankbarkeitsbrief, expressives Schreiben, Muskelentspannung …) – jeweils mit „Warum das hilft“ und Quellen
-- **Stimme & Klang** bei allen geführten Übungen und Atemübungen: gesprochene Anleitung über die Sprachausgabe des Geräts (offline, Stimme/Tonhöhe/Tempo wählbar), live erzeugter Klangteppich und Klangschale auf 432 Hz (als Klangfarbe, ohne Wirkversprechen); der Bildschirm bleibt während der Übung an
+- **Stimme & Klang** bei allen geführten Übungen und Atemübungen: gesprochene Anleitung mit drei natürlichen, vorab aufgenommenen Stimmen (Ruhig, Warm, Tief; erzeugt mit ElevenLabs, offline gespeichert nach dem ersten Abspielen) oder der Sprachausgabe des Geräts, die auch als Ersatz dient, live erzeugter Klangteppich und Klangschale auf 432 Hz (als Klangfarbe, ohne Wirkversprechen); der Bildschirm bleibt während der Übung an
 - **Garten**, der mit jeder Selbstfürsorge wächst und nie welkt – keine Streaks, kein Druck
 - **Hilfe-Seite** mit Krisennummern für Österreich/Wien; Krisenwörter in Texten zeigen sofort Hilfe an
 - Erinnerungen über **Kalenderdatei (.ics)**, sanfte Hinweise in der App (abschaltbar)

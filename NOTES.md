@@ -1,6 +1,6 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 13. November 2026 · Version 1.2.0 (live auf Render über `main`)_
+_Stand: 13. November 2026 · Version 1.3.0 in Arbeit (lokal, noch nicht online) · live ist 1.2.0_
 
 ## Erledigt
 ### Version 1.0 – Grundversion
@@ -25,7 +25,18 @@ _Stand: 13. November 2026 · Version 1.2.0 (live auf Render über `main`)_
 - Impulse bei allen Fragen, je drei Varianten, wechselnd täglich oder wöchentlich (de, en, cs)
 - Textkorrekturen: „Gutes für dich tun“, klarere Abschlussnachricht bei „Gewitter“, „1 Moment“ in der Einzahl
 
+### Version 1.3 – Natürliche Stimmen (in Arbeit, noch nicht online)
+- Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (voreingestellt), Warm, Tief – je 153 Aufnahmen, zusammen ca. 26 MB
+- Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz
+- Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
+- Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
+
 ## Offen / zu beobachten
+- **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
+- **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
+- **„Warm“ ist nachträglich tiefer gestellt** (Faktor 0.92). Auf Künstlichkeit achten; ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
+- **Render-Header:** Die geänderte CSP in `render.yaml` greift nur, wenn Render den Blueprint übernimmt. Nach dem Online-Stellen prüfen, ob Aufnahmen abspielen (sonst in Render unter „Blueprint“ synchronisieren).
+- **ElevenLabs:** Starter-Abo kann nach der Vertonung gekündigt werden; für spätere Textänderungen dann kurz wieder aktivieren. Die drei Stimmen bleiben im Konto gespeichert (IDs in `tools/vertonen.js`).
 - **Klang der Stimme auf echten Geräten nicht geprüft.** Im Test lief nur eine Attrappe. Rückmeldungen der Nutzerinnen abwarten: Tempo, Pausen, Tonhöhe, Lautstärke im Verhältnis zur Musik.
 - **Klangteppich und Klangschale noch nicht angehört.** Eventuell zu laut, zu leise oder zu tief. Werte stehen in `audio.js` (`startPad`, `bell`).
 - **Tschechische Texte** von einer Muttersprachlerin gegenlesen lassen. Die Gedanken stehen in weiblicher Form, die WHO-5-Übersetzung ist eine eigene, keine offiziell validierte.
@@ -37,6 +48,5 @@ _Stand: 13. November 2026 · Version 1.2.0 (live auf Render über `main`)_
 ## Mögliche nächste Schritte (Ideen, nicht beauftragt)
 - Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
 - Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
-- Natürlichere Stimme über vorab erzeugte Audiodateien (ElevenLabs o. ä., braucht Konto und API-Schlüssel des Inhabers)
 - Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz und Kosten)
 - Kurze Anleitung zum Weitergeben an Freundinnen (Installieren, iPhone-Premium-Stimmen, Sicherung)

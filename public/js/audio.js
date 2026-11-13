@@ -1,5 +1,6 @@
 /* Sonnseite – Stimme & Klang
-   Stimme: eingebaute Sprachausgabe des Geräts (Web Speech API) – offline, keine Datenübertragung.
+   Stimme: vorab aufgenommene, natürliche Stimmen (MP3 unter audio/<stimme>/<sprache>/, erzeugt mit tools/vertonen.js).
+   Fehlt eine Aufnahme oder lässt sie sich nicht laden, spricht die eingebaute Sprachausgabe des Geräts (Web Speech API).
    Klang: wird live mit der Web Audio API erzeugt und ist auf A = 432 Hz gestimmt (als warme Klangfarbe;
    eine besondere Wirkung dieser Stimmung ist wissenschaftlich nicht belegt). */
 (function () {
@@ -37,8 +38,12 @@
   /* Automatische Tonhöhe: hohe Stimmen etwas tiefer, tiefe etwas höher → neutralere Mitte */
   function autoPitch(v) { if (!v) return 1; if (HIGHER.test(v.name)) return 0.88; if (LOWER.test(v.name)) return 1.14; return 1; }
 
-  let cfg = { lang: 'de', voice: true, voiceURI: '', pitch: null, rate: 0.85, voiceVol: 1, music: true, musicVol: 0.5 };
-  function configure(c) { cfg = Object.assign(cfg, c); if (master) master.gain.setTargetAtTime(musicLevel(), ctx.currentTime, 0.3); }
+  let cfg = { lang: 'de', voice: true, natural: 'ruhig', voiceURI: '', pitch: null, rate: 0.85, voiceVol: 1, music: true, musicVol: 0.5 };
+  function configure(c) {
+    cfg = Object.assign(cfg, c);
+    if (master) master.gain.setTargetAtTime(musicLevel(), ctx.currentTime, 0.3);
+    if (voiceGain) voiceGain.gain.setTargetAtTime(cfg.voiceVol, ctx.currentTime, 0.05);
+  }
   const musicLevel = () => (cfg.music ? cfg.musicVol * 0.5 : 0);
 
   /* ---------- Sprechen ---------- */
@@ -47,10 +52,9 @@
     const clean = String(text).replace(/[„“”"«»]/g, '').replace(/\s+[–—]\s+/g, ', ');
     return (clean.match(/[^.!?…:]+[.!?…:]*/g) || [clean]).map((s) => s.trim()).filter((s) => /[\p{L}\d]/u.test(s));
   }
-  /* Spricht einen Text Satz für Satz mit kleinen Pausen. Liefert ein Promise, das nach dem Sprechen erfüllt wird. */
-  function speak(text, opt = {}) {
-    if (!synth || !cfg.voice || !text) return Promise.resolve(false);
-    const token = ++speakToken;
+  /* Gerätestimme: spricht Satz für Satz mit kleinen Pausen. */
+  function speakDevice(text, opt, token) {
+    if (!synth) return Promise.resolve(false);
     synth.cancel();
     const v = pickVoice(cfg.lang, cfg.voiceURI);
     const parts = splitSentences(text);
@@ -69,8 +73,81 @@
       });
     }), Promise.resolve(true));
   }
-  function stopSpeech() { speakToken++; if (synth) synth.cancel(); }
-  const speechAvailable = () => !!synth;
+
+  /* ---------- Natürliche Stimmen (Aufnahmen) ---------- */
+  const NAT = window.SONN_VOICES || { voices: [], files: {} };
+  const NAT_SPEED = 0.85; // Standardtempo; die Aufnahmen sind dafür gemacht. Andere Tempi → schneller/langsamer abspielen, Tonhöhe bleibt.
+  /* Muss mit audioKey() in tools/vertonen.js übereinstimmen */
+  function audioKey(text) {
+    const str = String(text).replace(/\s+/g, ' ').trim();
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return ('0000000' + h.toString(16)).slice(-8);
+  }
+  const haveSets = {};
+  function hasRecording(voice, lang, key) {
+    const id = voice + '/' + lang;
+    if (!haveSets[id]) haveSets[id] = new Set(((NAT.files[voice] || {})[lang] || '').split(' ').filter(Boolean));
+    return haveSets[id].has(key);
+  }
+  function recordingUrl(text) {
+    const v = cfg.natural; if (!v || NAT.voices.indexOf(v) < 0) return null;
+    const k = audioKey(text);
+    return hasRecording(v, cfg.lang, k) ? `audio/${v}/${cfg.lang}/${k}.mp3` : null;
+  }
+  const blobs = new Map(); // url → Promise<objectURL>, damit der nächste Satz schon bereitliegt
+  function fetchRecording(url) {
+    if (!blobs.has(url)) {
+      const p = fetch(url).then((r) => { if (!r.ok) throw new Error(r.status); return r.blob(); }).then((b) => URL.createObjectURL(b));
+      p.catch(() => blobs.delete(url));
+      blobs.set(url, p);
+      if (blobs.size > 60) { const first = blobs.keys().next().value; const old = blobs.get(first); blobs.delete(first); old.then((u) => URL.revokeObjectURL(u), () => {}); }
+    }
+    return blobs.get(url);
+  }
+  /* Lädt Aufnahmen vorab (z. B. alle Schritte einer Übung) – Fehler werden still ignoriert. */
+  function prefetch(texts) { if (!cfg.voice) return; (texts || []).forEach((t) => { const u = recordingUrl(t); if (u) fetchRecording(u).catch(() => {}); }); }
+  let player = null, voiceGain = null;
+  function ensurePlayer() {
+    if (player) return player;
+    player = new Audio(); player.preload = 'auto'; player.setAttribute('playsinline', '');
+    const c = ensureCtx();
+    if (c && c.createMediaElementSource) {
+      try { const src = c.createMediaElementSource(player); voiceGain = c.createGain(); voiceGain.gain.value = cfg.voiceVol; src.connect(voiceGain); voiceGain.connect(c.destination); } catch (e) { voiceGain = null; }
+    }
+    return player;
+  }
+  function playRecording(url, opt, token) {
+    return fetchRecording(url).then((obj) => new Promise((res, rej) => {
+      if (token !== speakToken) { res(false); return; }
+      const a = ensurePlayer(); ensureCtx();
+      let done = false, guard = null;
+      const end = (ok) => { if (done) return; done = true; clearTimeout(guard); a.onended = a.onerror = a.onloadedmetadata = null; ok === 'err' ? rej(new Error('play')) : res(token === speakToken); };
+      a.onended = () => end(true); a.onerror = () => end('err');
+      a.onloadedmetadata = () => { clearTimeout(guard); guard = setTimeout(() => end(true), (a.duration || 20) * 1000 / a.playbackRate + 4000); };
+      a.src = obj;
+      a.preservesPitch = true; a.webkitPreservesPitch = true;
+      a.playbackRate = Math.min(1.2, Math.max(0.8, (opt.rate ? opt.rate + 0.05 : cfg.rate) / NAT_SPEED));
+      if (!voiceGain) a.volume = cfg.voiceVol;
+      guard = setTimeout(() => end('err'), 8000); // lädt/startet nicht → Gerätestimme
+      const pr = a.play(); if (pr && pr.catch) pr.catch(() => end('err'));
+      a._end = end;
+    }));
+  }
+  /* Spricht einen Text: zuerst mit der gewählten natürlichen Stimme, sonst mit der Gerätestimme.
+     Liefert ein Promise, das nach dem Sprechen erfüllt wird (false, wenn abgebrochen). */
+  function speak(text, opt = {}) {
+    if (!cfg.voice || !text) return Promise.resolve(false);
+    const token = ++speakToken;
+    if (synth) synth.cancel();
+    if (player && player._end) { player.pause(); player._end(false); }
+    const url = recordingUrl(text);
+    if (!url) return speakDevice(text, opt, token);
+    return playRecording(url, opt, token).catch(() => (token === speakToken ? speakDevice(text, opt, token) : false));
+  }
+  function stopSpeech() { speakToken++; if (synth) synth.cancel(); if (player && player._end) { player.pause(); player._end(false); } }
+  const speechAvailable = () => !!synth || NAT.voices.length > 0;
+  const naturalVoices = () => NAT.voices.slice();
 
   /* ---------- Klang (Web Audio, A = 432 Hz) ---------- */
   const A = 432;
@@ -87,6 +164,7 @@
     const c = ensureCtx();
     if (c) { const b = c.createBuffer(1, 1, 22050); const s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(0); }
     if (synth && !unlock.done) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); unlock.done = true; }
+    if (cfg.natural && !unlock.player) { const a = ensurePlayer(); if (a.paused) { a.src = 'audio/stille.mp3'; const pr = a.play(); if (pr && pr.catch) pr.catch(() => {}); } unlock.player = true; }
   }
 
   /* Warmer Klangteppich: offene Quinten + Terz in A-Dur, sanft schwebend */
@@ -147,5 +225,5 @@
 
   function stopAll() { stopSpeech(); stopPad(); awake(false); }
 
-  window.SonnAudio = { configure, speak, stopSpeech, speechAvailable, voicesFor, pickVoice, autoPitch, unlock, startPad, stopPad, bell, awake, stopAll, A };
+  window.SonnAudio = { configure, speak, stopSpeech, speechAvailable, naturalVoices, prefetch, audioKey, voicesFor, pickVoice, autoPitch, unlock, startPad, stopPad, bell, awake, stopAll, A };
 })();

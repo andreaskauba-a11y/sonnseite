@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.2.0';
+  const VERSION = '1.3.0';
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
   const LANGS = ['de', 'en', 'cs'];
@@ -35,7 +35,7 @@
       days: {}, journal: [], weekly: [], exercises: [], favs: []
     };
   }
-  function audioDefaults() { return { voice: true, voiceURI: {}, pitch: null, rate: 0.85, voiceVol: 1, music: true, musicVol: 0.5 }; }
+  function audioDefaults() { return { voice: true, natural: 'ruhig', voiceURI: {}, pitch: null, rate: 0.85, voiceVol: 1, music: true, musicVol: 0.5 }; }
   function load() {
     try {
       const raw = localStorage.getItem(KEY);
@@ -160,7 +160,7 @@
   /* ---------- Stimme & Klang ---------- */
   const AU = window.SonnAudio;
   const AS = () => S.settings.audio;
-  function syncAudio() { const a = AS(); AU.configure({ lang: L(), voice: a.voice, voiceURI: (a.voiceURI || {})[L()] || '', pitch: a.pitch, rate: a.rate, voiceVol: a.voiceVol, music: a.music, musicVol: a.musicVol }); }
+  function syncAudio() { const a = AS(); AU.configure({ lang: L(), voice: a.voice, natural: AU.naturalVoices().includes(a.natural) ? a.natural : '', voiceURI: (a.voiceURI || {})[L()] || '', pitch: a.pitch, rate: a.rate, voiceVol: a.voiceVol, music: a.music, musicVol: a.musicVol }); }
   const waitMs = (ms) => new Promise((r) => later(r, ms));
   function audioBar() {
     const a = AS();
@@ -484,7 +484,7 @@
         { render: (d) => `<p class="eyebrow">${ic('sun')} ${esc(t('morningTitle'))}</p><h1>${esc(greeting())}</h1><p class="lead">${esc(t('moodQ'))}</p>${moodPicker(d.mood)}<p class="tiny center">${esc(t('moodHint'))}</p>`,
           collect: (el, d) => { d.mood = readPick(el) || d.mood; } },
         { skip: true, render: (d) => `${d.mood && d.mood <= 2 ? `<p class="note soft">${esc(t('lowMoodMorning'))}</p>` : ''}<h1>${esc(t('arriveTitle'))}</h1><p class="lead">${esc(t('arriveText'))}</p>${miniBreath()}`,
-          mount: () => { onCleanup(() => AU.stopSpeech()); actions.mbstart = (btn) => { btn.disabled = true; AU.unlock(); syncAudio(); if (stopB) stopB(); stopB = runBreath([4, 0, 6, 0], 3, cueBreath(3), () => { $('#bl').textContent = t('wellDone'); AU.bell('end'); AU.speak(t('wellDone')); btn.disabled = false; }); }; } },
+          mount: () => { onCleanup(() => AU.stopSpeech()); actions.mbstart = (btn) => { btn.disabled = true; AU.unlock(); syncAudio(); AU.prefetch([t('inhale'), t('exhale'), t('wellDone')]); if (stopB) stopB(); stopB = runBreath([4, 0, 6, 0], 3, cueBreath(3), () => { $('#bl').textContent = t('wellDone'); AU.bell('end'); AU.speak(t('wellDone')); btn.disabled = false; }); }; } },
         { render: () => `<h1>${esc(t('thoughtTitle'))}</h1>${affCard(ai, true)}<p class="muted">${esc(t('thoughtText'))}</p>` },
         { render: (d) => `<p class="eyebrow">${esc(t('intentionLabel'))}</p><h1>${esc(C().morningQuestions[qi])}</h1><textarea id="f-int" rows="4" placeholder="${esc(hint((C().morningHints || [])[qi], dayNum(k)) || t('intentionPh'))}">${esc(d.intention)}</textarea>`,
           collect: (el, d) => { d.intention = $('#f-int', el).value.trim(); } },
@@ -600,6 +600,7 @@
           if (running) { reset(); btn.innerHTML = ic('play') + ' ' + esc(t('start')); $('#bl').textContent = t('ready'); $('#btime').textContent = ''; $('#bc').classList.remove('grow'); return; }
           running = true;
           AU.unlock(); syncAudio(); AU.startPad(); AU.awake(true);
+          AU.prefetch([t('breathStartVoice'), t('inhale'), t('hold'), t('exhale'), t('voiceEnd')]);
           btn.innerHTML = ic('pause') + ' ' + esc(t('stop'));
           const mins = +$('[data-pick-group="min"]').dataset.value || ex.minutes;
           const per = ex.pattern.reduce((x, y) => x + y, 0);
@@ -623,6 +624,7 @@
       const stopRun = () => { run++; AU.stopSpeech(); };
       async function play() {
         const my = ++run;
+        AU.prefetch([ex.intro, ...steps.slice(i).map((x) => x.t), t('voiceEnd')]);
         if (!introDone) {
           $('#gt').textContent = ex.intro; $('#gc').textContent = '';
           await AU.speak(ex.intro); if (my !== run) return;
@@ -931,15 +933,19 @@
       <div class="card" id="audio-card"><p class="label">${esc(t('audioTitle'))}</p>
         ${AU.speechAvailable() ? '' : `<p class="note soft">${esc(t('noSpeech'))}</p>`}
         <label class="toggle"><input type="checkbox" id="a-voice" ${au.voice ? 'checked' : ''}><span>${esc(t('voiceToggle'))}</span></label>
-        <label class="field"><span>${esc(t('voiceLabel'))}</span><select id="a-uri"></select></label>
+        <label class="field"><span>${esc(t('voiceLabel'))}</span><select id="a-nat">${AU.naturalVoices().map((v) => `<option value="${esc(v)}" ${au.natural === v ? 'selected' : ''}>${esc(t('nat_' + v))}</option>`).join('')}<option value="" ${AU.naturalVoices().includes(au.natural) ? '' : 'selected'}>${esc(t('natDevice'))}</option></select></label>
+        <p class="tiny" id="a-nat-hint">${esc(t('naturalHint'))}</p>
+        <div id="a-device">
+        <label class="field"><span>${esc(t('deviceVoiceLabel'))}</span><select id="a-uri"></select></label>
         <label class="field"><span>${esc(t('pitchLabel'))}</span><input type="range" id="a-pitch" min="0.7" max="1.3" step="0.02"><span class="range-ends"><small>${esc(t('lower'))}</small><button class="link-btn" data-act="pitchauto">${esc(t('pitchAuto'))}</button><small>${esc(t('higher'))}</small></span></label>
+        <p class="tiny">${esc(t('audioHint'))}</p></div>
         <p class="label">${esc(t('rateLabel'))}</p>
         <div class="seg" data-pick-group="rate" data-value="${au.rate}">${[[0.75, t('rateSlow')], [0.85, t('rateCalm')], [0.95, t('rateNormal')]].map(([v, l]) => `<button class="${au.rate === v ? 'on' : ''}" data-act="pick" data-v="${v}" role="radio" aria-checked="${au.rate === v}">${esc(l)}</button>`).join('')}</div>
         <label class="field"><span>${esc(t('voiceVol'))}</span><input type="range" id="a-vv" min="0.2" max="1" step="0.05" value="${au.voiceVol}"></label>
         <label class="toggle"><input type="checkbox" id="a-music" ${au.music ? 'checked' : ''}><span>${esc(t('musicToggle'))}</span></label>
         <label class="field"><span>${esc(t('musicVol'))}</span><input type="range" id="a-mv" min="0.05" max="1" step="0.05" value="${au.musicVol}"></label>
         <button class="btn soft" data-act="listen">${ic('play')} ${esc(t('listen'))}</button>
-        <p class="tiny">${esc(t('audioHint'))}</p><p class="tiny">${esc(t('music432'))}</p></div>
+        <p class="tiny">${esc(t('music432'))}</p></div>
       <div class="card"><p class="label">${esc(t('installTitle'))}</p><p class="tiny">${esc(t('installHint'))}</p></div>
       <div class="card"><p class="label">${esc(t('yourData'))}</p><p class="tiny">${esc(t('dataHint'))}</p>
         <div class="row wrap"><button class="btn soft" data-act="backup">${ic('download')} ${esc(t('backupExport'))}</button>
@@ -961,6 +967,7 @@
     };
     function persistAudio() {
       au.voice = $('#a-voice').checked; au.music = $('#a-music').checked;
+      au.natural = $('#a-nat').value;
       au.voiceURI = au.voiceURI || {}; au.voiceURI[L()] = $('#a-uri').value;
       au.rate = +$('[data-pick-group="rate"]').dataset.value || 0.85;
       au.voiceVol = +$('#a-vv').value; au.musicVol = +$('#a-mv').value;
@@ -976,6 +983,9 @@
     };
     fillVoices(); later(fillVoices, 800); later(fillVoices, 2500);
     $('#a-uri').addEventListener('change', () => { persistAudio(); showPitch(); });
+    const showDevice = () => { const dev = !$('#a-nat').value; $('#a-device').hidden = !dev; $('#a-nat-hint').hidden = dev; };
+    showDevice();
+    $('#a-nat').addEventListener('change', () => { persistAudio(); showDevice(); AU.unlock(); AU.speak(t('sampleShort')); });
     pitchEl.addEventListener('input', () => { au.pitch = +pitchEl.value; save(); syncAudio(); });
     pitchEl.addEventListener('change', () => { AU.unlock(); AU.speak(t('sampleShort')); });
     $('#a-mv').addEventListener('input', () => { persistAudio(); });
