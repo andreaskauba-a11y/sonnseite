@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.1.0';
+  const VERSION = '1.2.0';
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
   const LANGS = ['de', 'en', 'cs'];
@@ -194,6 +194,10 @@
     const w = Math.floor(Math.max(0, daysBetween(S.settings.startDate, k)) / 7);
     return (((w + S.settings.programShift) % 8) + 8) % 8;
   }
+  /* Impulse wechseln: täglich (Morgen/Abend), wöchentlich (Check-up), alle 8 Wochen (Wochenthema) */
+  const dayNum = (k = dkey()) => Math.round(fromKey(k).getTime() / 864e5);
+  const weekIdx = () => Math.floor(Math.max(0, daysBetween(S.settings.startDate, dkey())) / 7);
+  const hint = (arr, n) => (arr && arr.length ? arr[((n % arr.length) + arr.length) % arr.length] : '');
   const weekNumber = () => Math.floor(Math.max(0, daysBetween(S.settings.startDate, dkey())) / 7) + 1;
 
   function dailyAffIndex(k = dkey()) {
@@ -242,38 +246,78 @@
   }
   const readPick = (el) => { const g = $('[data-pick-group]', el); return g && g.dataset.value ? +g.dataset.value : null; };
 
-  /* Der Garten wächst mit jedem Moment der Selbstfürsorge – und welkt nie. */
+  /* Sonnenauf- und -untergang für Wien (NOAA-Näherung, ±2 Min.), in Minuten nach lokaler Mitternacht */
+  function sunTimes(d = new Date(), lat = 48.21, lon = 16.37) {
+    const rad = Math.PI / 180;
+    const N = Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(d.getFullYear(), 0, 0)) / 864e5);
+    const g = 2 * Math.PI / 365 * (N - 0.5);
+    const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+    const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+    const ha = Math.acos(Math.cos(90.833 * rad) / (Math.cos(lat * rad) * Math.cos(decl)) - Math.tan(lat * rad) * Math.tan(decl)) / rad;
+    const tz = -d.getTimezoneOffset();
+    return { rise: 720 - 4 * (lon + ha) - eqt + tz, set: 720 - 4 * (lon - ha) - eqt + tz };
+  }
+  /* Tageszeit für den Garten-Himmel: Morgenröte, Tag, Abendrot, Nacht */
+  function dayPhase(d = new Date()) {
+    const m = d.getHours() * 60 + d.getMinutes(); const { rise, set } = sunTimes(d);
+    if (m >= rise - 30 && m < rise + 75) return 'dawn';
+    if (m >= rise + 75 && m < set - 60) return 'day';
+    if (m >= set - 60 && m < set + 35) return 'dusk';
+    return 'night';
+  }
+  const SKY = {
+    dawn: { s1: '#f6d9c8', s2: '#fbeee2', hill1: '#c3cfb2', hill2: '#dde2cb', stem: '#8aa07c' },
+    day: { s1: '#bfdcec', s2: '#e9f3f3', hill1: '#b9cfa4', hill2: '#d6e2c4', stem: '#7f9a6f' },
+    dusk: { s1: '#e8b9a8', s2: '#f6dcc4', hill1: '#a9b994', hill2: '#c9d0b2', stem: '#7f9470' },
+    night: { s1: '#2c3150', s2: '#4a4560', hill1: '#46543f', hill2: '#3a4535', stem: '#7d9370' }
+  };
+  let gid = 0;
+  /* Der Garten wächst mit jedem Moment der Selbstfürsorge – und welkt nie. Der Himmel folgt der Tageszeit. */
   function garden(n, H = 150) {
-    const W = 360; const r = rng(7);
-    const cols = ['var(--rose)', 'var(--ochre)', 'var(--lav)', 'var(--terra)', 'var(--cream)'];
+    const W = 360; const r = rng(7); const phase = dayPhase(); const c = SKY[phase]; const id = 'gs' + (++gid);
+    const cols = ['#e0aea6', '#ddb064', '#c3b2cf', '#c98467', '#f4e4c8'];
     const plants = [];
     const max = Math.min(n, 60);
     for (let i = 0; i < max; i++) {
       const x = 16 + r() * (W - 32); const y = H - 14 - r() * 26; const type = Math.floor(r() * 5); const col = cols[Math.floor(r() * cols.length)]; const sz = 0.75 + r() * 0.45;
-      plants.push({ x, y, type, col, sz: sz * (i >= max - 3 ? 1 : 1) });
+      plants.push({ x, y, type, col, sz });
     }
     plants.sort((a, b) => a.y - b.y);
-    const stem = 'var(--stem)';
+    const stem = c.stem; const dim = phase === 'night' ? ' opacity=".82"' : '';
     const draw = (p) => {
       const s = p.sz; const h = 22 * s;
-      const g = `<g transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})">`;
+      const g = `<g transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"${dim}>`;
       switch (p.type) {
-        case 0: return g + `<path d="M0 0v${-h}" stroke="${stem}" stroke-width="1.6" stroke-linecap="round"/><path d="M0 ${-h * .45}c-5-1-8-4-8-8 4 0 7 3 8 8z" fill="${stem}" opacity=".8"/>` + [0, 72, 144, 216, 288].map((a) => `<ellipse cx="0" cy="${-4 * s}" rx="${2.6 * s}" ry="${4.4 * s}" fill="${p.col}" transform="translate(0 ${-h}) rotate(${a})"/>`).join('') + `<circle cy="${-h}" r="${2.2 * s}" fill="var(--ochre)"/></g>`;
+        case 0: return g + `<path d="M0 0v${-h}" stroke="${stem}" stroke-width="1.6" stroke-linecap="round"/><path d="M0 ${-h * .45}c-5-1-8-4-8-8 4 0 7 3 8 8z" fill="${stem}" opacity=".8"/>` + [0, 72, 144, 216, 288].map((a) => `<ellipse cx="0" cy="${-4 * s}" rx="${2.6 * s}" ry="${4.4 * s}" fill="${p.col}" transform="translate(0 ${-h}) rotate(${a})"/>`).join('') + `<circle cy="${-h}" r="${2.2 * s}" fill="#ddb064"/></g>`;
         case 1: return g + `<path d="M0 0v${-h}" stroke="${stem}" stroke-width="1.6" stroke-linecap="round"/><path d="M0 ${-h * .3}c4-2 8-2 10-6-4-1-8 1-10 6z" fill="${stem}" opacity=".8"/><path d="M${-5 * s} ${-h}c0 ${-8 * s} ${10 * s} ${-8 * s} ${10 * s} 0 0 ${4 * s}-${2.5 * s} ${6 * s}-${5 * s} ${6 * s}s-${5 * s}-${2 * s}-${5 * s}-${6 * s}z" fill="${p.col}"/></g>`;
         case 2: return g + `<path d="M0 0c-1-6-6-10-9-11M0 0c0-8 1-13 0-17M0 0c1-6 6-10 9-12" stroke="${stem}" stroke-width="1.5" fill="none" stroke-linecap="round" transform="scale(${s})"/></g>`;
         case 3: return g + `<path d="M0 0v${-h * .9}" stroke="${stem}" stroke-width="1.5" stroke-linecap="round"/>` + [0.35, 0.55, 0.75].map((f, j) => `<circle cx="${(j % 2 ? 3 : -3) * s}" cy="${-h * f}" r="${2.4 * s}" fill="${p.col}"/>`).join('') + `<circle cy="${-h * .92}" r="${2.2 * s}" fill="${p.col}"/></g>`;
         default: return g + `<path d="M0 0v${-h * .6}" stroke="${stem}" stroke-width="1.6" stroke-linecap="round"/><path d="M0 ${-h * .6}c-7-1-9-7-8-11 5 1 8 5 8 11zM0 ${-h * .6}c6-2 8-8 7-12-5 2-7 6-7 12z" fill="${stem}" opacity=".9"/></g>`;
       }
     };
-    const seed = n === 0 ? `<g transform="translate(${W / 2} ${H - 22})"><ellipse rx="5" ry="3.5" fill="var(--terra)" opacity=".7"/><path d="M0 -3c0-5 3-7 6-8" stroke="var(--stem)" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>` : '';
+    let sky = '';
+    if (phase === 'day') {
+      sky = `<circle cx="${W - 58}" cy="38" r="30" fill="#fbe3a6" opacity=".35"/><circle cx="${W - 58}" cy="38" r="15" fill="#f6c76e"/>` +
+        [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<path d="M0 -22v-7" stroke="#f0b95c" stroke-width="2" stroke-linecap="round" transform="translate(${W - 58} 38) rotate(${a})"/>`).join('') +
+        `<g fill="#fff" opacity=".85"><ellipse cx="70" cy="34" rx="26" ry="9"/><ellipse cx="88" cy="28" rx="16" ry="9"/><ellipse cx="190" cy="50" rx="20" ry="6"/></g>`;
+    } else if (phase === 'dawn') {
+      sky = `<circle cx="70" cy="${H - 58}" r="34" fill="#f8cf9a" opacity=".3"/><circle cx="70" cy="${H - 58}" r="17" fill="#f3b77c"/>`;
+    } else if (phase === 'dusk') {
+      sky = `<circle cx="${W - 80}" cy="${H - 56}" r="38" fill="#f2a98a" opacity=".3"/><circle cx="${W - 80}" cy="${H - 56}" r="18" fill="#ec9a72"/>`;
+    } else {
+      const rs = rng(3);
+      sky = Array.from({ length: 22 }, () => `<circle cx="${(rs() * W).toFixed(0)}" cy="${(8 + rs() * (H - 80)).toFixed(0)}" r="${(0.6 + rs() * 1.1).toFixed(1)}" fill="#fff" opacity="${(0.4 + rs() * 0.5).toFixed(2)}"/>`).join('') +
+        `<circle cx="${W - 58}" cy="38" r="26" fill="#f1e3c0" opacity=".12"/><path d="M${W - 52} 22a16 16 0 1 0 10 28a13 13 0 1 1 -10 -28z" fill="#f1e3c0"/>`;
+    }
+    const seed = n === 0 ? `<g transform="translate(${W / 2} ${H - 22})"><ellipse rx="5" ry="3.5" fill="#c98467" opacity=".7"/><path d="M0 -3c0-5 3-7 6-8" stroke="${stem}" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>` : '';
     return `<svg class="garden" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('gardenAria', { n }))}">
-      <defs><linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient></defs>
-      <rect width="${W}" height="${H}" rx="20" fill="url(#gsky)"/>
-      <circle cx="${W - 52}" cy="36" r="15" fill="var(--sunc)" opacity=".9"/><circle cx="${W - 52}" cy="36" r="24" fill="var(--sunc)" opacity=".18"/>
-      <path d="M0 ${H - 44}Q90 ${H - 66} 180 ${H - 48}T360 ${H - 52}V${H}H0Z" fill="var(--hill2)"/>
-      <path d="M0 ${H - 28}Q120 ${H - 46} 230 ${H - 30}T360 ${H - 32}V${H}H0Z" fill="var(--hill1)"/>
+      <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.s1}"/><stop offset="1" stop-color="${c.s2}"/></linearGradient></defs>
+      <rect width="${W}" height="${H}" rx="20" fill="url(#${id})"/>${sky}
+      <path d="M0 ${H - 44}Q90 ${H - 66} 180 ${H - 48}T360 ${H - 52}V${H}H0Z" fill="${c.hill2}"/>
+      <path d="M0 ${H - 28}Q120 ${H - 46} 230 ${H - 30}T360 ${H - 32}V${H}H0Z" fill="${c.hill1}"/>
       ${plants.map(draw).join('')}${seed}</svg>`;
   }
+  const gardenCaption = (n) => t(n === 1 ? 'gardenCaption1' : 'gardenCaption', { n });
 
   function closeScreen(msg, mood) {
     return `<div class="close-screen">${garden(growth(), 140)}<h1>${esc(t('thanks'))}</h1><p class="lead">${esc(msg)}</p>
@@ -422,7 +466,7 @@
         <h2>${esc(prog.title)}</h2><p>${esc(prog.intro)}</p>
         <a class="mini-ex" href="#/ex/${exId}">${ic(TYPEI[ex.type])}<span><strong>${esc(t('exToday'))}: ${esc(ex.title)}</strong><small>${esc(ex.short)} · ${ex.minutes} ${esc(t('min'))}</small></span>${ic('arrowRight')}</a>
       </div>
-      <a class="garden-link" href="#/path">${garden(growth(), 120)}<span>${esc(t('gardenCaption', { n: growth() }))}</span></a>
+      <a class="garden-link" href="#/path">${garden(growth(), 120)}<span>${esc(gardenCaption(growth()))}</span></a>
     </section>`, { tab: 'home' });
     act({});
   }
@@ -442,7 +486,7 @@
         { skip: true, render: (d) => `${d.mood && d.mood <= 2 ? `<p class="note soft">${esc(t('lowMoodMorning'))}</p>` : ''}<h1>${esc(t('arriveTitle'))}</h1><p class="lead">${esc(t('arriveText'))}</p>${miniBreath()}`,
           mount: () => { onCleanup(() => AU.stopSpeech()); actions.mbstart = (btn) => { btn.disabled = true; AU.unlock(); syncAudio(); if (stopB) stopB(); stopB = runBreath([4, 0, 6, 0], 3, cueBreath(3), () => { $('#bl').textContent = t('wellDone'); AU.bell('end'); AU.speak(t('wellDone')); btn.disabled = false; }); }; } },
         { render: () => `<h1>${esc(t('thoughtTitle'))}</h1>${affCard(ai, true)}<p class="muted">${esc(t('thoughtText'))}</p>` },
-        { render: (d) => `<p class="eyebrow">${esc(t('intentionLabel'))}</p><h1>${esc(C().morningQuestions[qi])}</h1><textarea id="f-int" rows="4" placeholder="${esc(t('intentionPh'))}">${esc(d.intention)}</textarea>`,
+        { render: (d) => `<p class="eyebrow">${esc(t('intentionLabel'))}</p><h1>${esc(C().morningQuestions[qi])}</h1><textarea id="f-int" rows="4" placeholder="${esc(hint((C().morningHints || [])[qi], dayNum(k)) || t('intentionPh'))}">${esc(d.intention)}</textarea>`,
           collect: (el, d) => { d.intention = $('#f-int', el).value.trim(); } },
         { render: (d) => `<h1>${esc(t('lookForwardQ'))}</h1><textarea id="f-lf" rows="3" placeholder="${esc(t('lookForwardPh'))}">${esc(d.lookForward)}</textarea>`,
           collect: (el, d) => { d.lookForward = $('#f-lf', el).value.trim(); }, onNext: () => store(true) },
@@ -467,11 +511,11 @@
           collect: (el, d) => { d.mood = readPick(el) || d.mood; } },
         { render: (d) => `<h1>${esc(t('goodTitle'))}</h1><p class="lead">${esc(t('goodText'))}</p>
             ${[0, 1, 2].map((j) => `<label class="num-input"><span>${j + 1}</span><input type="text" id="g${j}" value="${esc(d.good[j])}" placeholder="${esc(t('goodPh' + j))}"></label>`).join('')}
-            <label class="field"><span>${esc(t('goodWhy'))}</span><textarea id="g-why" rows="2">${esc(d.why)}</textarea></label>
+            <label class="field"><span>${esc(t('goodWhy'))}</span><textarea id="g-why" rows="2" placeholder="${esc(hint(C().goodWhyHints, dayNum(k)))}">${esc(d.why)}</textarea></label>
             <p class="tiny">${esc(t('goodEvidence'))}</p>`,
           collect: (el, d) => { d.good = [0, 1, 2].map((j) => $('#g' + j, el).value.trim()); d.why = $('#g-why', el).value.trim(); } },
         { render: (d) => `${morning.intention ? `<div class="recall"><span>${esc(t('morningRecall'))}</span><q>${esc(morning.intention)}</q></div>` : ''}
-            <p class="eyebrow">${esc(t('reflectionLabel'))}</p><h1>${esc(C().eveningQuestions[qi])}</h1><textarea id="f-ref" rows="5" placeholder="${esc(t('reflectionPh'))}">${esc(d.reflection)}</textarea>`,
+            <p class="eyebrow">${esc(t('reflectionLabel'))}</p><h1>${esc(C().eveningQuestions[qi])}</h1><textarea id="f-ref" rows="5" placeholder="${esc(hint((C().eveningHints || [])[qi], dayNum(k)) || t('reflectionPh'))}">${esc(d.reflection)}</textarea>`,
           collect: (el, d) => { d.reflection = $('#f-ref', el).value.trim(); }, onNext: (d) => { if (!low(d)) finalize(d); } },
         { when: low, render: (d) => `<h1>${esc(t('kindTitle'))}</h1><p class="lead">${esc(t('kindText'))}</p><textarea id="f-kind" rows="4" placeholder="${esc(t('kindPh'))}">${esc(d.kind)}</textarea>`,
           collect: (el, d) => { d.kind = $('#f-kind', el).value.trim(); }, onNext: finalize },
@@ -523,7 +567,7 @@
     } else {
       body = `<div class="write">${ex.minutes >= 10 ? `<button class="btn soft" data-act="wtimer" id="wt">${ic('play')} ${esc(t('timerStart', { n: ex.minutes }))}</button>` : ''}
         <div class="audio-bar"><button class="pill" data-act="wmusic" aria-pressed="false">${ic('music')} ${esc(t('writeMusic'))}</button></div>
-        ${ex.fields.map((f, j) => `<label class="field"><span>${esc(f.l)}</span><textarea id="w${j}" rows="${f.rows || 3}" placeholder="${esc(f.p || '')}"></textarea></label>`).join('')}
+        ${ex.fields.map((f, j) => `<label class="field"><span>${esc(f.l)}</span><textarea id="w${j}" rows="${f.rows || 3}" placeholder="${esc(f.p || ((C().exerciseHints || {})[id] || [])[j] || '')}"></textarea></label>`).join('')}
         <button class="btn primary wide" data-act="wsave">${esc(t('saveEntry'))}</button></div>`;
     }
     onCleanup(() => AU.stopAll());
@@ -711,7 +755,7 @@
     const c = C(); const w = c.who5; const pi = programIndex(); const prog = c.program[pi];
     const data = { who: [null, null, null, null, null], a: {} };
     const qs = c.weeklyQuestions;
-    const tq = (q) => `<label class="field"><span>${esc(q.q)}</span><textarea data-q="${q.id}" rows="3" placeholder="${esc(q.p || '')}"></textarea></label>`;
+    const tq = (q) => `<label class="field"><span>${esc(q.q)}</span><textarea data-q="${q.id}" rows="3" placeholder="${esc(hint((c.weeklyHints || {})[q.id], weekIdx()) || q.p || '')}"></textarea></label>`;
     const collectQ = (el, d) => { $$('textarea[data-q]', el).forEach((ta) => { d.a[ta.dataset.q] = ta.value.trim(); }); };
     const fillQ = (el, d) => { $$('textarea[data-q]', el).forEach((ta) => { ta.value = d.a[ta.dataset.q] || ''; }); };
     let api;
@@ -729,7 +773,7 @@
             <div class="card soft"><p class="eyebrow">${esc(t('weekTheme', { n: weekNumber() }))}</p><h2>${esc(prog.title)}</h2><p>${esc(prog.intro)}</p></div>`, next: t('begin') },
         whoStep(0), whoStep(1), whoStep(2), whoStep(3), whoStep(4),
         { skip: true, render: () => `<h1>${esc(t('weekLookBack'))}</h1>${tq(qs[0])}${tq(qs[1])}`, mount: fillQ, collect: collectQ },
-        { skip: true, render: () => `<h1>${esc(t('weekDeeper'))}</h1>${tq({ id: 'theme', q: prog.weekQuestion })}${tq(qs[2])}`, mount: fillQ, collect: collectQ },
+        { skip: true, render: () => `<h1>${esc(t('weekDeeper'))}</h1>${tq({ id: 'theme', q: prog.weekQuestion, p: hint((c.themeHints || [])[pi], Math.floor(weekIdx() / 8)) })}${tq(qs[2])}`, mount: fillQ, collect: collectQ },
         { skip: true, render: () => `<h1>${esc(t('weekAhead'))}</h1>${tq(qs[3])}${tq(qs[4])}`, mount: fillQ, collect: collectQ,
           onNext: (d) => {
             const raw = d.who.reduce((a, b) => a + (b || 0), 0);
@@ -742,14 +786,28 @@
       ]
     });
   }
+  /* Rückmeldung in drei Stufen, immer mit Bezug auf die eigenen Antworten (WHO-5: 0–100) */
   function weeklyResult() {
-    const W = S.weekly; const cur = W[W.length - 1]; const prev = W[W.length - 2]; const m = C().weeklyMessages;
-    let msg = !prev ? m.first : cur.score - prev.score >= 8 ? m.up : prev.score - cur.score >= 8 ? m.down : m.steady;
+    const W = S.weekly; const cur = W[W.length - 1]; const prev = W[W.length - 2]; const m = C().weeklyMessages; const tr = C().weeklyTiers; const sh = C().who5Short;
+    const cmp = !prev ? m.first : cur.score - prev.score >= 8 ? m.up : prev.score - cur.score >= 8 ? m.down : m.steady;
+    const who = (cur.who || []).map((v) => (v == null ? 0 : v));
+    const best = who.indexOf(Math.max(...who)); const low = who.indexOf(Math.min(...who));
+    const prevLow = prev && prev.score < 50 && (cur.ts - prev.ts) <= 15 * 864e5;
+    let tier = '', note = '';
+    if (cur.score >= 50) tier = tr.high.replace('{best}', sh[best]);
+    else if (cur.score > 28) {
+      tier = tr.mid.replace('{low}', sh[low]);
+      note = prevLow ? `<div class="note soft">${esc(tr.midRepeat)} <a href="#/help">${esc(t('helpLink'))}</a></div>`
+        : `<p class="note soft">${esc(tr.midEx)} <a href="#/ex/selfcompassion">${esc(C().exercises.selfcompassion.title)} ${ic('arrowRight')}</a></p>`;
+    } else {
+      note = `<div class="note soft">${esc(tr.low)} <a href="#/help">${esc(t('helpLink'))}</a></div>`;
+    }
     const nextTheme = C().program[(programIndex() + 1) % 8];
     return `<h1>${esc(t('weeklyThanks'))}</h1>
       ${cur.crisis ? crisisCard() : ''}
-      <div class="card"><p class="eyebrow">${esc(t('wellbeingCurve'))}</p>${who5Chart(W.slice(-12))}<p>${esc(msg)}</p></div>
-      ${cur.score <= 28 ? `<div class="note soft">${esc(m.low)} <a href="#/help">${esc(t('helpLink'))}</a></div>` : cur.score < 50 ? `<p class="note soft">${esc(m.below)}</p>` : ''}
+      <div class="card"><p class="eyebrow">${esc(t('wellbeingCurve'))}</p>${who5Chart(W.slice(-12))}${tier ? `<p>${esc(tier)}</p>` : ''}<p class="muted">${esc(cmp)}</p>
+        <details><summary>${esc(tr.howTitle)}</summary><p class="tiny">${esc(tr.how)}</p></details></div>
+      ${note}
       <div class="card soft"><p class="eyebrow">${esc(t('nextWeekTheme'))}</p><h2>${esc(nextTheme.title)}</h2><p>${esc(nextTheme.intro)}</p></div>
       ${garden(growth(), 110)}`;
   }
@@ -826,7 +884,7 @@
     const n = growth(); const favs = S.favs;
     view(`<section class="page">
       <h1>${esc(t('tabPath'))}</h1>
-      <div class="card garden-card">${garden(n, 170)}<p>${esc(t('gardenCaption', { n }))}</p><p class="tiny">${esc(t('gardenNote'))}</p></div>
+      <div class="card garden-card">${garden(n, 170)}<p>${esc(gardenCaption(n))}</p><p class="tiny">${esc(t('gardenNote'))}</p></div>
       <div class="card"><p class="eyebrow">${esc(t('moodChart'))}</p>${moodChart()}</div>
       <div class="card"><p class="eyebrow">${esc(t('wellbeingCurve'))}</p>${who5Chart(S.weekly.slice(-12))}
         <a class="btn soft" href="#/weekly">${ic('compass')} ${esc(t('startWeekly'))}</a></div>

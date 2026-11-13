@@ -385,3 +385,78 @@ window.CONTENT.de = {
     'Datenschutz: Sonnseite hat keinen Server, kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.'
   ]
 };
+
+/* Impulse (Platzhalter) – je Frage drei Varianten, die sich abwechseln. Reihenfolge = Reihenfolge der Fragen. */
+Object.assign(window.CONTENT.de, {
+  morningHints: [
+    ['z. B. zehn Minuten an die frische Luft, eine Nachricht beantworten, die schon lange wartet', 'z. B. ein Glas Wasser gleich nach dem Aufstehen, ein Fenster öffnen, eine Kleinigkeit erledigen', 'z. B. ein paar Dehnübungen, ein gutes Frühstück, eine liebe Person anrufen'],
+    ['z. B. auf schöne Kleinigkeiten, auf deinen Atem in stressigen Momenten, auf ein Gespräch', 'z. B. auf das, was gelingt, auf freundliche Gesichter, auf Farben unterwegs', 'z. B. auf deine Bedürfnisse, auf eine Aufgabe nach der anderen, auf Pausen'],
+    ['z. B. geduldig, ohne Perfektion, mit Pausen, freundlich bei Fehlern', 'z. B. nachsichtig, wenn etwas länger dauert, mit Humor, ohne mich zu vergleichen', 'z. B. so, wie ich mit einer guten Freundin umgehen würde'],
+    ['z. B. die Wäsche, eine Aufgabe ohne Frist, der Anspruch, alles zu schaffen', 'z. B. das Aufräumen, eine Antwort, die bis morgen warten kann', 'z. B. das Grübeln über Dinge, die ich nicht ändern kann'],
+    ['z. B. einer Kollegin, der Verkäuferin, einem Familienmitglied – oder dir selbst', 'z. B. der Nachbarin, dem Busfahrer, einer Freundin per Nachricht', 'z. B. jemandem, der viel für dich tut, ohne dass es auffällt'],
+    ['z. B. Humor, Geduld, Organisationstalent, Mitgefühl', 'z. B. Ausdauer, Gelassenheit, Kreativität, Ehrlichkeit', 'z. B. Neugier, Hilfsbereitschaft, Mut, Freundlichkeit'],
+    ['z. B. genug trinken, eine Mittagspause, jemanden zum Reden', 'z. B. ein gutes Essen, ein bisschen Bewegung, klare Grenzen', 'z. B. weniger auf dem Plan, frische Luft, ein freundliches Wort an mich'],
+    ['z. B. ein Tee ohne Handy, fünf Minuten am Fenster, ein kurzer Spaziergang', 'z. B. ein paar tiefe Atemzüge, eine Runde um den Block, Musik hören', 'z. B. eine Mittagspause ohne Arbeit, kurz die Augen schließen, ein Kaffee in Ruhe'],
+    ['z. B. um Hilfe bitten, etwas absagen, Musik beim Aufräumen', 'z. B. eine Aufgabe aufteilen, Erwartungen herunterschrauben, früher Schluss machen', 'z. B. etwas Schönes einplanen, Unterstützung annehmen, eins nach dem anderen'],
+    ['z. B. freundlich bleiben, Zeit für die Familie, ehrlich zu dir sein', 'z. B. gut mit mir umgehen, zuhören, meinen Werten treu bleiben', 'z. B. Ruhe bewahren, Verbindung zu lieben Menschen, gut für mich sorgen'],
+    ['z. B. wenn ich eine Sache erledigt habe, wenn ich einmal gelacht habe', 'z. B. wenn ich eine Pause gemacht habe, wenn ich freundlich zu mir war', 'z. B. wenn ich einen schönen Moment bemerkt habe, wenn ich mit jemandem gesprochen habe'],
+    ['z. B. das Frühstück, ein Lied, die Sonne auf der Haut, ein warmes Bad', 'z. B. einen Spaziergang, ein gutes Buch, den Duft von Kaffee', 'z. B. ein Gespräch, frische Luft, ein Stück Schokolade']
+  ],
+  eveningHints: [
+    ['z. B. aufgestanden trotz Müdigkeit, ein schwieriges Telefonat, etwas Gesundes gekocht', 'z. B. eine Aufgabe abgeschlossen, Nein gesagt, ruhig geblieben', 'z. B. rausgegangen, obwohl ich keine Lust hatte, jemandem geholfen'],
+    ['z. B. auf dem Sofa mit Decke, im Gespräch mit einer Freundin, beim Spazierengehen', 'z. B. unter der Dusche, beim Kochen, mit einem Haustier', 'z. B. bei einer Umarmung, mit einem Tee, beim Lesen'],
+    ['z. B. ein Tier, eine Nachricht, ein kleines Missgeschick, über das du lachen konntest', 'z. B. ein Kind, ein Witz, eine schöne Erinnerung', 'z. B. ein Foto, eine Begegnung, etwas Unerwartetes'],
+    ['Das Schwere darf hier stehen. Und dann: eine Person, eine Pause, ein Gedanke?', 'z. B. ein Gespräch, das belastet hat – geholfen hat vielleicht Atmen, Abstand oder Reden', 'Schreib ruhig ehrlich. Was hat dich – auch nur ein wenig – gestützt?'],
+    ['z. B. ein kurzes Gespräch an der Kassa, ein Anruf, ein Gruß', 'z. B. ein Treffen mit einer Freundin, ein ehrlicher Austausch, ein Lächeln', 'z. B. eine Nachricht, ein Besuch, ein freundliches Gesicht unterwegs'],
+    ['z. B. dass ich mehr schaffe als gedacht, dass ich Ruhe brauche', 'z. B. was mir Kraft gibt, was mich ärgert, wo meine Grenzen sind', 'z. B. dass mir Bewegung guttut, dass ich gerne helfe'],
+    ['z. B. fürs Durchhalten, fürs Neinsagen, für Geduld mit dir oder anderen', 'z. B. dafür, dass ich auf mich gehört habe, für Mut, für eine Pause', 'z. B. für meine Freundlichkeit, dafür, dass ich weitergemacht habe'],
+    ['z. B. einen Ärger, einen Fehler, einen Gedanken, der immer wiederkommt', 'z. B. die Sorge um morgen, einen Vergleich mit anderen, Perfektion', 'z. B. etwas, das nicht in meiner Hand liegt, einen ungesagten Satz'],
+    ['Auch Kleines zählt: z. B. genug gegessen, früher Feierabend, die Lieblingsmusik', 'z. B. eine Pause gemacht, mich bewegt, Nein gesagt', 'z. B. etwas Schönes angezogen, mit jemandem telefoniert, früh ins Bett'],
+    ['z. B. beim Kochen, beim Zuhören, beim Blick in den Himmel', 'z. B. beim Essen, in der Natur, bei einer Umarmung', 'z. B. beim Musikhören, unter der Dusche, bei einem Gespräch'],
+    ['z. B. Geduld, Mut, Freundlichkeit, Durchhaltevermögen, Humor', 'z. B. Gelassenheit, Ehrlichkeit, Hilfsbereitschaft', 'z. B. Kreativität, Zuverlässigkeit, Selbstfürsorge'],
+    ['z. B. eine Erkenntnis, ein gutes Gefühl, einen Vorsatz', 'z. B. einen Satz, der mir gutgetan hat, ein Lächeln, mehr Ruhe', 'z. B. die Erinnerung an einen schönen Moment, eine kleine Idee'],
+    ['z. B. eine unerwartete Nachricht, deine eigene Reaktion, ein schöner Zufall', 'z. B. wie gut etwas geklappt hat, ein Gespräch, das Wetter', 'z. B. eine Begegnung, eine neue Idee, wie ruhig ich geblieben bin'],
+    ['z. B. jemand hat dir die Tür aufgehalten, du hast zugehört, ein liebes Wort', 'z. B. ein Kompliment, Hilfe beim Tragen, eine Nachricht', 'z. B. du hast jemandem Mut gemacht, jemand hat dich angelächelt']
+  ],
+  goodWhyHints: ['z. B. ich selbst, weil ich rausgegangen bin; meine Nachbarin, die freundlich war', 'z. B. ich habe mir Zeit genommen; eine Freundin hat angerufen', 'z. B. das schöne Wetter; dass ich um Hilfe gebeten habe'],
+  weeklyHints: {
+    good: ['z. B. ein gutes Gespräch, etwas erledigt, ein schöner Moment draußen', 'z. B. ein Treffen, ein erholsamer Abend, eine kleine Freude', 'z. B. etwas, das leichter ging als gedacht, ein Lob, ein Lachen'],
+    hard: ['Was hat dir geholfen, es zu tragen – eine Person, eine Pause, ein Gedanke?', 'z. B. Streit, Sorgen, Müdigkeit – und was du dagegen getan hast', 'Auch „Ich weiß es noch nicht“ ist eine ehrliche Antwort.'],
+    strength: ['z. B. Geduld, Humor, Durchhalten, um Hilfe bitten, Grenzen setzen', 'z. B. Gelassenheit, Mut, Ehrlichkeit, Fürsorge für dich', 'z. B. Zuversicht, Organisationstalent, Mitgefühl'],
+    care: ['Klein und konkret: z. B. am Dienstag ein Spaziergang, früher ins Bett, eine Freundin anrufen', 'z. B. ein Abend ohne Verpflichtungen, ein Ausflug ins Grüne, ein gutes Buch', 'z. B. einen Termin nur für mich eintragen, Bewegung, ein Treffen mit einem lieben Menschen'],
+    letgo: ['z. B. einen Anspruch an dich, eine Sorge, die nicht in deiner Hand liegt, einen Groll', 'z. B. ein schlechtes Gewissen, eine alte Kränkung, das Grübeln', 'z. B. die Erwartung, alles allein schaffen zu müssen']
+  },
+  themeHints: [
+    ['z. B. beim Essen, in der Natur, im Gespräch – wie war das für dich?', 'z. B. beim Atmen, unter der Dusche, mit Musik – was hast du gespürt?', 'z. B. bei einem Spaziergang, beim Kochen – was war anders als sonst?'],
+    ['z. B. Sonnenlicht am Morgen, ein Lächeln, ein Lied im Radio', 'z. B. ein Duft, ein freundlicher Satz, eine warme Mahlzeit', 'z. B. ein Vogel am Fenster, ein gelungener Moment, Ruhe am Abend'],
+    ['z. B. nach einem Fehler oder beim Vergleichen mit anderen. Vielleicht hättest du Verständnis, eine Pause oder ein gutes Wort gebraucht.', 'z. B. als etwas nicht geklappt hat – was hätte dir eine gute Freundin gesagt?', 'z. B. beim Blick in den Spiegel oder auf die To-do-Liste – was hätte dir gutgetan?'],
+    ['z. B. „Ich schaffe das nicht.“ Was spricht dafür, was dagegen?', 'z. B. „Das geht sicher schief.“ Wie oft ist so etwas wirklich eingetreten?', 'z. B. „Ich bin nicht gut genug.“ Was würde eine Freundin dazu sagen?'],
+    ['z. B. Geduld mit dir, Humor in einer schwierigen Lage, Mut, etwas anzusprechen', 'z. B. Ausdauer bei einer mühsamen Aufgabe, Freundlichkeit trotz Stress', 'z. B. Kreativität bei einem Problem, Ehrlichkeit in einem Gespräch'],
+    ['z. B. Fürsorge, Ehrlichkeit, Familie. Als kleiner Schritt: ein Anruf, ein ehrliches Gespräch, Zeit für dich', 'z. B. Gesundheit, Freundschaft, Ruhe – und als Schritt ein Spaziergang oder ein Treffen', 'z. B. Mut, Gerechtigkeit, Natur – und als Schritt ein offenes Wort oder ein Ausflug'],
+    ['z. B. eine Nachricht, ein Besuch, eine Umarmung. Und wem hast du eine Freude gemacht?', 'z. B. ein gutes Gespräch, gemeinsames Lachen – und wem hast du zugehört?', 'z. B. Hilfe im Alltag, ein Anruf – und wen hast du unterstützt?'],
+    ['z. B. eine Situation, die du gemeistert hast, ein Tag, den du trotz allem geschafft hast', 'z. B. ein Gespräch, vor dem du Angst hattest, eine Entscheidung, die du getroffen hast', 'z. B. ein Rückschlag, nach dem du wieder aufgestanden bist']
+  ],
+  /* Impulse für Felder von Schreibübungen ohne eigenen Platzhalter (Index = Feld) */
+  exerciseHints: {
+    threegood: [null, 'z. B. ein gutes Essen', 'z. B. etwas, das ich geschafft habe', 'z. B. ich selbst, weil ich rausgegangen bin'],
+    reframe: ['z. B. Meine Kollegin hat heute nicht zurückgegrüßt.', 'z. B. „Sie mag mich nicht.“', 'z. B. Sie war gestern auch kurz angebunden.', 'z. B. Sie wirkte gestresst; letzte Woche haben wir nett geplaudert.', 'z. B. „Vielleicht hatte sie einfach einen schlechten Tag.“', 'z. B. „Ich weiß nicht, warum sie nicht gegrüßt hat – es muss nichts mit mir zu tun haben.“'],
+    values: ['z. B. Familie, Ehrlichkeit, Ruhe', 'z. B. Ich nehme mir Zeit zum Zuhören.', 'z. B. am Samstag meine Mutter besuchen'],
+    bestself: ['z. B. Ich wohne …, verbringe meine Tage mit …, um mich sind …, ich fühle mich …', 'z. B. mich über einen Kurs informieren'],
+    strengths: ['z. B. Humor, Hilfsbereitschaft, Ausdauer', 'z. B. Als ich umgezogen bin, hat mir meine Ausdauer geholfen.', 'z. B. Neugier: einen neuen Weg nach Hause gehen'],
+    expressive: ['Schreib einfach los – auch „Ich weiß nicht, was ich schreiben soll“ ist ein Anfang.'],
+    letter: ['z. B. dass ich ungeduldig mit meinen Kindern war'],
+    gratitude: ['z. B. eine frühere Lehrerin, eine Freundin, ein Nachbar', 'Liebe …, ich denke oft an die Zeit, als du …'],
+    connection: ['z. B. eine alte Schulfreundin, die Nachbarin, ein Cousin', null, 'z. B. heute nach dem Abendessen']
+  },
+  who5Short: ['froh und gut gelaunt sein', 'ruhig und entspannt sein', 'voller Energie und aktiv sein', 'frisch und ausgeruht aufwachen', 'ein Alltag voller Dinge, die dich interessieren'],
+  weeklyTiers: {
+    high: 'Deine Antworten zeigen, dass in den letzten zwei Wochen vieles Raum hatte – besonders: {best}. Schön.',
+    mid: 'Deine Antworten zeigen, dass manches in den letzten zwei Wochen wenig Raum hatte – am wenigsten: {low}. In herausfordernden Zeiten ist das verständlich.',
+    midEx: 'Vielleicht tut dir jetzt eine kleine Übung gut:',
+    midRepeat: 'Seit zwei Wochen zeigen deine Antworten ein eher gedämpftes Wohlbefinden. Wenn du magst, sprich mit deiner Hausärztin, deinem Hausarzt oder einer Psychotherapeutin darüber – manchmal entlastet schon ein Gespräch.',
+    low: 'Bei vielen Fragen hast du „ab und zu“ oder „zu keinem Zeitpunkt“ angegeben. Das deutet darauf hin, dass es dir gerade wirklich nicht gut geht. Bitte nimm das ernst und sprich mit deiner Hausärztin, deinem Hausarzt oder einer Psychotherapeutin. Du musst das nicht allein schaffen.',
+    howTitle: 'Wie entsteht diese Rückmeldung?',
+    how: 'Die fünf Fragen stammen aus dem WHO-5-Fragebogen der Weltgesundheitsorganisation. Deine Antworten werden zu einem Wert zwischen 0 und 100 zusammengezählt. Er spiegelt, wie du selbst dein Wohlbefinden in den letzten zwei Wochen eingeschätzt hast – er ist keine Diagnose und keine Note. Ist der Wert über längere Zeit eher niedrig, gibt Sonnseite einen sanften Hinweis, weil dann ein Gespräch mit Fachleuten entlasten kann.'
+  }
+});
+window.CONTENT.de.weeklyQuestions[3].q = 'Was möchtest du nächste Woche Gutes für dich tun?';

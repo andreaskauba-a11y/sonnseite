@@ -381,3 +381,77 @@ window.CONTENT.cs = {
     'Ochrana dat: Sonnseite nemá server, účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.'
   ]
 };
+
+/* Podněty (zástupný text) – tři varianty ke každé otázce, které se střídají. */
+Object.assign(window.CONTENT.cs, {
+  morningHints: [
+    ['např. deset minut na čerstvém vzduchu, odpovědět na zprávu, která dlouho čeká', 'např. sklenice vody hned po probuzení, otevřít okno, vyřídit maličkost', 'např. pár protahovacích cviků, dobrá snídaně, zavolat milému člověku'],
+    ['např. na krásné maličkosti, na dech ve stresu, na rozhovor', 'např. na to, co se daří, na přátelské tváře, na barvy cestou', 'např. na své potřeby, na jeden úkol po druhém, na přestávky'],
+    ['např. trpělivě, bez dokonalosti, s přestávkami, laskavě při chybách', 'např. shovívavě, když něco trvá déle, s humorem, bez srovnávání', 'např. tak, jak bych se chovala k dobré kamarádce'],
+    ['např. prádlo, úkol bez termínu, nárok všechno stihnout', 'např. uklízení, odpověď, která může počkat do zítřka', 'např. přemýšlení o věcech, které nemůžu změnit'],
+    ['např. kolegyni, prodavačce, někomu z rodiny – nebo sobě', 'např. sousedce, řidiči autobusu, kamarádce ve zprávě', 'např. někomu, kdo pro tebe hodně dělá, aniž by to bylo vidět'],
+    ['např. humor, trpělivost, organizační talent, soucit', 'např. vytrvalost, klid, tvořivost, upřímnost', 'např. zvědavost, ochota pomoci, odvaha, laskavost'],
+    ['např. dost pít, polední pauzu, někoho na popovídání', 'např. dobré jídlo, trochu pohybu, jasné hranice', 'např. méně úkolů, čerstvý vzduch, laskavé slovo pro sebe'],
+    ['např. čaj bez telefonu, pět minut u okna, krátká procházka', 'např. pár hlubokých nádechů, kolečko kolem bloku, poslech hudby', 'např. polední pauza bez práce, chvíli zavřít oči, káva v klidu'],
+    ['např. požádat o pomoc, něco zrušit, hudba při uklízení', 'např. rozdělit úkol, snížit nároky, skončit dřív', 'např. naplánovat něco hezkého, přijmout podporu, jedno po druhém'],
+    ['např. zůstat laskavá, čas pro rodinu, být k sobě upřímná', 'např. chovat se k sobě dobře, naslouchat, zůstat věrná svým hodnotám', 'např. zachovat klid, spojení s blízkými, starat se o sebe'],
+    ['např. když něco dokončím, když se jednou zasměju', 'např. když si dám pauzu, když budu k sobě laskavá', 'např. když si všimnu hezké chvíle, když si s někým popovídám'],
+    ['např. snídani, píseň, slunce na kůži, teplou koupel', 'např. procházku, dobrou knihu, vůni kávy', 'např. rozhovor, čerstvý vzduch, kousek čokolády']
+  ],
+  eveningHints: [
+    ['např. vstala jsem i přes únavu, těžký telefonát, uvařila jsem něco zdravého', 'např. dokončila jsem úkol, řekla jsem ne, zůstala jsem klidná', 'např. šla jsem ven, i když se mi nechtělo, pomohla jsem někomu'],
+    ['např. na gauči pod dekou, v rozhovoru s kamarádkou, na procházce', 'např. ve sprše, při vaření, se zvířátkem', 'např. v objetí, u čaje, při čtení'],
+    ['např. zvíře, zpráva, malá nehoda, které ses mohla zasmát', 'např. dítě, vtip, hezká vzpomínka', 'např. fotka, setkání, něco nečekaného'],
+    ['To těžké tu smí být. A potom: člověk, pauza, myšlenka?', 'např. rozhovor, který tížil – možná pomohl dech, odstup nebo povídání', 'Klidně piš upřímně. Co tě – aspoň trochu – podrželo?'],
+    ['např. krátký rozhovor u pokladny, telefonát, pozdrav', 'např. setkání s kamarádkou, upřímný rozhovor, úsměv', 'např. zpráva, návštěva, přátelská tvář cestou'],
+    ['např. že zvládnu víc, než jsem myslela, že potřebuji klid', 'např. co mi dává sílu, co mě zlobí, kde jsou mé hranice', 'např. že mi pohyb dělá dobře, že ráda pomáhám'],
+    ['např. za vytrvalost, za to, že jsem řekla ne, za trpělivost', 'např. za to, že jsem se poslechla, za odvahu, za pauzu', 'např. za svou laskavost, za to, že jsem pokračovala'],
+    ['např. zlost, chybu, myšlenku, která se pořád vrací', 'např. starost o zítřek, srovnávání s ostatními, dokonalost', 'např. něco, co nemám v rukou, nevyřčenou větu'],
+    ['I maličkosti se počítají: např. dost jsem jedla, dřív jsem skončila s prací, oblíbená hudba', 'např. dala jsem si pauzu, hýbala jsem se, řekla jsem ne', 'např. oblékla jsem si něco hezkého, zavolala jsem někomu, šla jsem brzy spát'],
+    ['např. při vaření, při naslouchání, při pohledu na oblohu', 'např. při jídle, v přírodě, v objetí', 'např. při poslechu hudby, ve sprše, při rozhovoru'],
+    ['např. trpělivost, odvahu, laskavost, vytrvalost, humor', 'např. klid, upřímnost, ochotu pomoci', 'např. tvořivost, spolehlivost, péči o sebe'],
+    ['např. poznání, dobrý pocit, předsevzetí', 'např. větu, která mi udělala dobře, úsměv, víc klidu', 'např. vzpomínku na hezkou chvíli, malý nápad'],
+    ['např. nečekaná zpráva, tvoje vlastní reakce, hezká náhoda', 'např. jak dobře něco vyšlo, rozhovor, počasí', 'např. setkání, nový nápad, jak klidná jsem zůstala'],
+    ['např. někdo ti podržel dveře, naslouchala jsi, milé slovo', 'např. kompliment, pomoc s nošením, zpráva', 'např. dodala jsi někomu odvahu, někdo se na tebe usmál']
+  ],
+  goodWhyHints: ['např. já sama, protože jsem šla ven; sousedka, která byla milá', 'např. udělala jsem si čas; zavolala kamarádka', 'např. hezké počasí; to, že jsem požádala o pomoc'],
+  weeklyHints: {
+    good: ['např. dobrý rozhovor, něco vyřízeno, hezká chvíle venku', 'např. setkání, odpočinkový večer, malá radost', 'např. něco, co šlo snáz, než jsem čekala, pochvala, smích'],
+    hard: ['Co ti pomohlo to unést – člověk, pauza, myšlenka?', 'např. hádka, starosti, únava – a co jsi s tím udělala', 'I „Ještě nevím“ je upřímná odpověď.'],
+    strength: ['např. trpělivost, humor, vytrvalost, požádat o pomoc, stanovit hranice', 'např. klid, odvaha, upřímnost, péče o sebe', 'např. naděje, organizační talent, soucit'],
+    care: ['Malé a konkrétní: např. v úterý procházka, dřív do postele, zavolat kamarádce', 'např. večer bez povinností, výlet do přírody, dobrá kniha', 'např. zapsat si termín jen pro sebe, pohyb, setkání s milým člověkem'],
+    letgo: ['např. nárok na sebe, starost, která není v tvých rukou, zášť', 'např. výčitky svědomí, staré zranění, přemítání', 'např. očekávání, že musím všechno zvládnout sama']
+  },
+  themeHints: [
+    ['např. při jídle, v přírodě, v rozhovoru – jaké to pro tebe bylo?', 'např. při dýchání, ve sprše, s hudbou – co jsi vnímala?', 'např. na procházce, při vaření – co bylo jinak než obvykle?'],
+    ['např. ranní slunce, úsměv, píseň v rádiu', 'např. vůně, laskavá věta, teplé jídlo', 'např. pták u okna, povedená chvíle, klid večer'],
+    ['např. po chybě nebo při srovnávání s ostatními. Možná bys potřebovala pochopení, pauzu nebo laskavé slovo.', 'např. když se něco nepovedlo – co by ti řekla dobrá kamarádka?', 'např. při pohledu do zrcadla nebo na seznam úkolů – co by ti udělalo dobře?'],
+    ['např. „To nezvládnu.“ Co pro to mluví, co proti?', 'např. „Určitě to dopadne špatně.“ Jak často se to opravdu stalo?', 'např. „Nejsem dost dobrá.“ Co by na to řekla kamarádka?'],
+    ['např. trpělivost se sebou, humor v těžké situaci, odvaha něco říct', 'např. vytrvalost u náročného úkolu, laskavost i ve stresu', 'např. tvořivost u problému, upřímnost v rozhovoru'],
+    ['např. péče, upřímnost, rodina. Malý krok: telefonát, upřímný rozhovor, čas pro sebe', 'např. zdraví, přátelství, klid – a jako krok procházka nebo setkání', 'např. odvaha, spravedlnost, příroda – a jako krok otevřené slovo nebo výlet'],
+    ['např. zpráva, návštěva, objetí. A komu jsi udělala radost ty?', 'např. dobrý rozhovor, společný smích – a komu jsi naslouchala?', 'např. pomoc v běžném dni, telefonát – a koho jsi podpořila?'],
+    ['např. situace, kterou jsi zvládla, den, který jsi navzdory všemu ustála', 'např. rozhovor, ze kterého jsi měla strach, rozhodnutí, které jsi udělala', 'např. nezdar, po kterém ses znovu zvedla']
+  ],
+  exerciseHints: {
+    threegood: [null, 'např. dobré jídlo', 'např. něco, co jsem zvládla', 'např. já sama, protože jsem šla ven'],
+    reframe: ['např. Kolegyně mi dnes neodpověděla na pozdrav.', 'např. „Nemá mě ráda.“', 'např. Včera byla taky odměřená.', 'např. Vypadala ve stresu; minulý týden jsme si hezky povídaly.', 'např. „Možná měla prostě špatný den.“', 'např. „Nevím, proč nepozdravila – nemusí to mít nic společného se mnou.“'],
+    values: ['např. rodina, upřímnost, klid', 'např. Beru si čas naslouchat.', 'např. v sobotu navštívit maminku'],
+    bestself: ['např. Bydlím …, své dny trávím …, kolem mě jsou …, cítím se …', 'např. zjistit si něco o kurzu'],
+    strengths: ['např. humor, ochota pomoci, vytrvalost', 'např. Když jsem se stěhovala, pomohla mi vytrvalost.', 'např. zvědavost: jít domů novou cestou'],
+    expressive: ['Prostě začni psát – i „Nevím, co psát“ je začátek.'],
+    letter: ['např. že jsem byla netrpělivá na své děti'],
+    gratitude: ['např. bývalá učitelka, kamarádka, soused', 'Milá …, často myslím na dobu, kdy jsi …'],
+    connection: ['např. stará spolužačka, sousedka, bratranec', null, 'např. dnes po večeři']
+  },
+  who5Short: ['být veselá a v dobré náladě', 'být klidná a uvolněná', 'být aktivní a plná energie', 'probouzet se svěží a odpočatá', 'každodenní život plný věcí, které tě zajímají'],
+  weeklyTiers: {
+    high: 'Tvoje odpovědi ukazují, že v posledních dvou týdnech mělo hodně věcí prostor – nejvíc: {best}. Krásné.',
+    mid: 'Tvoje odpovědi ukazují, že něco mělo v posledních dvou týdnech málo prostoru – nejméně: {low}. V náročné době je to pochopitelné.',
+    midEx: 'Možná ti teď udělá dobře malé cvičení:',
+    midRepeat: 'Už dva týdny ukazují tvoje odpovědi spíše utlumenou pohodu. Jestli chceš, promluv si o tom s praktickým lékařem nebo psychoterapeutem – někdy uleví už samotný rozhovor.',
+    low: 'U mnoha otázek jsi uvedla „občas“ nebo „nikdy“. To naznačuje, že ti teď opravdu není dobře. Ber to prosím vážně a promluv si s praktickým lékařem nebo psychoterapeutem. Nemusíš to zvládat sama.',
+    howTitle: 'Jak tato zpětná vazba vzniká?',
+    how: 'Pět otázek pochází z dotazníku WHO-5 Světové zdravotnické organizace. Tvoje odpovědi se sečtou do hodnoty mezi 0 a 100. Ta odráží, jak jsi sama ohodnotila svou pohodu za poslední dva týdny – není to diagnóza ani známka. Pokud je hodnota delší dobu spíše nízká, Sonnseite jemně upozorní, protože rozhovor s odborníky pak může ulevit.'
+  }
+});
+window.CONTENT.cs.weeklyQuestions[3].q = 'Co dobrého chceš příští týden udělat pro sebe?';

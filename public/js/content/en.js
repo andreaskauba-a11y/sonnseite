@@ -381,3 +381,77 @@ window.CONTENT.en = {
     'Privacy: Sonnseite has no server, no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.'
   ]
 };
+
+/* Prompts (placeholders) – three variants per question that take turns. */
+Object.assign(window.CONTENT.en, {
+  morningHints: [
+    ['e.g. ten minutes of fresh air, answering a message that has been waiting', 'e.g. a glass of water right after getting up, opening a window, one small task', 'e.g. a few stretches, a good breakfast, calling someone you love'],
+    ['e.g. small beautiful things, your breath in stressful moments, a conversation', 'e.g. what goes well, friendly faces, colours on the way', 'e.g. your needs, one task at a time, breaks'],
+    ['e.g. patiently, without perfection, with breaks, kindly when mistakes happen', 'e.g. forgiving when things take longer, with humour, without comparing myself', 'e.g. the way I would treat a good friend'],
+    ['e.g. the laundry, a task without a deadline, the expectation to get everything done', 'e.g. tidying up, a reply that can wait until tomorrow', 'e.g. brooding over things I can’t change'],
+    ['e.g. a colleague, the shop assistant, a family member – or yourself', 'e.g. your neighbour, the bus driver, a friend by message', 'e.g. someone who does a lot for you without it being noticed'],
+    ['e.g. humour, patience, organising skills, compassion', 'e.g. perseverance, calm, creativity, honesty', 'e.g. curiosity, helpfulness, courage, kindness'],
+    ['e.g. enough to drink, a lunch break, someone to talk to', 'e.g. a good meal, a little exercise, clear boundaries', 'e.g. less on the schedule, fresh air, a kind word to myself'],
+    ['e.g. a tea without your phone, five minutes by the window, a short walk', 'e.g. a few deep breaths, a walk around the block, listening to music', 'e.g. a lunch break without work, closing your eyes briefly, a quiet coffee'],
+    ['e.g. asking for help, cancelling something, music while tidying', 'e.g. splitting up a task, lowering expectations, finishing earlier', 'e.g. planning something nice, accepting support, one thing at a time'],
+    ['e.g. staying kind, time for family, being honest with yourself', 'e.g. treating myself well, listening, staying true to my values', 'e.g. keeping calm, connecting with loved ones, taking care of myself'],
+    ['e.g. when I’ve done one thing, when I’ve laughed once', 'e.g. when I’ve taken a break, when I’ve been kind to myself', 'e.g. when I’ve noticed a lovely moment, when I’ve talked to someone'],
+    ['e.g. breakfast, a song, the sun on your skin, a warm bath', 'e.g. a walk, a good book, the smell of coffee', 'e.g. a conversation, fresh air, a piece of chocolate']
+  ],
+  eveningHints: [
+    ['e.g. got up despite feeling tired, a difficult phone call, cooked something healthy', 'e.g. finished a task, said no, stayed calm', 'e.g. went out although I didn’t feel like it, helped someone'],
+    ['e.g. on the sofa with a blanket, talking to a friend, on a walk', 'e.g. in the shower, while cooking, with a pet', 'e.g. in a hug, with a cup of tea, while reading'],
+    ['e.g. an animal, a message, a small mishap you could laugh about', 'e.g. a child, a joke, a lovely memory', 'e.g. a photo, an encounter, something unexpected'],
+    ['What was hard can be written here. And then: a person, a break, a thought?', 'e.g. a conversation that weighed on you – perhaps breathing, distance or talking helped', 'Feel free to be honest. What supported you – even just a little?'],
+    ['e.g. a short chat at the checkout, a phone call, a greeting', 'e.g. meeting a friend, an honest exchange, a smile', 'e.g. a message, a visit, a friendly face on the way'],
+    ['e.g. that I can do more than I thought, that I need rest', 'e.g. what gives me strength, what annoys me, where my limits are', 'e.g. that exercise does me good, that I like helping'],
+    ['e.g. for keeping going, for saying no, for patience with yourself or others', 'e.g. for listening to myself, for courage, for taking a break', 'e.g. for my kindness, for carrying on'],
+    ['e.g. an annoyance, a mistake, a thought that keeps coming back', 'e.g. worrying about tomorrow, comparing yourself with others, perfectionism', 'e.g. something that isn’t in my hands, an unspoken sentence'],
+    ['Small things count: e.g. ate enough, finished work earlier, favourite music', 'e.g. took a break, moved my body, said no', 'e.g. wore something nice, called someone, went to bed early'],
+    ['e.g. while cooking, while listening, looking at the sky', 'e.g. while eating, in nature, in a hug', 'e.g. listening to music, in the shower, in a conversation'],
+    ['e.g. patience, courage, kindness, perseverance, humour', 'e.g. calm, honesty, helpfulness', 'e.g. creativity, reliability, self-care'],
+    ['e.g. an insight, a good feeling, an intention', 'e.g. a sentence that did me good, a smile, more calm', 'e.g. the memory of a lovely moment, a small idea'],
+    ['e.g. an unexpected message, your own reaction, a lucky coincidence', 'e.g. how well something worked, a conversation, the weather', 'e.g. an encounter, a new idea, how calm I stayed'],
+    ['e.g. someone held the door for you, you listened, a kind word', 'e.g. a compliment, help with carrying something, a message', 'e.g. you encouraged someone, someone smiled at you']
+  ],
+  goodWhyHints: ['e.g. me, because I went outside; my neighbour, who was friendly', 'e.g. I took time for myself; a friend called', 'e.g. the lovely weather; that I asked for help'],
+  weeklyHints: {
+    good: ['e.g. a good conversation, something done, a lovely moment outside', 'e.g. a meeting, a restful evening, a small joy', 'e.g. something that was easier than expected, praise, a laugh'],
+    hard: ['What helped you carry it – a person, a break, a thought?', 'e.g. an argument, worries, tiredness – and what you did about it', '“I don’t know yet” is an honest answer, too.'],
+    strength: ['e.g. patience, humour, perseverance, asking for help, setting boundaries', 'e.g. calm, courage, honesty, caring for yourself', 'e.g. hope, organising skills, compassion'],
+    care: ['Small and concrete: e.g. a walk on Tuesday, going to bed earlier, calling a friend', 'e.g. an evening without obligations, a trip to the countryside, a good book', 'e.g. booking time just for me, exercise, meeting someone dear'],
+    letgo: ['e.g. a demand on yourself, a worry that isn’t in your hands, a grudge', 'e.g. a guilty conscience, an old hurt, brooding', 'e.g. the expectation of having to manage everything alone']
+  },
+  themeHints: [
+    ['e.g. while eating, in nature, in a conversation – how was that for you?', 'e.g. while breathing, in the shower, with music – what did you notice?', 'e.g. on a walk, while cooking – what was different from usual?'],
+    ['e.g. morning sunlight, a smile, a song on the radio', 'e.g. a scent, a kind sentence, a warm meal', 'e.g. a bird at the window, a moment that went well, a quiet evening'],
+    ['e.g. after a mistake or when comparing yourself with others. Perhaps you needed understanding, a break or a kind word.', 'e.g. when something didn’t work out – what would a good friend have said?', 'e.g. looking in the mirror or at your to-do list – what would have done you good?'],
+    ['e.g. “I can’t do this.” What speaks for it, what against it?', 'e.g. “This will surely go wrong.” How often has that actually happened?', 'e.g. “I’m not good enough.” What would a friend say?'],
+    ['e.g. patience with yourself, humour in a difficult situation, the courage to speak up', 'e.g. perseverance with a tedious task, kindness despite stress', 'e.g. creativity with a problem, honesty in a conversation'],
+    ['e.g. care, honesty, family. As a small step: a call, an honest conversation, time for yourself', 'e.g. health, friendship, calm – and as a step a walk or a meeting', 'e.g. courage, fairness, nature – and as a step an open word or an outing'],
+    ['e.g. a message, a visit, a hug. And whom did you bring joy to?', 'e.g. a good conversation, laughing together – and whom did you listen to?', 'e.g. help with everyday things, a call – and whom did you support?'],
+    ['e.g. a situation you mastered, a day you got through despite everything', 'e.g. a conversation you were afraid of, a decision you made', 'e.g. a setback after which you got back up']
+  ],
+  exerciseHints: {
+    threegood: [null, 'e.g. a good meal', 'e.g. something I managed to do', 'e.g. me, because I went outside'],
+    reframe: ['e.g. My colleague didn’t greet me back today.', 'e.g. “She doesn’t like me.”', 'e.g. She was short with me yesterday, too.', 'e.g. She seemed stressed; last week we had a nice chat.', 'e.g. “Maybe she was just having a bad day.”', 'e.g. “I don’t know why she didn’t greet me – it doesn’t have to be about me.”'],
+    values: ['e.g. family, honesty, calm', 'e.g. I take time to listen.', 'e.g. visiting my mother on Saturday'],
+    bestself: ['e.g. I live …, I spend my days …, around me are …, I feel …', 'e.g. finding out about a course'],
+    strengths: ['e.g. humour, helpfulness, perseverance', 'e.g. When I moved house, my perseverance helped me.', 'e.g. curiosity: taking a new route home'],
+    expressive: ['Just start writing – even “I don’t know what to write” is a beginning.'],
+    letter: ['e.g. that I was impatient with my children'],
+    gratitude: ['e.g. a former teacher, a friend, a neighbour', 'Dear …, I often think of the time when you …'],
+    connection: ['e.g. an old school friend, the neighbour, a cousin', null, 'e.g. today after dinner']
+  },
+  who5Short: ['feeling cheerful and in good spirits', 'feeling calm and relaxed', 'feeling active and full of energy', 'waking up fresh and rested', 'a daily life filled with things that interest you'],
+  weeklyTiers: {
+    high: 'Your answers show that a lot had room in the last two weeks – especially: {best}. Lovely.',
+    mid: 'Your answers show that some things had little room in the last two weeks – least of all: {low}. In challenging times that’s understandable.',
+    midEx: 'Perhaps a small practice would do you good now:',
+    midRepeat: 'For two weeks now your answers have shown rather subdued well-being. If you like, talk to your GP or a psychotherapist about it – sometimes a conversation alone brings relief.',
+    low: 'For many questions you answered “some of the time” or “at no time”. This suggests you’re really not doing well right now. Please take this seriously and talk to your GP or a psychotherapist. You don’t have to manage this alone.',
+    howTitle: 'How is this response created?',
+    how: 'The five questions come from the WHO-5 questionnaire of the World Health Organization. Your answers are added up to a value between 0 and 100. It reflects how you yourself rated your well-being over the last two weeks – it is neither a diagnosis nor a grade. If the value stays rather low over a longer time, Sonnseite gives a gentle hint, because talking to professionals can then bring relief.'
+  }
+});
+window.CONTENT.en.weeklyQuestions[3].q = 'What good thing would you like to do for yourself next week?';
