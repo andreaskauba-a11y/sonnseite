@@ -1,6 +1,6 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 13. November 2026 · Version 1.3.0 in Arbeit (lokal, noch nicht online) · live ist 1.2.0_
+_Stand: 13. November 2026 · Version 1.3.0 (live auf Render über `main`)_
 
 ## Erledigt
 ### Version 1.0 – Grundversion
@@ -25,7 +25,7 @@ _Stand: 13. November 2026 · Version 1.3.0 in Arbeit (lokal, noch nicht online) 
 - Impulse bei allen Fragen, je drei Varianten, wechselnd täglich oder wöchentlich (de, en, cs)
 - Textkorrekturen: „Gutes für dich tun“, klarere Abschlussnachricht bei „Gewitter“, „1 Moment“ in der Einzahl
 
-### Version 1.3 – Natürliche Stimmen (in Arbeit, noch nicht online)
+### Version 1.3 – Natürliche Stimmen
 - Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (voreingestellt), Warm, Tief – je 153 Aufnahmen, zusammen ca. 26 MB
 - Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz
 - Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
