@@ -9,7 +9,7 @@ Der Inhaber schreibt auf Deutsch und ist kein Entwickler. **Antworten bitte auf 
 - **PWA:** `manifest.webmanifest` und `sw.js` (Netzwerk zuerst, Cache als Rückfall). Die App funktioniert offline.
 - **Speicher:** nur `localStorage`, Schlüssel `sonnseite.v1`. Kein Server, kein Konto, kein Tracking, keine externen Schriften, Skripte oder Anfragen.
 - **Stimme:** vorab erzeugte MP3-Aufnahmen (ElevenLabs, drei Stimmen) unter `public/audio/`, als Ersatz die Sprachausgabe des Geräts (Web Speech API).
-- **Klang:** Web Audio API, live erzeugt. Es gibt keine Audiodateien.
+- **Klang:** Web Audio API, live erzeugt. Für Klangteppich und Klangschale gibt es keine Audiodateien (MP3s gibt es nur für die Stimme).
 - **Hosting:** GitHub (`andreaskauba-a11y/sonnseite`, Branch `main`) wird automatisch auf Render als Static Site veröffentlicht (`render.yaml`, Ordner `public/`). Jeder Push auf `main` geht live.
 
 ## Struktur
@@ -53,13 +53,18 @@ node tools/vertonen.js --aufraeumen
 # Inhalte auf gleiche Länge prüfen (Beispiel)
 node -e "global.window={};require('./public/js/content/de.js');const c=window.CONTENT.de;console.log(c.morningHints.length,c.morningQuestions.length)"
 ```
+**Stimmen-Werkzeug:** Die ElevenLabs-Stimm-IDs, Modell und Einstellungen stehen oben in `tools/vertonen.js`. Ein Durchgang kostet etwa 9 300 Zeichen pro Stimme (alle drei Sprachen), alle drei Stimmen also knapp 28 000. Der Schlüssel wird in der Cloud-Umgebung „sonnseite“ als Netzwerk-Geheimnis für `api.elevenlabs.io` vom Proxy eingesetzt (nie in Dateien oder im Chat). Er braucht mindestens die Berechtigungen Text-to-Speech sowie Voices lesen/schreiben.
+
 **Testen:** mit Playwright (vorinstalliert, `require('playwright')`), Gerät `devices['iPhone 13']`, `locale: 'de-AT'`, `timezoneId: 'Europe/Vienna'`. Tageszeiten testet man mit `page.clock.install({ time })`. Die Stimme im Test durch eine Attrappe von `speechSynthesis` ersetzen (Init-Script), die gesprochene Texte protokolliert. Testdaten über `localStorage.setItem('sonnseite.v1', …)` setzen, **danach `reload()`**, denn ein reiner Hash-Wechsel lädt die Daten nicht neu. Immer auf `pageerror` achten und auf waagrechtes Überlaufen prüfen.
+**Stimmen testen:** Chromium mit `--autoplay-policy=no-user-gesture-required` starten, im Kontext `serviceWorkers: 'block'`. `HTMLMediaElement.prototype.play` per Init-Script mitprotokollieren (Aufnahme gespielt?) und `speechSynthesis` als Attrappe (Ersatz gesprochen?). Fehlende Aufnahmen mit `page.route(…, r => r.fulfill({ status: 404 }))` simulieren. Für einen Test mit der echten CSP einen kleinen Node-Server nehmen, der den CSP-Header aus `render.yaml` mitschickt (`python3 -m http.server` sendet keine CSP).
 
 ## Konventionen
 - **Jede Textänderung in allen drei Sprachen** (de, en, cs). Die Arrays müssen in allen Sprachen **gleich lang und gleich sortiert** sein: `affirmations`, `morningQuestions` und `morningHints`, `eveningQuestions` und `eveningHints`, `themeHints`, `program`, `who5Short`, die Felder der Übungen und `exerciseHints`. Gespeichert werden Indizes, keine Texte, damit ein Sprachwechsel funktioniert.
 - **Deutsch:** Du-Form, warm, neutrales Hochdeutsch mit leicht österreichischer Note (Kassa, Sonnseite). Typografische Anführungszeichen „…“ und Halbgeviertstrich –.
 - **Tschechisch:** Die Gedanken und Impulse stehen in weiblicher Form, passend zur Zielgruppe. Die Texte sollten von einer Muttersprachlerin gegengelesen werden.
 - **Gesprochene Texte geändert?** (Übungen vom Typ `guided`, `inhale`/`hold`/`exhale`, `wellDone`, `breathStartVoice`, `voiceEnd`, `sampleText`, `sampleShort`) → `tools/vertonen.js` laufen lassen, danach `--aufraeumen`. Bis dahin spricht für geänderte Texte automatisch die Gerätestimme. Der Dateiname ist eine Prüfsumme des Wortlauts (`audioKey`, in `audio.js` und `vertonen.js` identisch halten).
+- **Neue Stimme hinzufügen:** in `tools/vertonen.js` unter `VOICES` eintragen, Text `nat_<id>` in allen drei Sprachen in `i18n.js` ergänzen, vertonen. Die Reihenfolge in `VOICES` ist die Reihenfolge in den Einstellungen.
+- **KI-Hinweis nie entfernen** (siehe Entscheidungen).
 - **Jede Nutzereingabe wird mit `esc()` ausgegeben** (XSS). Mehrzeiliger Text über `nl2br()`.
 - **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.3.0). Sonst bekommen Handys die neue Version nicht.
 - Icons sind feine, abgerundete Linien-SVGs im Objekt `P` (`stroke-width 1.6`). Emojis werden in der Oberfläche nicht verwendet.
@@ -95,6 +100,9 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 **Stimme und Klang**
 - **Natürliche Stimmen (ab 1.3):** einmalig mit ElevenLabs erzeugte Aufnahmen (Starter-Tarif des Inhabers, `eleven_multilingual_v2`, stability 0.6, speed 0.9, 0,8 s Pause zwischen Sätzen). Drei selbst entworfene Stimmen (Voice Design) für alle drei Sprachen: **Ruhig** (eher neutral, ~125 Hz, voreingestellt), **Warm** (weiblich, nachträglich mit ffmpeg/rubberband um Faktor 0.92 tiefer gestellt, ~185 Hz) und **Tief** (männlich, ~100 Hz). Auswahlkriterien des Inhabers: tief, ruhig, gleichmäßig. Eine frühere weibliche Stimme wurde verworfen, weil ihre Tonhöhe von Satz zu Satz stark schwankte („als würde jemand anderer sprechen“).
 - Aufnahmen werden erst beim Abspielen geladen (die ganze Übung vorab) und dann offline gespeichert. Wiedergabe über ein `Audio`-Element (Blob-URL, `preservesPitch`), Lautstärke über Web Audio. Das Tempo wirkt als Abspielgeschwindigkeit relativ zu 0.85.
+- **Auswahl in den Einstellungen:** „Stimme: Ruhig · Warm · Tief · Stimme des Geräts“ (en: Calm, Warm, Deep; cs: Klidný, Vřelý, Hluboký). Gespeichert als `settings.audio.natural` (`''` = Gerätestimme). Gerätestimmen-Auswahl und Tonhöhe erscheinen nur bei „Stimme des Geräts“.
+- **Wie die Stimmen ausgewählt wurden:** Bibliotheks- und Standardstimmen geprüft, Tonhöhe und Gleichmäßigkeit gemessen (Tonhöhe je Satz, Ziel ±6 % oder weniger), Hörproben in allen drei Sprachen und eine ganze Übung im echten Ablauf vorgespielt. Der Inhaber wählte nach Gehör. Für eine Ersatzstimme genauso vorgehen und nicht nur nach Beschreibung auswählen.
+- **KI-Hinweis (EU AI Act, Art. 50, vorsorglich und aus Ehrlichkeit):** In den Einstellungen unter der Stimmauswahl steht „künstlich erzeugte Stimmen (KI) … gehören keinem echten Menschen“. In jeder Übung mit KI-Stimme steht unter den Knöpfen „Stimme: Ruhig (KI-generiert)“, die Stimme wird zuerst genannt (Wunsch des Inhabers). Unter „Über Sonnseite“ gibt es einen eigenen Absatz. Beim Morgenmoment steht bewusst keine eigene Zeile.
 - **Gerätestimme bleibt als Ersatz** (fehlende Aufnahme, Ladefehler, offline beim ersten Mal) und als Wahlmöglichkeit „Stimme des Geräts“. Dort gilt: weibliche Stimmen automatisch etwas tiefer (0.88), männliche etwas höher (1.14), Tonhöhe einstellbar.
 - **Klang auf A = 432 Hz**, aber **ausdrücklich ohne Wirkversprechen** (nur als Klangfarbe). Das ist im Text der Einstellungen so festgehalten.
 - **Geführte Übungen:** Einleitung, dann je Schritt Klangschale, gesprochener Satz und mindestens 5 Sekunden Stille. Bei Atemübungen werden die ersten 3 Zyklen gesprochen, danach geben nur Töne den Rhythmus vor. Der Bildschirm bleibt an (Wake Lock).
@@ -105,6 +113,7 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 
 ## Arbeitsweise mit dem Inhaber
 - **Vor dem Umsetzen Zwischenergebnisse zur Freigabe vorlegen**: Vorschau-Bilder, Textentwürfe als Liste. Erst nach „passt“ oder „umsetzen“ einbauen.
-- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur lokal committen.
+- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher auf dem Arbeitszweig committen. Den Arbeitszweig hochzuladen ist erlaubt, denn er geht nicht live.
+- **Hörproben** als MP3 schicken: je Stimme eine Datei mit dem Probesatz in de, en und cs, und vor dem Vertonen von allem eine ganze Übung im echten Ablauf (Klangschale, Satz, Stille). Dazu eine kurze Tabelle mit gemessener Tonhöhe und Gleichmäßigkeit.
 - Rückfragen mit Empfehlung stellen („[Vorschlag: …]“), damit der Inhaber kurz antworten kann.
 - Nach Änderungen mit Playwright testen und Bildschirmfotos zeigen. Ehrlich sagen, was nicht geprüft werden konnte, etwa wie die Stimme tatsächlich klingt.

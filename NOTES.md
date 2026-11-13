@@ -26,18 +26,20 @@ _Stand: 13. November 2026 · Version 1.3.0 (live auf Render über `main`)_
 - Textkorrekturen: „Gutes für dich tun“, klarere Abschlussnachricht bei „Gewitter“, „1 Moment“ in der Einzahl
 
 ### Version 1.3 – Natürliche Stimmen
-- Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (voreingestellt), Warm, Tief – je 153 Aufnahmen, zusammen ca. 26 MB
-- Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz
+- Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (eher neutral, voreingestellt), Warm (weiblich, leicht tiefer gestellt), Tief (männlich). 459 Aufnahmen, zusammen ca. 23 MB
+- Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz für fehlende Aufnahmen
+- Übungen laden ihre Aufnahmen vorab und speichern sie offline, getrennt von der App-Version
 - Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
-- Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
+- KI-Hinweis (EU AI Act) in den Einstellungen, in jeder Übung („Stimme: Ruhig (KI-generiert)“) und unter „Über Sonnseite“
+- CSP um `media-src 'self' blob:` ergänzt
+- Am Handy getestet und bestätigt (13.11.2026)
 
 ## Offen / zu beobachten
 - **Natürliche Stimmen funktionieren am Handy** (vom Inhaber am 13.11.2026 bestätigt). Weiter beobachten: Lautstärke im Verhältnis zu Klangteppich und Klangschale, Verhalten bei gesperrtem Bildschirm, Rückmeldungen zu „Warm“ (tiefer gestellt).
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
 - **„Warm“ ist nachträglich tiefer gestellt** (Faktor 0.92). Auf Künstlichkeit achten; ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
-- **Render-Header:** Die geänderte CSP in `render.yaml` greift nur, wenn Render den Blueprint übernimmt. Nach dem Online-Stellen prüfen, ob Aufnahmen abspielen (sonst in Render unter „Blueprint“ synchronisieren).
-- **ElevenLabs:** Starter-Abo kann nach der Vertonung gekündigt werden; für spätere Textänderungen dann kurz wieder aktivieren. Die drei Stimmen bleiben im Konto gespeichert (IDs in `tools/vertonen.js`).
-- **Klang der Stimme auf echten Geräten nicht geprüft.** Im Test lief nur eine Attrappe. Rückmeldungen der Nutzerinnen abwarten: Tempo, Pausen, Tonhöhe, Lautstärke im Verhältnis zur Musik.
+- **ElevenLabs-Abo:** Das Starter-Abo kann gekündigt werden (Entscheidung beim Inhaber). Für spätere Textänderungen kurz wieder aktivieren. Die drei Stimmen bleiben im Konto gespeichert (IDs in `tools/vertonen.js`). Die nicht gewählten Entwürfe sind gelöscht.
+- **Gerätestimme** (Ersatz und Wahlmöglichkeit) auf echten Geräten nicht gezielt geprüft. Im Test lief nur eine Attrappe.
 - **Klangteppich und Klangschale noch nicht angehört.** Eventuell zu laut, zu leise oder zu tief. Werte stehen in `audio.js` (`startPad`, `bell`).
 - **Tschechische Texte** von einer Muttersprachlerin gegenlesen lassen. Die Gedanken stehen in weiblicher Form, die WHO-5-Übersetzung ist eine eigene, keine offiziell validierte.
 - **Neue Impuls-Varianten 2 und 3** wurden mit „online stellen“ freigegeben, aber nicht einzeln kommentiert. Auf Rückmeldungen achten.
@@ -49,4 +51,11 @@ _Stand: 13. November 2026 · Version 1.3.0 (live auf Render über `main`)_
 - Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
 - Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
 - Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz und Kosten)
-- Kurze Anleitung zum Weitergeben an Freundinnen (Installieren, iPhone-Premium-Stimmen, Sicherung)
+- Kurze Anleitung zum Weitergeben an Freundinnen (Installieren, Stimme wählen, Sicherung)
+- Tschechisch: eigene Stimme von einer tschechischen Sprecherin aus der ElevenLabs-Bibliothek (z. B. „Kami – Warm, Velvety and Soothing“), falls die Aufnahmen beim Probehören nicht überzeugen
+- Stimme auch beim Morgenmoment-Hinweis kennzeichnen, falls gewünscht
+
+## Nächste konkrete Schritte
+1. Rückmeldungen von Freundinnen sammeln: Stimme (welche wird gewählt?), Tempo, Lautstärke der Stimme im Verhältnis zu den Klängen
+2. Englische und tschechische Aufnahmen und Texte von Muttersprachlerinnen prüfen lassen
+3. Danach gesammelte Korrekturen in einem Durchgang einbauen, geänderte Sätze nachvertonen (`tools/vertonen.js`, ElevenLabs-Abo dafür kurz aktivieren)
