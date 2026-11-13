@@ -23,7 +23,7 @@ public/
   icons/                App-Icons (SVG + PNG, per Playwright aus SVG gerendert)
   js/i18n.js            Oberflächentexte de/en/cs (window.I18N)
   js/content/{de,en,cs}.js  Inhalte (window.CONTENT[lang]): Gedanken, Fragen, Impulse, Übungen,
-                        8-Wochen-Programm, Rückmeldungsregeln, WHO-5, Hilfe-Nummern, Über-Texte.
+                        8-Wochen-Programm, Rückmeldungsregeln, WHO-5, Hilfe-Nummern, Impressum (`imprint`), Über-Texte.
                         Am Ende jeder Datei ein Object.assign-Block mit Impulsen und Wochen-Rückmeldungsstufen.
   js/audio.js           window.SonnAudio: speak() (Aufnahme, sonst Gerätestimme), prefetch(), Klangteppich, Klangschale, Wake Lock
   js/app.js             Ganze App in einer IIFE: Speicher, Router, Ansichten, Abläufe, Garten, Diagramme
@@ -33,7 +33,7 @@ README.md               Beschreibung und Deploy-Anleitung für Menschen
 NOTES.md                Aktueller Stand, offene Punkte, nächste Schritte
 ```
 
-**Aufbau von app.js** (in dieser Reihenfolge): Helfer, Speicher (`defaults`/`load`/`save`), `t()` und `C()` für Texte und Inhalte, Icons (`P`, `ic()`), Ansicht und Aktionen (`view`, `act`, Klick-Delegation über `data-act`/`data-go`), Darstellung, Stimme und Klang (`syncAudio`, `audioBar`), Tagesinhalte (`programIndex`, `dailyAffIndex`, Impulse über `hint()`), Garten (`sunTimes`, `dayPhase`, `garden`), Rückmeldungen (`analyze`, `feedbackCard`, `crisisCard`), `flow()` für Abläufe mit Schritten, danach die Ansichten (Home, Morgen, Abend, Übungen, Journal, Woche, Mein Weg, Einstellungen, Hilfe, Onboarding) und am Ende der Router.
+**Aufbau von app.js** (in dieser Reihenfolge): Helfer, Speicher (`defaults`/`load`/`save`), `t()` und `C()` für Texte und Inhalte, Icons (`P`, `ic()`), Ansicht und Aktionen (`view`, `act`, Klick-Delegation über `data-act`/`data-go`), Darstellung, Stimme und Klang (`syncAudio`, `audioBar`), Tagesinhalte (`programIndex`, `dailyAffIndex`, Impulse über `hint()`), Garten (`sunTimes`, `dayPhase`, `garden`), Rückmeldungen (`analyze`, `feedbackCard`, `crisisCard`), `flow()` für Abläufe mit Schritten, danach die Ansichten (Home, Morgen, Abend, Übungen, Journal, Woche, Mein Weg, Einstellungen, Hilfe, Impressum, Onboarding) und am Ende der Router. Ganz oben stehen `VERSION` und `OWNER` (Namen und Kontakt-E-Mail fürs Impressum).
 
 **Routen** (Hash): `#/`, `#/morning`, `#/evening`, `#/weekly`, `#/exercises`, `#/ex/:id`, `#/journal`, `#/journal/new`, `#/journal/:id`, `#/path`, `#/settings`, `#/help`, `#/imprint` (Impressum, auch vor dem Onboarding erreichbar; Name und E-Mail in `OWNER` in app.js, Texte unter `imprint` in `content/*.js`).
 
@@ -89,6 +89,15 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
   - Dazu gibt es immer die aufklappbare Erklärung „Wie entsteht diese Rückmeldung?“.
 - **Impulse als Platzhalter im Eingabefeld**, je drei Varianten pro Frage. Sie wechseln täglich (Morgen und Abend, `dayNum`), wöchentlich (Check-up, `weekIdx`) oder alle 8 Wochen (Wochenthema). Variante 1 ist jeweils vom Inhaber freigegeben.
 
+**Impressum und Datenschutz** (ab 1.3.1)
+- Eigene Seite `#/imprint`, Link „Impressum und Datenschutz“ in den Einstellungen (unter „Über Sonnseite“), auf der Hilfe-Seite und im Willkommens-Bildschirm. Auch vor dem Onboarding erreichbar. „Zurück“ führt zur vorigen Seite (`prevRoute`).
+- **Offenlegung nach § 25 Mediengesetz** als kleine private Website: Medieninhaber und Herausgeber **Andreas Kauba & Tomas Mikeska**, nur Ort **Wien** (keine Straße), Kontakt **sonnseite@tm-relations.com** (eigene Adresse, nicht die private). Kein § 5 ECG, weil nicht kommerziell. Im Text „wir“, weil es zwei Personen sind.
+- Abschnitte: Grundlegende Richtung, Gesundheitshinweis (keine Therapie, kein Medizinprodukt, 142 / 01 31330 / 144, Link zur Hilfe), Haftung, Links, Datenschutz, Urheberrecht und Quellen, Stand.
+- **Datenschutz steht nur noch im Impressum.** Ehrlich formuliert: Einträge bleiben im Browser, aber Render Services, Inc. (USA) verarbeitet beim Aufruf technisch notwendige Daten (IP-Adresse, Zeitpunkt, Datei). Deshalb nie „Sonnseite hat keinen Server“ schreiben, höchstens „speichert nichts auf einem Server“. Aussagen über **Einträge** („bleiben auf deinem Gerät“) sind korrekt und bleiben stehen.
+- **Bewusst doppelt** (nicht durch das Impressum abgelöst): „keine Therapie“ im Willkommens-Bildschirm und auf der Hilfe-Seite, der KI-Hinweis zu den Stimmen bei „Über“ und in den Stimmen-Einstellungen.
+- WHO-5-Urheber ist die **Psychiatric Research Unit, Frederiksborg General Hospital**, nicht die WHO selbst.
+- Kein Ersatz für Rechtsberatung. Bei Änderung von Hosting, Kontakt oder Personen das Impressum anpassen.
+
 **Erinnerungen**
 - Push-Benachrichtigungen ohne Server sind unzuverlässig. Deshalb gibt es **eine Kalenderdatei (.ics)** mit zwei täglichen Terminen und sanfte Hinweise in der App, die sich abschalten lassen.
 
@@ -105,6 +114,9 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 
 ## Arbeitsweise mit dem Inhaber
 - **Vor dem Umsetzen Zwischenergebnisse zur Freigabe vorlegen**: Vorschau-Bilder, Textentwürfe als Liste. Erst nach „passt“ oder „umsetzen“ einbauen.
-- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur lokal committen.
+- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher auf dem Arbeitszweig committen; der Arbeitszweig darf jederzeit auf GitHub gesichert werden (geht nicht live).
+- Bei „online stellen“: prüfen, dass `main` ohne Zusammenführen nachgezogen werden kann, NOTES.md auf „live“ setzen, dann `git push origin HEAD:main`.
+- Aus der Cloud-Umgebung ist `sonnseite.onrender.com` nicht erreichbar. Ob die neue Version live ist, prüft der Inhaber selbst (Versionsnummer unten in den Einstellungen). Nicht minutenlang warten.
+- Ist eine Anweisung wie „prüfe und korrigiere“ eindeutig, darf direkt umgesetzt werden; danach mit Bildschirmfoto berichten.
 - Rückfragen mit Empfehlung stellen („[Vorschlag: …]“), damit der Inhaber kurz antworten kann.
 - Nach Änderungen mit Playwright testen und Bildschirmfotos zeigen. Ehrlich sagen, was nicht geprüft werden konnte, etwa wie die Stimme tatsächlich klingt.
