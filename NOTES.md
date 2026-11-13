@@ -1,6 +1,6 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 13. November 2026 · Version 1.3.1 (live auf Render über `main`)_
+_Stand: 13. November 2026 · Version 1.3.2 (lokal; live ist 1.3.1)_
 
 ## Erledigt
 ### Version 1.0 – Grundversion
@@ -36,7 +36,11 @@ _Stand: 13. November 2026 · Version 1.3.1 (live auf Render über `main`)_
 - Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
 - „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
 
-## Offen / zu beobachten
+### Version 1.3.2 – Aufräumen nach dem Impressum (noch nicht online)
+- Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
+- Link heißt „Impressum und Datenschutz“ (de, en, cs)
+- WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
+
 - **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
 - **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.

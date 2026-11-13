@@ -390,7 +390,7 @@ window.CONTENT.en = {
         'Your entries are stored only in your device’s browser and are not sent anywhere. There is no account, no tracking, no cookies and no fonts or scripts from third parties.',
         'The app is hosted by Render Services, Inc. (San Francisco, USA). As with any website, this provider processes technically necessary data when the page is opened – such as IP address, time and requested file – in order to deliver the page and protect it from misuse. We have no access to this data and do not analyse anything.',
         'If you have questions about privacy, you can reach us at the email address above. You can lodge a complaint with the Austrian Data Protection Authority (dsb.gv.at).'] },
-      { h: 'Copyright and sources', p: ['Texts and design: {names}. The practices are based on published methods; you’ll find the sources for each practice under “Why this helps”. WHO-5 questionnaire: © World Health Organization. The voices in the practices are generated with artificial intelligence (ElevenLabs).'] }
+      { h: 'Copyright and sources', p: ['Texts and design: {names}. The practices are based on published methods; you’ll find the sources for each practice under “Why this helps”. WHO-5 questionnaire: © Psychiatric Research Unit, WHO Collaborating Centre in Mental Health, Frederiksborg General Hospital. The voices in the practices are generated with artificial intelligence (ElevenLabs).'] }
     ],
     updated: 'As of November 2026'
   },
@@ -398,7 +398,6 @@ window.CONTENT.en = {
   about: [
     'Sonnseite accompanies you with small, science-based practices from positive psychology, mindfulness, self-compassion, cognitive behavioural therapy and Acceptance and Commitment Therapy (ACT). For each practice you’ll find the background under “Why this helps”.',
     'We don’t promise healing or permanent happiness. Difficult feelings are part of life. The aim is to see the good again, to meet yourself more kindly and to strengthen your resilience.',
-    'Privacy: Sonnseite stores nothing on a server and has no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.',
     'The voices in the practices are generated with artificial intelligence (ElevenLabs). The texts were written by people. You can choose your device’s voice at any time.'
   ]
 };

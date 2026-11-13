@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.3.1';
+  const VERSION = '1.3.2';
   const OWNER = { names: 'Andreas Kauba & Tomas Mikeska', mail: 'sonnseite@tm-relations.com' };
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;

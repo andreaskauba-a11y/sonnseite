@@ -394,7 +394,7 @@ window.CONTENT.de = {
         'Deine Einträge werden nur im Browser deines Geräts gespeichert und nirgendwohin übertragen. Es gibt kein Konto, kein Tracking, keine Cookies und keine Schriften oder Skripte von fremden Anbietern.',
         'Die App liegt bei Render Services, Inc. (San Francisco, USA). Wie bei jeder Webseite verarbeitet dieser Anbieter beim Aufruf technisch notwendige Daten wie IP-Adresse, Zeitpunkt und aufgerufene Datei, damit er die Seite ausliefern und vor Missbrauch schützen kann. Wir selbst haben darauf keinen Zugriff und werten nichts aus.',
         'Bei Fragen zum Datenschutz erreichst du uns unter der E-Mail-Adresse oben. Beschwerden kannst du bei der österreichischen Datenschutzbehörde einbringen (dsb.gv.at).'] },
-      { h: 'Urheberrecht und Quellen', p: ['Texte und Gestaltung: {names}. Die Übungen beruhen auf veröffentlichten Methoden, die Quellen stehen bei jeder Übung unter „Warum das hilft“. WHO-5-Fragebogen: © Weltgesundheitsorganisation. Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs).'] }
+      { h: 'Urheberrecht und Quellen', p: ['Texte und Gestaltung: {names}. Die Übungen beruhen auf veröffentlichten Methoden, die Quellen stehen bei jeder Übung unter „Warum das hilft“. WHO-5-Fragebogen: © Psychiatric Research Unit, WHO Collaborating Centre in Mental Health, Frederiksborg General Hospital. Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs).'] }
     ],
     updated: 'Stand: November 2026'
   },
@@ -402,7 +402,6 @@ window.CONTENT.de = {
   about: [
     'Sonnseite begleitet dich mit kleinen, wissenschaftlich fundierten Übungen aus Positiver Psychologie, Achtsamkeit, Selbstmitgefühl, kognitiver Verhaltenstherapie und Akzeptanz- und Commitment-Therapie (ACT). Bei jeder Übung findest du unter „Warum das hilft“ die Grundlagen.',
     'Wir versprechen keine Heilung und kein Dauerglück. Schwere Gefühle gehören zum Leben. Ziel ist, auch das Gute wieder zu sehen, sich selbst freundlicher zu begegnen und die eigene Widerstandskraft zu stärken.',
-    'Datenschutz: Sonnseite speichert nichts auf einem Server, hat kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.',
     'Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs). Die Texte dazu sind von Menschen geschrieben. Du kannst jederzeit die Stimme deines Geräts wählen.'
   ]
 };

@@ -390,7 +390,7 @@ window.CONTENT.cs = {
         'Tvé zápisy se ukládají jen v prohlížeči tvého zařízení a nikam se nepřenášejí. Není tu žádný účet, žádné sledování, žádné cookies a žádná písma ani skripty cizích poskytovatelů.',
         'Aplikace je umístěna u společnosti Render Services, Inc. (San Francisco, USA). Jako u každé webové stránky zpracovává tento poskytovatel při otevření technicky nutné údaje, jako je IP adresa, čas a vyžádaný soubor, aby mohl stránku doručit a chránit ji před zneužitím. My sami k těmto údajům nemáme přístup a nic nevyhodnocujeme.',
         'S dotazy k ochraně údajů se na nás můžeš obrátit na e-mailu uvedeném výše. Stížnost můžeš podat u rakouského úřadu pro ochranu osobních údajů (Datenschutzbehörde, dsb.gv.at).'] },
-      { h: 'Autorská práva a zdroje', p: ['Texty a vzhled: {names}. Cvičení vycházejí z publikovaných metod, zdroje najdeš u každého cvičení pod „Proč to pomáhá“. Dotazník WHO-5: © Světová zdravotnická organizace. Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs).'] }
+      { h: 'Autorská práva a zdroje', p: ['Texty a vzhled: {names}. Cvičení vycházejí z publikovaných metod, zdroje najdeš u každého cvičení pod „Proč to pomáhá“. Dotazník WHO-5: © Psychiatric Research Unit, WHO Collaborating Centre in Mental Health, Frederiksborg General Hospital. Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs).'] }
     ],
     updated: 'Stav: listopad 2026'
   },
@@ -398,7 +398,6 @@ window.CONTENT.cs = {
   about: [
     'Sonnseite tě provází malými, vědecky podloženými cvičeními z pozitivní psychologie, všímavosti, soucitu se sebou, kognitivně-behaviorální terapie a terapie přijetím a závazkem (ACT). U každého cvičení najdeš základy pod „Proč to pomáhá“.',
     'Neslibujeme uzdravení ani trvalé štěstí. Těžké pocity patří k životu. Cílem je znovu vidět i to dobré, chovat se k sobě laskavěji a posilovat vlastní odolnost.',
-    'Ochrana dat: Sonnseite neukládá nic na žádný server, nemá účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.',
     'Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs). Texty k nim napsali lidé. Kdykoli si můžeš zvolit hlas svého zařízení.'
   ]
 };
