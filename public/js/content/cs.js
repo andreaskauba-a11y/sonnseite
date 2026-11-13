@@ -378,7 +378,8 @@ window.CONTENT.cs = {
   about: [
     'Sonnseite tě provází malými, vědecky podloženými cvičeními z pozitivní psychologie, všímavosti, soucitu se sebou, kognitivně-behaviorální terapie a terapie přijetím a závazkem (ACT). U každého cvičení najdeš základy pod „Proč to pomáhá“.',
     'Neslibujeme uzdravení ani trvalé štěstí. Těžké pocity patří k životu. Cílem je znovu vidět i to dobré, chovat se k sobě laskavěji a posilovat vlastní odolnost.',
-    'Ochrana dat: Sonnseite nemá server, účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.'
+    'Ochrana dat: Sonnseite nemá server, účet ani sledování. Vše se ukládá jen v prohlížeči tvého zařízení. Když smažeš data prohlížeče, zmizí i zápisy – proto existuje záloha.',
+    'Hlasy ve cvičeních jsou vytvořené umělou inteligencí (ElevenLabs). Texty k nim napsali lidé. Kdykoli si můžeš zvolit hlas svého zařízení.'
   ]
 };
 

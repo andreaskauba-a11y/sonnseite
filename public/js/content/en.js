@@ -378,7 +378,8 @@ window.CONTENT.en = {
   about: [
     'Sonnseite accompanies you with small, science-based practices from positive psychology, mindfulness, self-compassion, cognitive behavioural therapy and Acceptance and Commitment Therapy (ACT). For each practice you’ll find the background under “Why this helps”.',
     'We don’t promise healing or permanent happiness. Difficult feelings are part of life. The aim is to see the good again, to meet yourself more kindly and to strengthen your resilience.',
-    'Privacy: Sonnseite has no server, no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.'
+    'Privacy: Sonnseite has no server, no account and no tracking. Everything is stored only in your device’s browser. If you clear browser data, the entries are gone too – that’s why there is a backup.',
+    'The voices in the practices are generated with artificial intelligence (ElevenLabs). The texts were written by people. You can choose your device’s voice at any time.'
   ]
 };
 

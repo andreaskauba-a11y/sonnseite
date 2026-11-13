@@ -166,7 +166,7 @@
     const a = AS();
     return `<div class="audio-bar" role="group" aria-label="${esc(t('audioTitle'))}">
       <button class="pill ${a.voice ? 'on' : ''}" data-act="tvoice" aria-pressed="${a.voice}">${ic(a.voice ? 'speaker' : 'speakerOff')} ${esc(t('voiceShort'))}</button>
-      <button class="pill ${a.music ? 'on' : ''}" data-act="tmusic" aria-pressed="${a.music}">${ic(a.music ? 'music' : 'musicOff')} ${esc(t('musicShort'))}</button></div>`;
+      <button class="pill ${a.music ? 'on' : ''}" data-act="tmusic" aria-pressed="${a.music}">${ic(a.music ? 'music' : 'musicOff')} ${esc(t('musicShort'))}</button></div>${AU.naturalVoices().includes(a.natural) ? `<p class="tiny ai-voice">${esc(t('aiVoiceLine').replace('{v}', t('nat_' + a.natural)))}</p>` : ''}`;
   }
   function audioToggles(onChange) {
     const upd = (key, el) => {

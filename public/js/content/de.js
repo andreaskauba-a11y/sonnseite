@@ -382,7 +382,8 @@ window.CONTENT.de = {
   about: [
     'Sonnseite begleitet dich mit kleinen, wissenschaftlich fundierten Übungen aus Positiver Psychologie, Achtsamkeit, Selbstmitgefühl, kognitiver Verhaltenstherapie und Akzeptanz- und Commitment-Therapie (ACT). Bei jeder Übung findest du unter „Warum das hilft“ die Grundlagen.',
     'Wir versprechen keine Heilung und kein Dauerglück. Schwere Gefühle gehören zum Leben. Ziel ist, auch das Gute wieder zu sehen, sich selbst freundlicher zu begegnen und die eigene Widerstandskraft zu stärken.',
-    'Datenschutz: Sonnseite hat keinen Server, kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.'
+    'Datenschutz: Sonnseite hat keinen Server, kein Konto und kein Tracking. Alles wird nur im Browser deines Geräts gespeichert. Wenn du die Browserdaten löschst, sind auch die Einträge weg – deshalb gibt es die Sicherung.',
+    'Die Stimmen der Übungen sind mit künstlicher Intelligenz erzeugt (ElevenLabs). Die Texte dazu sind von Menschen geschrieben. Du kannst jederzeit die Stimme deines Geräts wählen.'
   ]
 };
 
