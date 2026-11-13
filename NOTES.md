@@ -1,6 +1,6 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 13. November 2026 · Version 1.3.2 (lokal; live ist 1.3.1)_
+_Stand: 13. November 2026 · Version 1.3.2 (live auf Render über `main`)_
 
 ## Erledigt
 ### Version 1.0 – Grundversion
@@ -36,7 +36,7 @@ _Stand: 13. November 2026 · Version 1.3.2 (lokal; live ist 1.3.1)_
 - Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
 - „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
 
-### Version 1.3.2 – Aufräumen nach dem Impressum (noch nicht online)
+### Version 1.3.2 – Aufräumen nach dem Impressum
 - Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
 - Link heißt „Impressum und Datenschutz“ (de, en, cs)
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
