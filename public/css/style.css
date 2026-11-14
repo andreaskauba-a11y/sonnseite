@@ -353,3 +353,9 @@ input[type="range"] { width: 100%; accent-color: var(--primary); height: 32px; }
 body.locked .topbar, body.locked .tabbar { display: none; }
 .gate { text-align: center; }
 .gate .field { text-align: left; }
+
+/* Hinweis nach einem Update */
+.modal-back { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(40, 28, 20, .45); }
+.modal { max-width: 460px; width: 100%; max-height: 85vh; overflow-y: auto; margin: 0; }
+.backup-card .row { gap: 8px; }
+details.whatsnew summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }

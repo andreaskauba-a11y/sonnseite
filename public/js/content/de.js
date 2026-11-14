@@ -505,3 +505,6 @@ Object.assign(window.CONTENT.de, {
   }
 });
 window.CONTENT.de.weeklyQuestions[3].q = 'Was möchtest du nächste Woche Gutes für dich tun?';
+window.CONTENT.de.changelog = [
+  { v: '1.4.0', items: ["Die Sonnseite ist jetzt mit einem Zugangscode geschützt. Du hast ihn schon eingegeben, das ist nur einmal nötig.", "Du kannst Freund:innen einladen (in den Einstellungen).", "Ich erinnere dich ab und zu daran, deine Einträge zu sichern.", "Hier siehst du künftig, was sich nach einem Update geändert hat."] }
+];

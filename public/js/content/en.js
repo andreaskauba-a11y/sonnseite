@@ -500,3 +500,6 @@ Object.assign(window.CONTENT.en, {
   }
 });
 window.CONTENT.en.weeklyQuestions[3].q = 'What good thing would you like to do for yourself next week?';
+window.CONTENT.en.changelog = [
+  { v: '1.4.0', items: ["Sonnseite is now protected with an access code. You have already entered it – this is only needed once.", "You can invite friends (in the settings).", "I will remind you from time to time to back up your entries.", "From now on, you will see here what has changed after an update."] }
+];

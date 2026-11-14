@@ -500,3 +500,6 @@ Object.assign(window.CONTENT.cs, {
   }
 });
 window.CONTENT.cs.weeklyQuestions[3].q = 'Co dobrého chceš příští týden udělat pro sebe?';
+window.CONTENT.cs.changelog = [
+  { v: '1.4.0', items: ["Sonnseite je nyní chráněna přístupovým kódem. Už jsi ho zadala, stačí to jen jednou.", "Můžeš pozvat přátele (v nastavení).", "Čas od času ti připomenu, abys zálohovala své zápisy.", "Tady uvidíš, co se po aktualizaci změnilo."] }
+];

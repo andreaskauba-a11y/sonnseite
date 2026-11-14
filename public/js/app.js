@@ -35,7 +35,7 @@
   function defaults() {
     return {
       v: 1,
-      settings: { lang: detectLang(), name: '', themes: [], fontScale: 1, theme: 'evening', morningTime: '07:30', eveningTime: '20:30', hints: true, onboarded: false, startDate: dkey(), programShift: 0, audio: audioDefaults() },
+      settings: { lang: detectLang(), name: '', themes: [], fontScale: 1, theme: 'evening', morningTime: '07:30', eveningTime: '20:30', hints: true, onboarded: false, seenVersion: '', lastBackup: '', backupSnooze: '', startDate: dkey(), programShift: 0, audio: audioDefaults() },
       days: {}, journal: [], weekly: [], exercises: [], favs: []
     };
   }
@@ -438,6 +438,22 @@
   }
 
   /* ---------- Startseite ---------- */
+  /* ---------- Sicherungs-Erinnerung ---------- */
+  const BACKUP_DAYS = 28, SNOOZE_DAYS = 7;
+  const addDays = (k, n) => dkey(new Date(fromKey(k).getTime() + n * 864e5 + 36e5 * 3));
+  const hasData = () => S.journal.length > 0 || S.weekly.length > 0 || Object.keys(S.days).length > 0;
+  function backupDue() {
+    const s = S.settings; if (!s.hints || !hasData()) return false;
+    const k = dkey();
+    if (s.backupSnooze && k < s.backupSnooze) return false;
+    return daysBetween(s.lastBackup || s.startDate, k) >= BACKUP_DAYS;
+  }
+  function doBackup() {
+    S.settings.lastBackup = dkey(); S.settings.backupSnooze = ''; save();
+    download(`sonnseite-backup-${dkey()}.json`, JSON.stringify(S, null, 1), 'application/json');
+  }
+  const lastBackupText = () => (S.settings.lastBackup ? t('lastBackup', { d: fmtDate(fromKey(S.settings.lastBackup), { day: 'numeric', month: 'long', year: 'numeric' }) }) : t('lastBackupNever'));
+
   function viewHome() {
     const k = dkey(); const d = dayData(k); const h = new Date().getHours();
     const m = d.morning || {}, e = d.evening || {};
@@ -470,9 +486,14 @@
         <h2>${esc(prog.title)}</h2><p>${esc(prog.intro)}</p>
         <a class="mini-ex" href="#/ex/${exId}">${ic(TYPEI[ex.type])}<span><strong>${esc(t('exToday'))}: ${esc(ex.title)}</strong><small>${esc(ex.short)} · ${ex.minutes} ${esc(t('min'))}</small></span>${ic('arrowRight')}</a>
       </div>
+      ${backupDue() ? `<div class="card soft backup-card"><p class="label">${ic('download')} ${esc(t('backupRemTitle'))}</p><p>${esc(t('backupRemText'))}</p>
+        <div class="row wrap"><button class="btn primary" data-act="bk-now">${esc(t('backupNow'))}</button><button class="btn ghost" data-act="bk-later">${esc(t('later'))}</button></div></div>` : ''}
       <a class="garden-link" href="#/path">${garden(growth(), 120)}<span>${esc(gardenCaption(growth()))}</span></a>
     </section>`, { tab: 'home' });
-    act({});
+    act({
+      'bk-now': () => { doBackup(); toast(t('backupDone')); viewHome(); },
+      'bk-later': () => { S.settings.backupSnooze = addDays(dkey(), SNOOZE_DAYS); save(); viewHome(); }
+    });
   }
 
   /* ---------- Morgenmoment ---------- */
@@ -964,7 +985,9 @@
         <div class="row wrap"><button class="btn soft" data-act="backup">${ic('download')} ${esc(t('backupExport'))}</button>
         <label class="btn soft">${ic('upload')} ${esc(t('backupImport'))}<input type="file" id="s-import" accept="application/json,.json" hidden></label>
         <button class="btn soft" data-act="pdf">${ic('download')} ${esc(t('exportPdf'))}</button></div>
+        <p class="tiny" id="s-lastbk">${esc(lastBackupText())}</p>
         <button class="btn ghost danger" data-act="wipe">${esc(t('deleteAll'))}</button></div>
+      <details class="card whatsnew"><summary class="label">${esc(t('whatsNewTitle'))}</summary>${(C().changelog || []).slice(0, 5).map((c) => `<p class="tiny"><strong>${esc(t('versionLabel', { v: c.v }))}</strong></p><ul class="ob-list">${c.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`).join('')}</details>
       <div class="card about"><p class="label">${esc(t('about'))}</p>${C().about.map((p) => `<p>${esc(p)}</p>`).join('')}<p class="tiny">${esc(C().who5.attribution)}</p><p class="tiny">Sonnseite ${VERSION} · <a href="#/imprint">${esc(t('imprint'))}</a></p></div>
       <button class="btn primary wide" data-act="save">${esc(t('saveSettings'))}</button>
     </section>`, {});
@@ -1024,7 +1047,7 @@
       ics: () => { persist(); downloadIcs(); },
       pitchauto: () => { au.pitch = null; save(); syncAudio(); showPitch(); toast(t('pitchAutoDone')); },
       listen: () => { persistAudio(); AU.unlock(); syncAudio(); AU.startPad(); AU.bell('step'); AU.speak(t('sampleText')).then(() => later(() => AU.stopPad(), 1200)); },
-      backup: () => { download(`sonnseite-backup-${dkey()}.json`, JSON.stringify(S, null, 1), 'application/json'); },
+      backup: () => { doBackup(); const el = $('#s-lastbk'); if (el) el.textContent = lastBackupText(); },
       pdf: exportPdf,
       invite: sendInvite,
       wipe: () => { if (confirm(t('confirmWipe')) && confirm(t('confirmWipe2'))) { localStorage.removeItem(KEY); S = defaults(); applyTheme(); renderChrome(); go('/'); } }
@@ -1114,7 +1137,7 @@
             <p class="note soft">${esc(t('obNoPressure'))}</p>` },
         { render: () => `<h1>${esc(t('obImportant'))}</h1><ul class="ob-list"><li>${esc(t('obImp1'))}</li><li>${esc(t('obImp2'))}</li><li>${esc(t('obImp3'))}</li><li>${esc(t('obImp4'))}</li></ul>`, next: t('obStart'),
           onNext: (d) => {
-            s.name = d.name; s.themes = d.themes; s.onboarded = true; s.startDate = dkey(); save();
+            s.name = d.name; s.themes = d.themes; s.onboarded = true; s.startDate = dkey(); s.seenVersion = VERSION; save();
             if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
           } }
       ],
@@ -1167,8 +1190,27 @@
     try { await navigator.clipboard.writeText(text); toast(t('inviteCopied')); } catch (e) { prompt(t('inviteCopyManual'), text); }
   }
 
+  /* ---------- Hinweis nach einem Update ---------- */
+  const verNum = (v) => String(v || '0').split('.').reduce((a, n) => a * 1000 + (+n || 0), 0);
+  function maybeWhatsNew() {
+    const s = S.settings;
+    if (!UNLOCKED || !s.onboarded || s.seenVersion === VERSION || $('#whatsnew')) return;
+    const log = C().changelog || [];
+    const fresh = s.seenVersion ? log.filter((c) => verNum(c.v) > verNum(s.seenVersion) && verNum(c.v) <= verNum(VERSION)).slice(0, 3) : log.filter((c) => c.v === VERSION);
+    if (!fresh.length) { s.seenVersion = VERSION; save(); return; }
+    const el = document.createElement('div');
+    el.id = 'whatsnew'; el.className = 'modal-back';
+    el.innerHTML = `<div class="modal card" role="dialog" aria-modal="true" aria-labelledby="wn-h"><h2 id="wn-h">${esc(t('whatsNewHead'))}</h2>
+      ${fresh.map((c) => `<ul class="ob-list">${c.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`).join('')}
+      <button class="btn primary wide" id="wn-ok">${esc(t('understood'))}</button></div>`;
+    document.body.appendChild(el);
+    $('#wn-ok', el).addEventListener('click', () => { s.seenVersion = VERSION; save(); el.remove(); });
+    $('#wn-ok', el).focus();
+  }
+
   /* ---------- Router ---------- */
-  function route() {
+  function route() { routeInner(); maybeWhatsNew(); }
+  function routeInner() {
     cleanup(); applyTheme(); AU.stopAll(); syncAudio();
     const h = (location.hash || '#/').slice(1) || '/';
     document.body.classList.toggle('locked', !UNLOCKED);

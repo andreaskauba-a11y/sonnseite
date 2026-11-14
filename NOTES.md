@@ -9,6 +9,8 @@ _Stand: 14. November 2026 · Version 1.4.0 (lokal committet, noch nicht online; 
 - Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Aktueller Code: sonnenblume14 (Vorschlag, bitte vom Inhaber bestätigen oder ändern)
 - Schutz nur gegen Zufallsbesucher: Der Prüfwert steht (als SHA-256) in `app.js`. `robots.txt` sperrt Suchmaschinen.
 - Bestehende Nutzer:innen müssen sich nach dem Update einmal freischalten.
+- Sicherungs-Erinnerung (Startseite, ab 28 Tagen seit der letzten Sicherung, „Später“ = 7 Tage), „Letzte Sicherung“ in den Einstellungen
+- Update-Hinweis: kleines Fenster einmal pro Version (`seenVersion`, Texte in `changelog`), „Was ist neu?“ in den Einstellungen
 ### Version 1.0 – Grundversion
 - Onboarding: Sprache, Name, Lebensthemen, Erklärung, wichtige Hinweise
 - Morgenmoment, Abendmoment, Journal mit lokaler, regelbasierter Rückmeldung und Krisenerkennung
