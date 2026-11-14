@@ -54,6 +54,34 @@ _Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 - Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
 - Offen: tschechische Texte von Muttersprachlerin gegenlesen lassen
 
+### Version 1.3.2 – Aufräumen nach dem Impressum
+- Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
+- Link heißt „Impressum und Datenschutz“ (de, en, cs)
+- WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
+
+### Version 1.3.1 – Impressum
+- Eigene Seite (Route `#/imprint`): Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis, Haftung, Links, Datenschutz (inkl. Hosting bei Render), Urheberrecht (de, en, cs)
+- Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
+- „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
+
+### Version 1.3 – Natürliche Stimmen
+- Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (voreingestellt), Warm, Tief – je 153 Aufnahmen, zusammen ca. 26 MB
+- Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz
+- Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
+- Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
+
+### Version 1.2 – Feedback aus der Nutzung
+- Garten-Himmel nach Tageszeit (echter Sonnenauf- und -untergang in Wien)
+- Wochen-Check-up: Rückmeldung in drei Stufen mit Bezug auf die eigenen Antworten, Arzt-Hinweis bei mittleren Werten erst ab der zweiten Woche, Erklärung „Wie entsteht diese Rückmeldung?“
+- Impulse bei allen Fragen, je drei Varianten, wechselnd täglich oder wöchentlich (de, en, cs)
+- Textkorrekturen: „Gutes für dich tun“, klarere Abschlussnachricht bei „Gewitter“, „1 Moment“ in der Einzahl
+
+### Version 1.1 – Stimme & Klang
+- Gesprochene Anleitung bei allen geführten Übungen, Atemübungen und den Morgen-Atemzügen
+- Stimme, Tonhöhe, Tempo und Lautstärke einstellbar, Tonhöhe automatisch Richtung neutrale Mitte
+- Klangteppich und Klangschale auf 432 Hz (ohne Wirkversprechen), Bildschirm bleibt während der Übung an
+- Schreibübungen optional mit leisen Klängen
+
 ### Version 1.0 – Grundversion
 - Onboarding: Sprache, Name, Lebensthemen, Erklärung, wichtige Hinweise
 - Morgenmoment, Abendmoment, Journal mit lokaler, regelbasierter Rückmeldung und Krisenerkennung
@@ -63,31 +91,3 @@ _Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 - Hilfe-Seite mit Nummern für Österreich und Wien, Kalender-Erinnerungen (.ics), sanfte Hinweise in der App
 - Drei Sprachen (de, en, cs), heller, dunkler und abends warm-dunkler Modus, drei Schriftgrößen, offline-fähig (PWA)
 - Auf GitHub und Render veröffentlicht
-
-### Version 1.1 – Stimme & Klang
-- Gesprochene Anleitung bei allen geführten Übungen, Atemübungen und den Morgen-Atemzügen
-- Stimme, Tonhöhe, Tempo und Lautstärke einstellbar, Tonhöhe automatisch Richtung neutrale Mitte
-- Klangteppich und Klangschale auf 432 Hz (ohne Wirkversprechen), Bildschirm bleibt während der Übung an
-- Schreibübungen optional mit leisen Klängen
-
-### Version 1.2 – Feedback aus der Nutzung
-- Garten-Himmel nach Tageszeit (echter Sonnenauf- und -untergang in Wien)
-- Wochen-Check-up: Rückmeldung in drei Stufen mit Bezug auf die eigenen Antworten, Arzt-Hinweis bei mittleren Werten erst ab der zweiten Woche, Erklärung „Wie entsteht diese Rückmeldung?“
-- Impulse bei allen Fragen, je drei Varianten, wechselnd täglich oder wöchentlich (de, en, cs)
-- Textkorrekturen: „Gutes für dich tun“, klarere Abschlussnachricht bei „Gewitter“, „1 Moment“ in der Einzahl
-
-### Version 1.3 – Natürliche Stimmen
-- Drei selbst entworfene ElevenLabs-Stimmen für de, en, cs: Ruhig (voreingestellt), Warm, Tief – je 153 Aufnahmen, zusammen ca. 26 MB
-- Auswahl in den Einstellungen, Gerätestimme als Wahlmöglichkeit und automatischer Ersatz
-- Werkzeug `tools/vertonen.js` zum Nachvertonen geänderter Texte
-- Offline-Speicher für Aufnahmen getrennt von der App-Version; CSP um `media-src 'self' blob:` ergänzt
-
-### Version 1.3.1 – Impressum
-- Eigene Seite (Route `#/imprint`): Offenlegung nach § 25 Mediengesetz (Andreas Kauba & Tomas Mikeska, Wien, sonnseite@tm-relations.com), Gesundheitshinweis, Haftung, Links, Datenschutz (inkl. Hosting bei Render), Urheberrecht (de, en, cs)
-- Erreichbar über Einstellungen („Über“), Hilfe-Seite und Willkommens-Bildschirm
-- „Über“: „hat keinen Server“ → „speichert nichts auf einem Server“
-
-### Version 1.3.2 – Aufräumen nach dem Impressum
-- Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
-- Link heißt „Impressum und Datenschutz“ (de, en, cs)
-- WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
