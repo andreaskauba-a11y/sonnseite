@@ -2,6 +2,37 @@
 
 _Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 
+## Aktueller Stand
+- App läuft auf Render, geschützt durch Zugangscode (einmal pro Gerät) und Einladungslink. Freund:innen sind informiert.
+- Auf Android vom Inhaber geprüft (14.11.2026): Zugangsschutz, Teilen, Stimmen, Klangteppich und Klangschale passen. „Warm“ klingt manchmal etwas künstlich, ist aber in Ordnung. Anleitung zum Weitergeben ist erstellt. Impressum und Datenschutz zur Kenntnis genommen.
+- Nutzungszahlen: nur die Render-Übersicht (bewusst kein Zähler).
+
+## Offen
+**Dringend**
+- **Zugangscode stand im Klartext in `NOTES.md`** (öffentliches Repository, auch im Verlauf). Entscheidung des Inhabers: Code ändern (`node tools/zugangscode.js <neuer-code>`, alle müssen neu freischalten) oder Repository auf „privat“ stellen (Render muss danach noch Zugriff haben) oder bewusst so lassen (Schutz gilt ohnehin nur gegen Zufallsbesucher).
+
+**Prüfen**
+- **iPhone:** Zugangscode und Einladungslink (Safari vs. installierte App haben getrennten Speicher), Stimme bei gesperrtem Bildschirm, Speicherort der Sicherungsdatei, Update-Fenster.
+- **Render:** Spielen die Aufnahmen ab (CSP aus `render.yaml`)? Auf Android offenbar ja. Falls nicht: Blueprint in Render synchronisieren.
+
+**Gegenlesen lassen**
+- Alle **tschechischen Texte** von einer Muttersprachlerin (weibliche Form bei Gedanken und Impulsen; die WHO-5-Übersetzung ist eine eigene, keine validierte).
+- **Englische und tschechische Aufnahmen** probehören (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
+- **Impressum und Datenschutz** sind keine Rechtsberatung, bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
+
+**Laufend beobachten**
+- **Hilfe-Nummern** regelmäßig auf gesundheit.gv.at prüfen. Die Zeiten der Kummernummer 116 123 sind bewusst nicht angegeben.
+- **Schlüsselwörter** für Krisen und Rückmeldungen sind einfache Wortstämme: Fehlauslöser oder Lücken sind möglich, Rückmeldungen sammeln. Das gilt auch für die Impuls-Varianten 2 und 3 (freigegeben, nicht einzeln kommentiert).
+- **„Warm“** ist nachträglich tiefer gestellt (Faktor 0.92). Ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
+- **ElevenLabs:** Das Starter-Abo kann gekündigt werden. Für Textänderungen an gesprochenen Texten kurz wieder aktivieren. Die drei Stimmen bleiben im Konto (IDs in `tools/vertonen.js`).
+- **Datensicherheit:** Daten liegen nur im Browser. iOS kann Daten lange nicht genutzter Webseiten löschen, mit der App auf dem Home-Bildschirm ist das unwahrscheinlicher. Die Sicherungs-Erinnerung (alle 4 Wochen) soll das abfedern.
+
+## Nächste Schritte (Ideen, nicht beauftragt)
+- Naturgeräusche als Alternative zum Klangteppich (braucht lizenzfreie Aufnahmen)
+- Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
+- Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz, Kosten)
+- Falls der Kreis wächst und einzelne Personen gesperrt werden sollen: Zugang pro Person (bräuchte einen Server, widerspricht dem heutigen Aufbau)
+
 ## Erledigt
 ### Version 1.4.1 – Korrektur Hilfe-Seite
 - 112 heißt jetzt „112 · Euro-Notruf“ (de, en, cs)
@@ -10,11 +41,19 @@ _Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 ### Version 1.4.0 – Zugangsschutz, Sicherungs-Erinnerung, Update-Hinweis
 - Beim ersten Öffnen: Zugangscode oder Einladungslink (`#/join/<code>`), gemerkt auf dem Gerät (`sonnseite.access`). Hilfe und Impressum bleiben ohne Code erreichbar.
 - Einstellungen: „Freund:innen einladen“ (Teilen-Menü oder Kopieren, zeigt den Code als Ersatz für die installierte App)
-- Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Aktueller Code: sonnenblume14 (vom Inhaber bestätigt)
+- Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Der aktuelle Code ist dem Inhaber bekannt und steht bewusst **nicht** in den Dateien (das Repository ist öffentlich)
 - Schutz nur gegen Zufallsbesucher: Der Prüfwert steht (als SHA-256) in `app.js`. `robots.txt` sperrt Suchmaschinen.
 - Bestehende Nutzer:innen müssen sich nach dem Update einmal freischalten.
 - Sicherungs-Erinnerung (Startseite, ab 28 Tagen seit der letzten Sicherung, „Später“ = 7 Tage), „Letzte Sicherung“ in den Einstellungen
 - Update-Hinweis: kleines Fenster einmal pro Version (`seenVersion`, Texte in `changelog`), „Was ist neu?“ in den Einstellungen
+
+### Version 1.3.3 – Lebensthemen ergänzt
+- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
+- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
+- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
+- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
+- Offen: tschechische Texte von Muttersprachlerin gegenlesen lassen
+
 ### Version 1.0 – Grundversion
 - Onboarding: Sprache, Name, Lebensthemen, Erklärung, wichtige Hinweise
 - Morgenmoment, Abendmoment, Journal mit lokaler, regelbasierter Rückmeldung und Krisenerkennung
@@ -52,30 +91,3 @@ _Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 - Datenschutz-Absatz unter „Über Sonnseite“ entfernt (stand im Widerspruch zum Hosting-Hinweis, jetzt nur noch im Impressum)
 - Link heißt „Impressum und Datenschutz“ (de, en, cs)
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
-
-- _Geprüft 14.11.2026 (Android, Inhaber): Zugangsschutz und Teilen funktionieren, Freund:innen informiert, Stimmen, Klangteppich und Klangschale passen, „Warm“ ist okay (manchmal etwas künstlich), Anleitung zum Weitergeben ist erstellt, Impressum und Datenschutz zur Kenntnis genommen. Noch offen: iPhone._
-- **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
-- **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
-- **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
-- **„Warm“ ist nachträglich tiefer gestellt** (Faktor 0.92). Auf Künstlichkeit achten; ohne Tieferstellen: in `tools/vertonen.js` `pitch: 1` setzen, Ordner `public/audio/warm` löschen und neu erzeugen.
-- **Render-Header:** Die geänderte CSP in `render.yaml` greift nur, wenn Render den Blueprint übernimmt. Nach dem Online-Stellen prüfen, ob Aufnahmen abspielen (sonst in Render unter „Blueprint“ synchronisieren).
-- **ElevenLabs:** Starter-Abo kann nach der Vertonung gekündigt werden; für spätere Textänderungen dann kurz wieder aktivieren. Die drei Stimmen bleiben im Konto gespeichert (IDs in `tools/vertonen.js`).
-- **Klang der Stimme auf echten Geräten nicht geprüft.** Im Test lief nur eine Attrappe. Rückmeldungen der Nutzerinnen abwarten: Tempo, Pausen, Tonhöhe, Lautstärke im Verhältnis zur Musik.
-- **Klangteppich und Klangschale noch nicht angehört.** Eventuell zu laut, zu leise oder zu tief. Werte stehen in `audio.js` (`startPad`, `bell`).
-- **Tschechische Texte** von einer Muttersprachlerin gegenlesen lassen. Die Gedanken stehen in weiblicher Form, die WHO-5-Übersetzung ist eine eigene, keine offiziell validierte.
-- **Neue Impuls-Varianten 2 und 3** wurden mit „online stellen“ freigegeben, aber nicht einzeln kommentiert. Auf Rückmeldungen achten.
-- **Hilfe-Nummern** regelmäßig prüfen (gesundheit.gv.at). Die Zeiten der Kummernummer 116 123 sind bewusst nicht angegeben.
-- **Datensicherheit:** Die Daten liegen nur im Browser. Nutzerinnen auf die Sicherung hinweisen, vor allem vor einem Handywechsel oder dem Löschen der Browserdaten. iOS kann Daten von Webseiten löschen, die lange nicht genutzt wurden. Mit der App auf dem Home-Bildschirm ist das unwahrscheinlicher.
-- Krisen- und Rückmeldungs-Schlüsselwörter sind einfache Wortstämme. Fehlauslöser oder Lücken sind möglich, daher Rückmeldungen sammeln.
-
-### Version 1.3.3 – Lebensthemen ergänzt
-- „Was dich gerade beschäftigt“ hat jetzt 17 Themen in drei Gruppen: schön – verändert – schwer
-- Neu: Neue oder gewachsene Liebe, Familie wächst, Ein Tier zieht ein, Eine gute Phase bewusst genießen, Umzug, Kinder werden selbstständig, Übergang in die Pension, Abschied von einem Tier
-- „Lebensumbruch“ heißt jetzt „Neuanfang / Neuorientierung“ (gleicher Schlüssel `veraenderung`)
-- Je zwei Gedanken pro neuem Thema (de/en/cs, am Ende von `affirmations` angehängt; Gruppen in `themeGroups`)
-- Offen: tschechische Texte von Muttersprachlerin gegenlesen lassen
-
-## Mögliche nächste Schritte (Ideen, nicht beauftragt)
-- Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
-- Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
-- Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz und Kosten)

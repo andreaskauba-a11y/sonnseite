@@ -7,14 +7,17 @@ Der Inhaber schreibt auf Deutsch und ist kein Entwickler. **Antworten bitte auf 
 ## Tech-Stack
 - **Vanilla HTML, CSS und JavaScript.** Kein Framework, kein Build-Schritt, keine npm-Abhängigkeiten. Das soll so bleiben.
 - **PWA:** `manifest.webmanifest` und `sw.js` (Netzwerk zuerst, Cache als Rückfall). Die App funktioniert offline.
-- **Speicher:** nur `localStorage`, Schlüssel `sonnseite.v1`. Kein Server, kein Konto, kein Tracking, keine externen Schriften, Skripte oder Anfragen.
+- **Speicher:** nur `localStorage`, Schlüssel `sonnseite.v1` (alle Daten) und `sonnseite.access` (Zugangscode dieses Geräts, wird beim „Alle Daten löschen“ bewusst nicht gelöscht). Kein Server, kein Konto, kein Tracking, keine externen Schriften, Skripte oder Anfragen.
+- **Zugangsschutz:** Zugangscode oder Einladungslink, nur im Browser geprüft (SHA-256 des Codes in `app.js`). Schutz gegen zufällige Besucher, **kein** Schutz gegen gezielte Angriffe.
 - **Stimme:** vorab erzeugte MP3-Aufnahmen (ElevenLabs, drei Stimmen) unter `public/audio/`, als Ersatz die Sprachausgabe des Geräts (Web Speech API).
 - **Klang:** Web Audio API, live erzeugt. Es gibt keine Audiodateien.
-- **Hosting:** GitHub (`andreaskauba-a11y/sonnseite`, Branch `main`) wird automatisch auf Render als Static Site veröffentlicht (`render.yaml`, Ordner `public/`). Jeder Push auf `main` geht live.
+- **Hosting:** GitHub (`andreaskauba-a11y/sonnseite`, Branch `main`) wird automatisch auf Render als Static Site veröffentlicht (`render.yaml`, Ordner `public/`). Jeder Push auf `main` geht live. **Das GitHub-Repository ist öffentlich: Nie den Zugangscode im Klartext in Dateien, Notizen oder Commit-Nachrichten schreiben.**
+- **Nutzungszahlen:** nur die Übersicht im Render-Dashboard (grob, ohne Personen). Kein Zähler in der App, weil das externe Anfragen bräuchte.
 
 ## Struktur
 ```
 public/
+  robots.txt            sperrt Suchmaschinen (zusätzlich `noindex` in index.html)
   index.html            Grundgerüst, Kopfzeile, Tab-Leiste, lädt alle Skripte (Reihenfolge wichtig)
   sw.js                 Service Worker – CACHE-Version bei jeder Änderung erhöhen (Aufnahmen liegen in eigenem AUDIO_CACHE)
   manifest.webmanifest  PWA-Manifest
@@ -28,14 +31,15 @@ public/
   js/audio.js           window.SonnAudio: speak() (Aufnahme, sonst Gerätestimme), prefetch(), Klangteppich, Klangschale, Wake Lock
   js/app.js             Ganze App in einer IIFE: Speicher, Router, Ansichten, Abläufe, Garten, Diagramme
 tools/vertonen.js       Erzeugt fehlende Aufnahmen mit ElevenLabs (Node 22 + ffmpeg), schreibt audio/voices.js
+tools/zugangscode.js    Setzt einen neuen Zugangscode (trägt den SHA-256-Prüfwert in app.js ein)
 render.yaml             Render-Blueprint (Static Site, Sicherheits-Header inkl. CSP)
 README.md               Beschreibung und Deploy-Anleitung für Menschen
 NOTES.md                Aktueller Stand, offene Punkte, nächste Schritte
 ```
 
-**Aufbau von app.js** (in dieser Reihenfolge): Helfer, Speicher (`defaults`/`load`/`save`), `t()` und `C()` für Texte und Inhalte, Icons (`P`, `ic()`), Ansicht und Aktionen (`view`, `act`, Klick-Delegation über `data-act`/`data-go`), Darstellung, Stimme und Klang (`syncAudio`, `audioBar`), Tagesinhalte (`programIndex`, `dailyAffIndex`, Impulse über `hint()`), Garten (`sunTimes`, `dayPhase`, `garden`), Rückmeldungen (`analyze`, `feedbackCard`, `crisisCard`), `flow()` für Abläufe mit Schritten, danach die Ansichten (Home, Morgen, Abend, Übungen, Journal, Woche, Mein Weg, Einstellungen, Hilfe, Onboarding) und am Ende der Router.
+**Aufbau von app.js** (in dieser Reihenfolge): Helfer, Speicher (`defaults`/`load`/`save`), `t()` und `C()` für Texte und Inhalte, Icons (`P`, `ic()`), Ansicht und Aktionen (`view`, `act`, Klick-Delegation über `data-act`/`data-go`), Darstellung, Stimme und Klang (`syncAudio`, `audioBar`), Tagesinhalte (`programIndex`, `dailyAffIndex`, Impulse über `hint()`), Garten (`sunTimes`, `dayPhase`, `garden`), Rückmeldungen (`analyze`, `feedbackCard`, `crisisCard`), `flow()` für Abläufe mit Schritten, danach die Sicherungs-Erinnerung (`backupDue`, `doBackup`), die Ansichten (Home, Morgen, Abend, Übungen, Journal, Woche, Mein Weg, Einstellungen, Hilfe, Impressum, Onboarding), der Zugangsschutz (`codeOk`, `viewGate`, `sendInvite`), der Update-Hinweis (`maybeWhatsNew`) und am Ende der Router (`route` → `routeInner`) mit der Start-Funktion, die zuerst den Zugang prüft.
 
-**Routen** (Hash): `#/`, `#/morning`, `#/evening`, `#/weekly`, `#/exercises`, `#/ex/:id`, `#/journal`, `#/journal/new`, `#/journal/:id`, `#/path`, `#/settings`, `#/help`, `#/imprint` (Impressum, auch vor dem Onboarding erreichbar; Name und E-Mail in `OWNER` in app.js, Texte unter `imprint` in `content/*.js`).
+**Routen** (Hash): `#/`, `#/morning`, `#/evening`, `#/weekly`, `#/exercises`, `#/ex/:id`, `#/journal`, `#/journal/new`, `#/journal/:id`, `#/path`, `#/settings`, `#/help`, `#/imprint` (Impressum, auch vor dem Onboarding erreichbar; Name und E-Mail in `OWNER` in app.js, Texte unter `imprint` in `content/*.js`), `#/join/<code>` (Einladungslink, schaltet frei und leitet auf `#/`). Ohne Freischaltung sind nur `#/help` und `#/imprint` erreichbar, alles andere zeigt die Code-Eingabe.
 
 ## Wichtige Befehle
 ```bash
@@ -50,10 +54,13 @@ node tools/vertonen.js --zaehlen
 NODE_USE_ENV_PROXY=1 node tools/vertonen.js
 node tools/vertonen.js --aufraeumen
 
+# Zugangscode ändern (danach VERSION und CACHE erhöhen, changelog ergänzen; alle Geräte müssen neu freischalten)
+node tools/zugangscode.js <neuer-code>
+
 # Inhalte auf gleiche Länge prüfen (Beispiel)
 node -e "global.window={};require('./public/js/content/de.js');const c=window.CONTENT.de;console.log(c.morningHints.length,c.morningQuestions.length)"
 ```
-**Testen:** mit Playwright (vorinstalliert, `require('playwright')`), Gerät `devices['iPhone 13']`, `locale: 'de-AT'`, `timezoneId: 'Europe/Vienna'`. Tageszeiten testet man mit `page.clock.install({ time })`. Die Stimme im Test durch eine Attrappe von `speechSynthesis` ersetzen (Init-Script), die gesprochene Texte protokolliert. Testdaten über `localStorage.setItem('sonnseite.v1', …)` setzen, **danach `reload()`**, denn ein reiner Hash-Wechsel lädt die Daten nicht neu. Immer auf `pageerror` achten und auf waagrechtes Überlaufen prüfen.
+**Testen:** mit Playwright (vorinstalliert, `require('playwright')`), Gerät `devices['iPhone 13']`, `locale: 'de-AT'`, `timezoneId: 'Europe/Vienna'`. Tageszeiten testet man mit `page.clock.install({ time })`. Die Stimme im Test durch eine Attrappe von `speechSynthesis` ersetzen (Init-Script), die gesprochene Texte protokolliert. Testdaten über `localStorage.setItem('sonnseite.v1', …)` setzen, **danach `reload()`**, denn ein reiner Hash-Wechsel lädt die Daten nicht neu. Immer auf `pageerror` achten und auf waagrechtes Überlaufen prüfen. **Seit 1.4.0 ist der Zugang gesperrt:** im Test zuerst `localStorage.setItem('sonnseite.access', '<code>')` setzen (zusammen mit den Daten, danach `reload()`), sonst erscheint nur die Code-Eingabe. Für Tests ohne Klartext-Code im Repo den Code als Argument oder Umgebungsvariable übergeben.
 
 ## Konventionen
 - **Jede Textänderung in allen drei Sprachen** (de, en, cs). Die Arrays müssen in allen Sprachen **gleich lang und gleich sortiert** sein: `affirmations`, `morningQuestions` und `morningHints`, `eveningQuestions` und `eveningHints`, `themeHints`, `program`, `who5Short`, die Felder der Übungen und `exerciseHints`. Gespeichert werden Indizes, keine Texte, damit ein Sprachwechsel funktioniert.
@@ -61,10 +68,11 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 - **Tschechisch:** Die Gedanken und Impulse stehen in weiblicher Form, passend zur Zielgruppe. Die Texte sollten von einer Muttersprachlerin gegengelesen werden.
 - **Gesprochene Texte geändert?** (Übungen vom Typ `guided`, `inhale`/`hold`/`exhale`, `wellDone`, `breathStartVoice`, `voiceEnd`, `sampleText`, `sampleShort`) → `tools/vertonen.js` laufen lassen, danach `--aufraeumen`. Bis dahin spricht für geänderte Texte automatisch die Gerätestimme. Der Dateiname ist eine Prüfsumme des Wortlauts (`audioKey`, in `audio.js` und `vertonen.js` identisch halten).
 - **Jede Nutzereingabe wird mit `esc()` ausgegeben** (XSS). Mehrzeiliger Text über `nl2br()`.
-- **Update-Hinweis:** Bei jeder neuen Version einen Eintrag oben in `changelog` (`content/de.js`, `en.js`, `cs.js`) ergänzen (2–4 kurze Stichpunkte, Du-Form, ohne Fachjargon). Die App zeigt ihn einmal nach dem Update (`seenVersion`) und listet die letzten in den Einstellungen.
-- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.4.0). Sonst bekommen Handys die neue Version nicht.
+- **Update-Hinweis:** Bei jeder neuen Version einen Eintrag oben in `changelog` (`content/de.js`, `en.js`, `cs.js`) ergänzen (2–4 kurze Stichpunkte, Du-Form, ohne Fachjargon, ohne Versionsnummer im Text). Die App zeigt ihn einmal nach dem Update (`seenVersion`) in einem kleinen Fenster und listet die letzten fünf in den Einstellungen („Was ist neu?“). Neu installierte Geräte sehen kein Fenster. Wer mehrere Versionen übersprungen hat, sieht bis zu drei Einträge.
+- **Bei jeder Änderung an `public/`:** `CACHE` in `sw.js` **und** `VERSION` in `app.js` erhöhen (aktuell 1.4.1). Sonst bekommen Handys die neue Version nicht.
 - Icons sind feine, abgerundete Linien-SVGs im Objekt `P` (`stroke-width 1.6`). Emojis werden in der Oberfläche nicht verwendet.
 - Lesbarkeit für die Zielgruppe: Grundschrift 18px, Schriftgröße in drei Stufen einstellbar, Touch-Ziele mindestens 44px.
+- **Lange Wörter im Deutschen** (Namen auf Karten, z. B. „Kriseninterventionszentrum“) mit weichen Trennstellen (`\u00ad`) versehen und auf schmalen Handys prüfen. Knöpfe und Nummern immer mit Beschriftung (z. B. „112 · Euro-Notruf“).
 - Commits auf Deutsch, Absender `Claude <noreply@anthropic.com>` (ein Hook prüft das).
 
 ## Grundsatzentscheidungen (mit dem Inhaber abgestimmt)
@@ -77,6 +85,15 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 - **Krisenerkennung:** Bestimmte Wörter zeigen sofort eine Karte mit Notrufnummern (142, PSD 01 31330, 144). Die Hilfe-Seite ist jederzeit über das Herz-Symbol oben erreichbar.
 - **Hilfe-Nummern für Österreich mit Schwerpunkt Wien** (Stand November 2026, geprüft auf gesundheit.gv.at). Sie stehen in `content/*.js` unter `help`.
 - **Formulierungen dürfen nicht verunsichern.** Jede Rückmeldung bezieht sich ausdrücklich auf das, was die Person selbst angegeben hat. Kein unklares „so“.
+
+**Zugang und Sicherung** (ab 1.4)
+- **Zugangsschutz mit gemeinsamem Code**, nicht pro Person (einfach, ohne Server). Freischaltung einmal pro Gerät: Eingabefeld oder Einladungslink `#/join/<code>`. Gemerkt in `sonnseite.access`. Wer ihn ändert, sperrt alle Geräte bis zur neuen Eingabe (so lassen sich Links widerrufen).
+- **Einladungsfunktion für alle Nutzer:innen** (Einstellungen → „Freund:innen einladen“): Teilen-Menü des Handys, sonst Kopieren. Der Code steht zusätzlich auf der Karte, weil die installierte App (v. a. iPhone) einen eigenen Speicher hat und der Link dort nicht greift. Bewusst akzeptiert: Der Kreis wächst ohne Zutun des Inhabers, einzelne Personen lassen sich nicht sperren, Nutzer:innen werden nicht gezählt. Hinweistext: nur Menschen einladen, denen man die App wirklich ans Herz legen möchte.
+- **Ohne Code erreichbar:** Hilfe-Seite (Notrufnummern) und Impressum. Bestehende Nutzer:innen wurden nicht automatisch freigeschaltet, sondern mussten den Code einmal eingeben.
+- **Ehrlich zur Grenze:** Der Schutz hält Zufallsbesucher ab. Wer technisch gezielt sucht, kommt vorbei (alle Dateien sind öffentlich auslieferbar). Echter Schutz (z. B. Cloudflare Access oder ein Server mit Login) wurde bewusst nicht gewählt, weil er Konto und Server bräuchte.
+- **Keine Zählung der Nutzer:innen.** Ein anonymer Zähler wurde abgelehnt (externe Anfragen widersprechen „kein Tracking“). Es gilt die Render-Übersicht.
+- **Sicherungs-Erinnerung:** Karte auf der Startseite (kein Pop-up, nie mitten in einem Ablauf), sobald Einträge da sind und die letzte Sicherung länger als **28 Tage** her ist (vor der ersten Sicherung zählt der Beginn der Nutzung). „Später“ = 7 Tage Ruhe, „Jetzt sichern“ = 28 Tage. Abschaltbar über „Freundliche Hinweise“. Die Einstellungen zeigen „Letzte Sicherung“. Text ehrlich, aber nicht beunruhigend (Browser kann Daten aufräumen).
+- **Transparente Updates:** nach einem Update einmal ein kleines Fenster „Neu in der Sonnseite“ (siehe Konvention Update-Hinweis).
 
 **Abläufe**
 - **Morgenmoment** (3–5 Min.): inneres Wetter, drei Atemzüge, Gedanke des Tages, Ausrichtung, Vorfreude.
@@ -106,6 +123,8 @@ node -e "global.window={};require('./public/js/content/de.js');const c=window.CO
 
 ## Arbeitsweise mit dem Inhaber
 - **Vor dem Umsetzen Zwischenergebnisse zur Freigabe vorlegen**: Vorschau-Bilder, Textentwürfe als Liste. Erst nach „passt“ oder „umsetzen“ einbauen.
-- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur lokal committen.
+- **Erst nach ausdrücklicher Freigabe („online stellen“) auf `main` pushen**, denn jeder Push geht live. Vorher nur lokal committen. Der Arbeitszweig `claude/…` darf jederzeit gepusht werden (ein Hook fordert das), das veröffentlicht nichts.
+- **Kleine Korrekturen** (z. B. nach Bildschirmfotos des Inhabers) dürfen direkt umgesetzt werden, aber mit eigener Version und Update-Hinweis; veröffentlicht wird erst nach „online stellen“.
+- Beim Online-Stellen: `main` per Fast-Forward auf den Arbeitszweig, danach kurz sagen, was der Inhaber am Handy prüfen soll.
 - Rückfragen mit Empfehlung stellen („[Vorschlag: …]“), damit der Inhaber kurz antworten kann.
 - Nach Änderungen mit Playwright testen und Bildschirmfotos zeigen. Ehrlich sagen, was nicht geprüft werden konnte, etwa wie die Stimme tatsächlich klingt.
