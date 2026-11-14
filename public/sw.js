@@ -1,5 +1,5 @@
 /* Sonnseite – Service Worker: macht die App offline nutzbar. Speichert nur App-Dateien, keine Nutzerdaten. */
-const CACHE = 'sonnseite-v1.3.3';
+const CACHE = 'sonnseite-v1.4.0';
 /* Sprachaufnahmen in einem eigenen Speicher: Ihr Name ändert sich nicht mit jeder Version, damit Handys sie nicht neu laden müssen.
    Eine Aufnahme ändert sich nie (der Dateiname ist eine Prüfsumme des Textes). */
 const AUDIO_CACHE = 'sonnseite-audio-v1';

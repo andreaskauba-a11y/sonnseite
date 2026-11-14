@@ -3,8 +3,11 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.3.3';
+  const VERSION = '1.4.0';
   const OWNER = { names: 'Andreas Kauba & Tomas Mikeska', mail: 'sonnseite@tm-relations.com' };
+  /* Zugangsschutz: gespeichert wird nur der Prüfwert (SHA-256), nicht der Code selbst. Ändern mit: node tools/zugangscode.js <code> */
+  const ACCESS_HASH = '94d6458205fb6dbfd1b14972d630647f00d6e5db0ea1f5de81c02af384acabbe';
+  const ACCESS_KEY = 'sonnseite.access';
   const I18N = window.I18N;
   const CONTENT = window.CONTENT;
   const LANGS = ['de', 'en', 'cs'];
@@ -953,6 +956,9 @@
         <label class="field"><span>${esc(t('musicVol'))}</span><input type="range" id="a-mv" min="0.05" max="1" step="0.05" value="${au.musicVol}"></label>
         <button class="btn soft" data-act="listen">${ic('play')} ${esc(t('listen'))}</button>
         <p class="tiny">${esc(t('music432'))}</p></div>
+      <div class="card"><p class="label">${esc(t('inviteTitle'))}</p><p class="tiny">${esc(t('inviteHint'))}</p>
+        <button class="btn soft" data-act="invite">${ic('heart')} ${esc(t('inviteButton'))}</button>
+        <p class="tiny">${esc(t('inviteCodeNote', { code: storedCode() }))}</p></div>
       <div class="card"><p class="label">${esc(t('installTitle'))}</p><p class="tiny">${esc(t('installHint'))}</p></div>
       <div class="card"><p class="label">${esc(t('yourData'))}</p><p class="tiny">${esc(t('dataHint'))}</p>
         <div class="row wrap"><button class="btn soft" data-act="backup">${ic('download')} ${esc(t('backupExport'))}</button>
@@ -1020,6 +1026,7 @@
       listen: () => { persistAudio(); AU.unlock(); syncAudio(); AU.startPad(); AU.bell('step'); AU.speak(t('sampleText')).then(() => later(() => AU.stopPad(), 1200)); },
       backup: () => { download(`sonnseite-backup-${dkey()}.json`, JSON.stringify(S, null, 1), 'application/json'); },
       pdf: exportPdf,
+      invite: sendInvite,
       wipe: () => { if (confirm(t('confirmWipe')) && confirm(t('confirmWipe2'))) { localStorage.removeItem(KEY); S = defaults(); applyTheme(); renderChrome(); go('/'); } }
     });
   }
@@ -1117,10 +1124,55 @@
     $('[data-act="fclose"]') && ($('[data-act="fclose"]').hidden = true);
   }
 
+  /* ---------- Zugangsschutz ---------- */
+  let UNLOCKED = false;
+  const normCode = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9äöüß-]/g, '');
+  async function codeOk(raw) {
+    const c = normCode(raw);
+    if (c.length < 4 || !(window.crypto && crypto.subtle)) return false;
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('sonnseite:' + c));
+      return Array.from(new Uint8Array(buf)).map((b) => pad(b.toString(16))).join('') === ACCESS_HASH;
+    } catch (e) { return false; }
+  }
+  const storedCode = () => { try { return localStorage.getItem(ACCESS_KEY) || ''; } catch (e) { return ''; } };
+  function unlock(raw) { UNLOCKED = true; try { localStorage.setItem(ACCESS_KEY, normCode(raw)); } catch (e) { /* ignore */ } }
+
+  function viewGate(msg) {
+    document.body.classList.add('locked');
+    view(`<section class="page gate">
+      <div class="ob-hero">${garden(9, 150)}</div>
+      <h1>${esc(t('gateTitle'))}</h1>
+      <p class="lead">${esc(t('gateText'))}</p>
+      <form id="gate-form" autocomplete="off">
+        <label class="field"><span>${esc(t('gateLabel'))}</span><input type="text" id="gate-code" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"></label>
+        <p class="note soft" id="gate-msg" role="alert" ${msg ? '' : 'hidden'}>${esc(msg || '')}</p>
+        <button class="btn primary wide" type="submit">${esc(t('gateButton'))}</button>
+      </form>
+      <p class="tiny"><a href="#/help">${esc(t('gateHelp'))}</a> · <a href="#/imprint">${esc(t('imprint'))}</a></p>
+    </section>`, {});
+    $('#gate-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const v = $('#gate-code').value;
+      if (await codeOk(v)) { unlock(v); document.body.classList.remove('locked'); go('/'); }
+      else { const m = $('#gate-msg'); m.textContent = t('gateWrong'); m.hidden = false; }
+    });
+    act({});
+  }
+
+  function inviteLink() { return location.href.split('#')[0] + '#/join/' + encodeURIComponent(storedCode()); }
+  async function sendInvite() {
+    const text = t('inviteMsg') + '\n' + inviteLink();
+    if (navigator.share) { try { await navigator.share({ text }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(text); toast(t('inviteCopied')); } catch (e) { prompt(t('inviteCopyManual'), text); }
+  }
+
   /* ---------- Router ---------- */
   function route() {
     cleanup(); applyTheme(); AU.stopAll(); syncAudio();
     const h = (location.hash || '#/').slice(1) || '/';
+    document.body.classList.toggle('locked', !UNLOCKED);
+    if (!UNLOCKED && h !== '/imprint' && h !== '/help') return viewGate();
     if (h === '/imprint') return viewImprint();
     prevRoute = S.settings.onboarded ? h : '/';
     if (!S.settings.onboarded && h !== '/help') return viewOnboarding();
@@ -1145,7 +1197,18 @@
   window.addEventListener('storage', (e) => { if (e.key === KEY) { S = load(); } });
   setInterval(applyTheme, 10 * 60 * 1000);
   renderChrome();
-  route();
+  /* Start: erst den Zugang prüfen (gespeicherter Code oder Einladungslink), dann die Ansicht zeigen */
+  (async function start() {
+    const join = (location.hash || '').match(/^#\/join\/([^/?]+)/);
+    if (join) {
+      let c = ''; try { c = decodeURIComponent(join[1]); } catch (e) { /* ignore */ }
+      if (await codeOk(c)) { unlock(c); history.replaceState(null, '', location.pathname + location.search + '#/'); }
+      else if (!(await codeOk(storedCode()))) { history.replaceState(null, '', location.pathname + location.search + '#/'); route(); return viewGate(t('gateBadLink')); }
+      else history.replaceState(null, '', location.pathname + location.search + '#/');
+    }
+    if (!UNLOCKED) { const c = storedCode(); if (c && await codeOk(c)) UNLOCKED = true; }
+    route();
+  })();
 
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

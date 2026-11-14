@@ -348,3 +348,8 @@ select {
 input[type="range"] { width: 100%; accent-color: var(--primary); height: 32px; }
 .range-ends { display: flex !important; justify-content: space-between; align-items: center; color: var(--muted); margin-top: -2px; }
 .link-btn { background: none; border: 0; color: var(--primary); font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; padding: 6px; }
+
+/* Zugangsschutz: vor der Freischaltung keine Kopfzeile und Tab-Leiste */
+body.locked .topbar, body.locked .tabbar { display: none; }
+.gate { text-align: center; }
+.gate .field { text-align: left; }
