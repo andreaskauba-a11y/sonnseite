@@ -1,9 +1,9 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 14. November 2026 · Version 1.4.1 lokal fertig, nicht online (1.4.0 ist live)_
+_Stand: 14. November 2026 · Version 1.4.1 (live auf Render über `main`)_
 
 ## Erledigt
-### Version 1.4.1 – Korrektur Hilfe-Seite (noch nicht online)
+### Version 1.4.1 – Korrektur Hilfe-Seite
 - 112 heißt jetzt „112 · Euro-Notruf“ (de, en, cs)
 - Langer Name „Kriseninterventionszentrum Wien“ bricht sauber um (Trennstellen, `overflow-wrap`)
 
