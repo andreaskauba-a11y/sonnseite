@@ -6,7 +6,7 @@ _Stand: 14. November 2026 · Version 1.4.0 (live auf Render über `main`)_
 ### Version 1.4.0 – Zugangsschutz, Sicherungs-Erinnerung, Update-Hinweis
 - Beim ersten Öffnen: Zugangscode oder Einladungslink (`#/join/<code>`), gemerkt auf dem Gerät (`sonnseite.access`). Hilfe und Impressum bleiben ohne Code erreichbar.
 - Einstellungen: „Freund:innen einladen“ (Teilen-Menü oder Kopieren, zeigt den Code als Ersatz für die installierte App)
-- Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Aktueller Code: sonnenblume14 (Vorschlag, bitte vom Inhaber bestätigen oder ändern)
+- Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Aktueller Code: sonnenblume14 (vom Inhaber bestätigt)
 - Schutz nur gegen Zufallsbesucher: Der Prüfwert steht (als SHA-256) in `app.js`. `robots.txt` sperrt Suchmaschinen.
 - Bestehende Nutzer:innen müssen sich nach dem Update einmal freischalten.
 - Sicherungs-Erinnerung (Startseite, ab 28 Tagen seit der letzten Sicherung, „Später“ = 7 Tage), „Letzte Sicherung“ in den Einstellungen
@@ -49,6 +49,7 @@ _Stand: 14. November 2026 · Version 1.4.0 (live auf Render über `main`)_
 - Link heißt „Impressum und Datenschutz“ (de, en, cs)
 - WHO-5-Urheber im Impressum korrigiert (Psychiatric Research Unit, Frederiksborg, nicht die WHO selbst)
 
+- _Geprüft 14.11.2026 (Android, Inhaber): Zugangsschutz und Teilen funktionieren, Freund:innen informiert, Stimmen, Klangteppich und Klangschale passen, „Warm“ ist okay (manchmal etwas künstlich), Anleitung zum Weitergeben ist erstellt, Impressum und Datenschutz zur Kenntnis genommen. Noch offen: iPhone._
 - **Impressum** ist keine Rechtsberatung; bei Bedarf von einer Fachperson prüfen lassen. Bei Änderung von Hosting oder Kontakt anpassen.
 - **Natürliche Stimmen auf echten Handys prüfen** (vor allem iPhone): Startet die Stimme zuverlässig, auch mit gesperrtem Bildschirm? Lautstärke im Verhältnis zu Klangteppich und Klangschale? Im Test lief nur Chromium.
 - **Tschechische und englische Aufnahmen** von Muttersprachlerinnen probehören lassen (Aussprache, Betonung). Die Stimmen wurden auf Deutsch ausgesucht.
@@ -74,4 +75,3 @@ _Stand: 14. November 2026 · Version 1.4.0 (live auf Render über `main`)_
 - Naturgeräusche als Alternative zum Klangteppich (in Runde 1.1 zurückgestellt, braucht lizenzfreie Aufnahmen)
 - Weitere geführte Übungen oder ein zweites 8-Wochen-Programm, damit sich nach 8 Wochen weniger wiederholt
 - Rückmeldungen bei Bedarf mit KI erweitern (bewusst zurückgestellt: Datenschutz und Kosten)
-- Kurze Anleitung zum Weitergeben an Freundinnen (Installieren, iPhone-Premium-Stimmen, Sicherung)
