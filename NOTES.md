@@ -1,9 +1,9 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 14. November 2026 · Version 1.4.0 (lokal committet, noch nicht online; 1.3.3 ist live)_
+_Stand: 14. November 2026 · Version 1.4.0 (live auf Render über `main`)_
 
 ## Erledigt
-### Version 1.4.0 – Zugangsschutz (noch nicht online)
+### Version 1.4.0 – Zugangsschutz, Sicherungs-Erinnerung, Update-Hinweis
 - Beim ersten Öffnen: Zugangscode oder Einladungslink (`#/join/<code>`), gemerkt auf dem Gerät (`sonnseite.access`). Hilfe und Impressum bleiben ohne Code erreichbar.
 - Einstellungen: „Freund:innen einladen“ (Teilen-Menü oder Kopieren, zeigt den Code als Ersatz für die installierte App)
 - Code ändern: `node tools/zugangscode.js <neuer-code>`, dann VERSION und CACHE erhöhen und veröffentlichen (alle müssen sich neu freischalten). Aktueller Code: sonnenblume14 (Vorschlag, bitte vom Inhaber bestätigen oder ändern)
