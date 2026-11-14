@@ -372,7 +372,7 @@ window.CONTENT.cs = {
   },
 
   help: {
-    ts: 'Telefonseelsorge', rescue: 'Záchranka',
+    ts: 'Telefonseelsorge', rescue: 'Záchranka', emergency: 'Evropská tísňová linka',
     title: 'Pomoc v těžkých chvílích',
     intro: 'Někdy cvičení nestačí – a to je úplně v pořádku. Tady najdeš lidi, kteří naslouchají a pomáhají. V Rakousku, se zaměřením na Vídeň a okolí. Většina služeb mluví německy.',
     acuteTitle: 'Při akutním ohrožení', acuteText: 'Pokud jsi v ohrožení nebo myslíš na to, že si ublížíš: okamžitě zavolej záchranku nebo jdi na nejbližší pohotovost.',
@@ -501,5 +501,6 @@ Object.assign(window.CONTENT.cs, {
 });
 window.CONTENT.cs.weeklyQuestions[3].q = 'Co dobrého chceš příští týden udělat pro sebe?';
 window.CONTENT.cs.changelog = [
+  { v: '1.4.1', items: ["Na stránce Pomoc je nyní uvedeno, co je číslo 112 (evropská tísňová linka), a dlouhé názvy se správně zalamují."] },
   { v: '1.4.0', items: ["Sonnseite je nyní chráněna přístupovým kódem. Už jsi ho zadala, stačí to jen jednou.", "Můžeš pozvat přátele (v nastavení).", "Čas od času ti připomenu, abys zálohovala své zápisy.", "Tady uvidíš, co se po aktualizaci změnilo."] }
 ];

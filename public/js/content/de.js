@@ -376,7 +376,7 @@ window.CONTENT.de = {
   },
 
   help: {
-    ts: 'Telefonseelsorge', rescue: 'Rettung',
+    ts: 'Telefonseelsorge', rescue: 'Rettung', emergency: 'Euro-Notruf',
     title: 'Hilfe in schweren Momenten',
     intro: 'Manchmal reicht eine Übung nicht – und das ist völlig in Ordnung. Hier findest du Menschen, die zuhören und helfen. In Österreich, mit Schwerpunkt Wien und Umgebung.',
     acuteTitle: 'Bei akuter Gefahr', acuteText: 'Wenn du in Gefahr bist oder daran denkst, dir etwas anzutun: Ruf sofort die Rettung an oder geh in die nächste Notaufnahme.',
@@ -389,7 +389,7 @@ window.CONTENT.de = {
     ],
     moreTitle: 'Weitere Anlaufstellen',
     more: [
-      { num: '01 406 95 95', tel: '+4314069595', name: 'Kriseninterventionszentrum Wien', info: 'Mo–Fr 8–17 Uhr · für Erwachsene ab 18 · auch persönliche Gespräche' },
+      { num: '01 406 95 95', tel: '+4314069595', name: 'Krisen­interventions­zentrum Wien', info: 'Mo–Fr 8–17 Uhr · für Erwachsene ab 18 · auch persönliche Gespräche' },
       { num: '116 123', tel: '116123', name: 'Kummernummer', info: 'Zuhören und Gespräch in belastenden Situationen' },
       { num: '147', tel: '147', name: 'Rat auf Draht', info: 'Für Kinder, Jugendliche und Eltern · 0–24 Uhr' }
     ],
@@ -506,5 +506,6 @@ Object.assign(window.CONTENT.de, {
 });
 window.CONTENT.de.weeklyQuestions[3].q = 'Was möchtest du nächste Woche Gutes für dich tun?';
 window.CONTENT.de.changelog = [
+  { v: '1.4.1', items: ["Auf der Hilfe-Seite steht jetzt, was die 112 ist (Euro-Notruf), und der lange Name des Kriseninterventionszentrums bricht sauber um."] },
   { v: '1.4.0', items: ["Die Sonnseite ist jetzt mit einem Zugangscode geschützt. Du hast ihn schon eingegeben, das ist nur einmal nötig.", "Du kannst Freund:innen einladen (in den Einstellungen).", "Ich erinnere dich ab und zu daran, deine Einträge zu sichern.", "Hier siehst du künftig, was sich nach einem Update geändert hat."] }
 ];

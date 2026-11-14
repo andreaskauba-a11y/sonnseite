@@ -1,8 +1,12 @@
 # Sonnseite – Stand & nächste Schritte
 
-_Stand: 14. November 2026 · Version 1.4.0 (live auf Render über `main`)_
+_Stand: 14. November 2026 · Version 1.4.1 lokal fertig, nicht online (1.4.0 ist live)_
 
 ## Erledigt
+### Version 1.4.1 – Korrektur Hilfe-Seite (noch nicht online)
+- 112 heißt jetzt „112 · Euro-Notruf“ (de, en, cs)
+- Langer Name „Kriseninterventionszentrum Wien“ bricht sauber um (Trennstellen, `overflow-wrap`)
+
 ### Version 1.4.0 – Zugangsschutz, Sicherungs-Erinnerung, Update-Hinweis
 - Beim ersten Öffnen: Zugangscode oder Einladungslink (`#/join/<code>`), gemerkt auf dem Gerät (`sonnseite.access`). Hilfe und Impressum bleiben ohne Code erreichbar.
 - Einstellungen: „Freund:innen einladen“ (Teilen-Menü oder Kopieren, zeigt den Code als Ersatz für die installierte App)

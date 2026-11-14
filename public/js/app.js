@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.4.0';
+  const VERSION = '1.4.1';
   const OWNER = { names: 'Andreas Kauba & Tomas Mikeska', mail: 'sonnseite@tm-relations.com' };
   /* Zugangsschutz: gespeichert wird nur der Prüfwert (SHA-256), nicht der Code selbst. Ändern mit: node tools/zugangscode.js <code> */
   const ACCESS_HASH = '94d6458205fb6dbfd1b14972d630647f00d6e5db0ea1f5de81c02af384acabbe';
@@ -1084,7 +1084,7 @@
       <h1>${esc(h.title)}</h1>
       <p class="lead">${esc(h.intro)}</p>
       <div class="card crisis"><h2>${esc(h.acuteTitle)}</h2><p>${esc(h.acuteText)}</p>
-        <div class="call-row"><a class="btn primary" href="tel:144">${ic('phone')} 144 · ${esc(h.rescue)}</a><a class="btn soft" href="tel:112">${ic('phone')} 112</a></div></div>
+        <div class="call-row"><a class="btn primary" href="tel:144">${ic('phone')} 144 · ${esc(h.rescue)}</a><a class="btn soft" href="tel:112">${ic('phone')} 112 · ${esc(h.emergency)}</a></div></div>
       <p class="section-label">${esc(h.alwaysTitle)}</p>${h.always.map(line).join('')}
       <p class="section-label">${esc(h.moreTitle)}</p>${h.more.map(line).join('')}
       <p class="section-label">${esc(h.onlineTitle)}</p>

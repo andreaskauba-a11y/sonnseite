@@ -372,7 +372,7 @@ window.CONTENT.en = {
   },
 
   help: {
-    ts: 'Telefonseelsorge', rescue: 'Ambulance',
+    ts: 'Telefonseelsorge', rescue: 'Ambulance', emergency: 'European emergency number',
     title: 'Help in difficult moments',
     intro: 'Sometimes a practice isn’t enough – and that’s completely okay. Here you’ll find people who listen and help. In Austria, with a focus on Vienna and surroundings. Most services speak German; some also offer English.',
     acuteTitle: 'In acute danger', acuteText: 'If you are in danger or thinking about harming yourself: call an ambulance immediately or go to the nearest emergency department.',
@@ -501,5 +501,6 @@ Object.assign(window.CONTENT.en, {
 });
 window.CONTENT.en.weeklyQuestions[3].q = 'What good thing would you like to do for yourself next week?';
 window.CONTENT.en.changelog = [
+  { v: '1.4.1', items: ["The help page now says what 112 is (European emergency number), and long names wrap properly."] },
   { v: '1.4.0', items: ["Sonnseite is now protected with an access code. You have already entered it – this is only needed once.", "You can invite friends (in the settings).", "I will remind you from time to time to back up your entries.", "From now on, you will see here what has changed after an update."] }
 ];
